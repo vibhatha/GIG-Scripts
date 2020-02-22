@@ -2,7 +2,7 @@ package utils
 
 import (
 	"GIG/commons/request_handlers"
-	"GIG/scripts"
+	"GIG-Scripts"
 	"encoding/json"
 )
 
