@@ -1,14 +1,13 @@
 package entity_handlers
 
 import (
-	"GIG/app/models"
-	"GIG/app/repositories/mongodb"
 	"GIG-Scripts/entity_handlers"
+	"GIG/app/models"
 	"fmt"
 )
 
 func (t *TestEntityHandlers) TestThatAddEntityAsAttributeWorks() {
-	attributeEntity, err := mongodb.GetEntityBy("title", "Sri Lanka")
+	attributeEntity, err := entity_handlers.GetEntity("Sri Lanka")
 	if err != nil {
 		t.AssertNotFound()
 	}
