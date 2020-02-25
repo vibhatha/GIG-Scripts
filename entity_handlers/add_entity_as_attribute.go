@@ -13,8 +13,8 @@ func AddEntityAsAttribute(entity models.Entity, attributeName string, attributeE
 		return entity, attributeEntity, err
 	}
 	entity = entity.SetAttribute(attributeName, models.Value{
-		Type:     "string",
-		RawValue: linkEntity.Title,
+		ValueType:     "string",
+		ValueString: linkEntity.Title,
 	})
 
 	return entity, linkEntity, nil
