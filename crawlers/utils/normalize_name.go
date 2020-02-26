@@ -29,7 +29,6 @@ func NormalizeName(title string) (string, error) {
     if json.Unmarshal([]byte(normalizedName), &response); err != nil {
         return "", err
     }
-    fmt.Println(response)
     if response.Status != 200 {
         return "", revel.NewErrorFromPanic("Server responded with" + strconv.Itoa(response.Status))
     }

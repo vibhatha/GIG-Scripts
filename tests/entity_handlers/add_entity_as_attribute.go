@@ -13,8 +13,8 @@ func (t *TestEntityHandlers) TestThatAddEntityAsAttributeWorks() {
 	}
 	entity := models.Entity{Title: "test entity"}
 	entity, attributeEntity, _ = entity_handlers.AddEntityAsAttribute(entity, "testAttribute", attributeEntity)
-	fmt.Println(attributeEntity.ID)
+	fmt.Println(attributeEntity.Id)
 	fmt.Println(entity.Attributes[0].Values)
-	t.AssertEqual(entity.Attributes[0].Values[0].RawValue, attributeEntity.ID.Hex())
+	t.AssertEqual(entity.Attributes[0].Values[0].ValueString, attributeEntity.Id.Hex())
 
 }
