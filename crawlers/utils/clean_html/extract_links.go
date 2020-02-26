@@ -29,11 +29,11 @@ func (c HtmlCleaner) extractLinks(startTag string, n *html.Node, uri string, lin
 
 			linkedEntities = append(linkedEntities,
 				models.Entity{
-					SourceURL: fixedURL,
+					Source: fixedURL,
 				}.
 					SetTitle(models.Value{
-						Type:      "string",
-						RawValue:  title.Val,
+						ValueType:      "string",
+						ValueString:  title.Val,
 						Date: time.Now(),
 					}))
 
