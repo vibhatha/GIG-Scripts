@@ -50,7 +50,7 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 		body   *html.Node
 	)
 
-	entity = models.Entity{SourceURL: uri}
+	entity = models.Entity{}.SetSource(uri).SetSourceSignature("trusted")
 
 	resp, err := request_handlers.GetRequest(uri)
 	if err != nil {
@@ -80,10 +80,10 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 
 	// queue new links for crawling
 	for _, linkedEntity := range linkedEntities {
-		if !visited[linkedEntity.SourceURL] {
+		if !visited[linkedEntity.GetSource()] {
 			go func(url string) {
 				queue <- url
-			}(linkedEntity.SourceURL)
+			}(linkedEntity.GetSource())
 		}
 	}
 
@@ -94,10 +94,10 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 	}
 
 	// save linkedEntities (create empty if not exist)
-	entity, err = entity_handlers.AddEntitiesAsLinks(entity, linkedEntities)
+	//entity, err = entity_handlers.AddEntitiesAsLinks(entity, linkedEntities)
 	entity = entity.SetAttribute("", models.Value{
-		Type:     "html",
-		RawValue: result,
+		ValueType:     "html",
+		ValueString: result,
 	}).AddCategory("Wikipedia")
 
 	return entity, nil
