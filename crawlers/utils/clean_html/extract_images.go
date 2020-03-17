@@ -9,7 +9,9 @@ import (
 
 func ExtractImages(startTag string, n *html.Node, uri string, imageList []models.Upload) (string, []models.Upload, string, int) {
 	sourceLink := ""
+	var uploadImageClass models.Upload
 	imageWidth := 0
+
 	if n.Data == "img" {
 		var (
 			src   html.Attribute
@@ -23,7 +25,7 @@ func ExtractImages(startTag string, n *html.Node, uri string, imageList []models
 			}
 		}
 
-		sourceLink, uploadImageClass := GenerateImagePath(src.Val, uri)
+		sourceLink, uploadImageClass = GenerateImagePath(src.Val, uri)
 		imageWidth, _ = strconv.Atoi(width.Val)
 		startTag = n.Data + " src='" + sourceLink+"'"
 		imageList = append(imageList, uploadImageClass)
