@@ -25,7 +25,7 @@ func ExtractImages(startTag string, n *html.Node, uri string, imageList []models
 
 		sourceLink, uploadImageClass := GenerateImagePath(src.Val, uri)
 		imageWidth, _ = strconv.Atoi(width.Val)
-		startTag = n.Data + " src='" + sourceLink
+		startTag = n.Data + " src='" + sourceLink+"'"
 		imageList = append(imageList, uploadImageClass)
 	}
 	return startTag, imageList, sourceLink, imageWidth
