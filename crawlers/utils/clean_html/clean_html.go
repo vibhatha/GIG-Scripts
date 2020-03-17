@@ -7,14 +7,14 @@ import (
 	"strings"
 )
 
-var defaultIgnoreElements = []string{"noscript", "script", "style", "input", "form","br","hr"}
+var defaultIgnoreElements = []string{"noscript", "script", "style", "input", "form", "br", "hr"}
 
 type Config struct {
-	LineBreakers   []string
-	IgnoreElements []string
-	IgnoreStrings  []string
-	IgnoreTitles   []string
-	IgnoreClasses  []string
+	LineBreakers    []string
+	IgnoreElements  []string
+	IgnoreStrings   []string
+	IgnoreTitles    []string
+	IgnoreClasses   []string
 }
 
 type HtmlCleaner struct {

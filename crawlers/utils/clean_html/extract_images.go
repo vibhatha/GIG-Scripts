@@ -12,8 +12,8 @@ func ExtractImages(startTag string, n *html.Node, uri string, imageList []models
 	imageWidth := 0
 	if n.Data == "img" {
 		var (
-			src    html.Attribute
-			width  html.Attribute
+			src   html.Attribute
+			width html.Attribute
 		)
 		for _, attr := range n.Attr {
 			if attr.Key == "src" {
@@ -23,13 +23,17 @@ func ExtractImages(startTag string, n *html.Node, uri string, imageList []models
 			}
 		}
 
-		fixedSrc := commons.FixUrl(src.Val, uri)
-		fileName := commons.ExtractFileName(fixedSrc)
-		bucketName := commons.ExtractDomain(fixedSrc)
-		sourceLink = "images/" + bucketName + "/" + fileName
+		sourceLink, uploadImageClass := GenerateImagePath(src.Val, uri)
 		imageWidth, _ = strconv.Atoi(width.Val)
 		startTag = n.Data + " src='" + sourceLink
-		imageList = append(imageList, models.Upload{Title: bucketName, Source: fixedSrc})
+		imageList = append(imageList, uploadImageClass)
 	}
 	return startTag, imageList, sourceLink, imageWidth
+}
+
+func GenerateImagePath(href string, uri string) (string, models.Upload) {
+	fixedSrc := commons.FixUrl(href, uri)
+	fileName := commons.ExtractFileName(fixedSrc)
+	bucketName := commons.ExtractDomain(fixedSrc)
+	return "images/" + bucketName + "/" + fileName, models.Upload{Title: bucketName, Source: fixedSrc}
 }
