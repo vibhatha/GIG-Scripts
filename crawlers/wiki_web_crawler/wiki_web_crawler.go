@@ -32,6 +32,7 @@ func main() {
 		if err != nil {
 			fmt.Println("enqueue error:", err.Error(), uri)
 		}
+		fmt.Println(entity.ImageURL)
 		_, err = entity_handlers.CreateEntity(entity)
 		fmt.Println("entity added", entity.Title)
 		if err != nil {
@@ -85,6 +86,7 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 				queue <- url
 			}(linkedEntity.GetSource())
 		}
+		entity=entity.AddLink(linkedEntity.GetTitle())
 	}
 
 	for _, image := range imageList {
@@ -94,11 +96,10 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 	}
 
 	// save linkedEntities (create empty if not exist)
-	//entity, err = entity_handlers.AddEntitiesAsLinks(entity, linkedEntities)
-	entity = entity.SetAttribute("", models.Value{
+	entity, err = entity_handlers.AddEntitiesAsLinks(entity, linkedEntities)
+	entity = entity.SetAttribute("content", models.Value{
 		ValueType:     "html",
 		ValueString: result,
 	}).AddCategory("Wikipedia")
-
 	return entity, nil
 }
