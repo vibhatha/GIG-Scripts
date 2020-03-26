@@ -1,6 +1,8 @@
 package entity_handlers
 
-import "GIG/app/models"
+import (
+	"GIG/app/models"
+)
 
 /**
 Add entity as an link to a given entity
@@ -10,6 +12,6 @@ func AddEntityAsLink(entity models.Entity, linkEntity models.Entity) (models.Ent
 	if linkEntityCreateError != nil {
 		return entity, createdLinkEntity, linkEntityCreateError
 	}
-	entity = entity.AddLink(createdLinkEntity.Title)
+	entity = entity.AddLink(models.Link{}.SetTitle(linkEntity.GetTitle()).AddDate(entity.GetSourceDate()))
 	return entity, createdLinkEntity, nil
 }

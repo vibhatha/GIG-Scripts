@@ -11,7 +11,7 @@ func AddEntitiesAsLinks(entity models.Entity, linkEntities []models.Entity) (mod
 		return entity, linkEntityCreateError
 	}
 	for _, linkEntity := range createdLinkEntities {
-		entity = entity.AddLink(linkEntity.Title)
+		entity = entity.AddLink(models.Link{}.SetTitle(linkEntity.GetTitle()).AddDate(entity.GetSourceDate()))
 	}
 	return entity, nil
 }
