@@ -2,12 +2,12 @@
 package main
 
 import (
-	"GIG/app/models"
-	"GIG/commons/request_handlers"
 	"GIG-Scripts/crawlers/utils"
 	"GIG-Scripts/crawlers/utils/clean_html"
 	"GIG-Scripts/crawlers/wiki_web_crawler/parsers"
 	"GIG-Scripts/entity_handlers"
+	"GIG/app/models"
+	"GIG/commons/request_handlers"
 	"flag"
 	"fmt"
 	"golang.org/x/net/html"
@@ -74,7 +74,7 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 		IgnoreElements: []string{"noscript", "script", "style", "input"},
 		IgnoreStrings:  []string{"[", "]", "edit", "Jump to search", "Jump to navigation"},
 		IgnoreTitles:   []string{"(page does not exist)", ":"},
-		IgnoreClasses:   []string{"box-Multiple_issues"},
+		IgnoreClasses:  []string{"box-Multiple_issues"},
 	}}
 	result, linkedEntities, imageList, defaultImageSource := htmlCleaner.CleanHTML(uri, body)
 	entity.ImageURL = defaultImageSource
@@ -86,7 +86,7 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 				queue <- url
 			}(linkedEntity.GetSource())
 		}
-		entity=entity.AddLink(linkedEntity.GetTitle())
+		entity = entity.AddLink(models.Link{}.SetTitle(linkedEntity.GetTitle()).AddDate(entity.GetSourceDate()))
 	}
 
 	for _, image := range imageList {
@@ -98,7 +98,7 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 	// save linkedEntities (create empty if not exist)
 	entity, err = entity_handlers.AddEntitiesAsLinks(entity, linkedEntities)
 	entity = entity.SetAttribute("content", models.Value{
-		ValueType:     "html",
+		ValueType:   "html",
 		ValueString: result,
 	}).AddCategory("Wikipedia")
 	return entity, nil
