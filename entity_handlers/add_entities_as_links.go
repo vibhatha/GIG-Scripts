@@ -1,6 +1,6 @@
 package entity_handlers
 
-import "GIG/app/models"
+import "GIG-SDK/models"
 
 /**
 Add list of related entities to a given entity

@@ -1,7 +1,7 @@
 package clean_html
 
 import (
-	"GIG/commons"
+	"GIG-SDK/libraries"
 	"golang.org/x/net/html"
 )
 
@@ -27,4 +27,3 @@ func ExtractIFrames(startTag string, n *html.Node, uri string) string {
 	}
 	return startTag
 }
-

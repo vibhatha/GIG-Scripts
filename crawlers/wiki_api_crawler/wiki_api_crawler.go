@@ -2,7 +2,7 @@
 package main
 
 import (
-	"GIG/app/models"
+	"GIG-SDK/models"
 	"GIG-Scripts/crawlers/wiki_api_crawler/decoders"
 	"GIG-Scripts/crawlers/wiki_api_crawler/requests"
 	"GIG-Scripts/entity_handlers"

@@ -1,8 +1,8 @@
 package clean_html
 
 import (
-	"GIG/app/models"
-	"GIG/commons"
+	"GIG-SDK/libraries"
+	"GIG-SDK/models"
 	"golang.org/x/net/html"
 	"strconv"
 )
@@ -27,7 +27,7 @@ func ExtractImages(startTag string, n *html.Node, uri string, imageList []models
 
 		sourceLink, uploadImageClass = GenerateImagePath(src.Val, uri)
 		imageWidth, _ = strconv.Atoi(width.Val)
-		startTag = n.Data + " src='" + sourceLink+"'"
+		startTag = n.Data + " src='" + sourceLink + "'"
 		imageList = append(imageList, uploadImageClass)
 	}
 	return startTag, imageList, sourceLink, imageWidth

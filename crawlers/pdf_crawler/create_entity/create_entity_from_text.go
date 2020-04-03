@@ -1,7 +1,7 @@
 package create_entity
 
 import (
-	"GIG/app/models"
+	"GIG-SDK/models"
 	"GIG-Scripts/crawlers/utils"
 	"GIG-Scripts/entity_handlers"
 	"time"

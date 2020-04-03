@@ -1,7 +1,7 @@
 package requests
 
 import (
-	"GIG/commons/request_handlers"
+	"GIG-SDK/request_handlers"
 	"encoding/json"
 	"net/url"
 )

@@ -1,7 +1,7 @@
 package decoders
 
 import (
-	"GIG/app/models"
+	"GIG-SDK/models"
 	"fmt"
 	"strings"
 	"time"

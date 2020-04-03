@@ -2,8 +2,8 @@ package entity_handlers
 
 import (
 	"GIG-Scripts"
-	"GIG/app/models"
-	"GIG/commons/request_handlers"
+	"GIG-SDK/models"
+	"GIG-SDK/request_handlers"
 	"encoding/json"
 )
 

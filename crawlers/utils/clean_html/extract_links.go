@@ -1,8 +1,8 @@
 package clean_html
 
 import (
-	"GIG/app/models"
-	"GIG/commons"
+	"GIG-SDK/libraries"
+	"GIG-SDK/models"
 	"golang.org/x/net/html"
 	"time"
 )
@@ -32,9 +32,9 @@ func (c HtmlCleaner) extractLinks(startTag string, n *html.Node, uri string, lin
 					Source: fixedURL,
 				}.
 					SetTitle(models.Value{
-						ValueType:      "string",
-						ValueString:  title.Val,
-						Date: time.Now(),
+						ValueType:   "string",
+						ValueString: title.Val,
+						Date:        time.Now(),
 					}))
 
 		}

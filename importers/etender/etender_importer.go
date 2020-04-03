@@ -1,7 +1,7 @@
 package main
 
 import (
-	"GIG/app/models"
+	"GIG-SDK/models"
 	"GIG-Scripts/entity_handlers"
 	"GIG-Scripts/importers/etender/decoders"
 	"bufio"

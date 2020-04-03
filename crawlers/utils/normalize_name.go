@@ -1,7 +1,7 @@
 package utils
 
 import (
-    "GIG/commons/request_handlers"
+    "GIG-SDK/request_handlers"
     "GIG-Scripts"
     "encoding/json"
     "fmt"

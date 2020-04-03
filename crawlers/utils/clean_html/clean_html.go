@@ -1,8 +1,8 @@
 package clean_html
 
 import (
-	"GIG/app/models"
-	"GIG/commons"
+	"GIG-SDK/libraries"
+	"GIG-SDK/models"
 	"golang.org/x/net/html"
 	"strings"
 )
@@ -10,11 +10,11 @@ import (
 var defaultIgnoreElements = []string{"noscript", "script", "style", "input", "form", "br", "hr"}
 
 type Config struct {
-	LineBreakers    []string
-	IgnoreElements  []string
-	IgnoreStrings   []string
-	IgnoreTitles    []string
-	IgnoreClasses   []string
+	LineBreakers   []string
+	IgnoreElements []string
+	IgnoreStrings  []string
+	IgnoreTitles   []string
+	IgnoreClasses  []string
 }
 
 type HtmlCleaner struct {

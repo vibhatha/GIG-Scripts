@@ -2,7 +2,7 @@ package entity_handlers
 
 import (
 	"GIG-Scripts/entity_handlers"
-	"GIG/app/models"
+	"GIG-SDK/models"
 	"fmt"
 )
 

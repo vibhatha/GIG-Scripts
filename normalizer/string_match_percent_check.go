@@ -1,7 +1,7 @@
 package main
 
 import (
-	"GIG/commons"
+	"GIG-SDK"
 	"fmt"
 )
 
