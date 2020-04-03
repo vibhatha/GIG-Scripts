@@ -37,13 +37,13 @@ func (c HtmlCleaner) CleanHTML(uri string, body *html.Node) (string, []models.En
 	ignoreClasses := c.Config.IgnoreClasses
 
 	f = func(n *html.Node) {
-		if !commons.StringInSlice(ignoreElements, n.Data) && // ignore elements
-			!commons.StringContainsAnyInSlice(ignoreClasses, ExtractClass(n)) { // ignore classes
+		if !libraries.StringInSlice(ignoreElements, n.Data) && // ignore elements
+			!libraries.StringContainsAnyInSlice(ignoreClasses, ExtractClass(n)) { // ignore classes
 
 			endTag := ""
 			trimmedData := strings.TrimSpace(n.Data)
 			if n.Type == html.TextNode && trimmedData != "" {
-				if !commons.StringInSlice(ignoreStrings, trimmedData) {
+				if !libraries.StringInSlice(ignoreStrings, trimmedData) {
 					result = result + n.Data
 				}
 			} else if n.Type == html.ElementNode {
@@ -76,7 +76,7 @@ func (c HtmlCleaner) CleanHTML(uri string, body *html.Node) (string, []models.En
 			if endTag != "" {
 				result = result + endTag
 			}
-			if commons.StringInSlice(lineBreakers, n.Data) {
+			if libraries.StringInSlice(lineBreakers, n.Data) {
 				result = result + "\n"
 			}
 		}

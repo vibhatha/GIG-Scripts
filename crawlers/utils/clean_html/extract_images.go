@@ -34,8 +34,8 @@ func ExtractImages(startTag string, n *html.Node, uri string, imageList []models
 }
 
 func GenerateImagePath(href string, uri string) (string, models.Upload) {
-	fixedSrc := commons.FixUrl(href, uri)
-	fileName := commons.ExtractFileName(fixedSrc)
-	bucketName := commons.ExtractDomain(fixedSrc)
+	fixedSrc := libraries.FixUrl(href, uri)
+	fileName := libraries.ExtractFileName(fixedSrc)
+	bucketName := libraries.ExtractDomain(fixedSrc)
 	return "images/" + bucketName + "/" + fileName, models.Upload{Title: bucketName, Source: fixedSrc}
 }

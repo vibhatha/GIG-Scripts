@@ -22,7 +22,7 @@ func ExtractIFrames(startTag string, n *html.Node, uri string) string {
 			}
 		}
 
-		fixedSrc := commons.FixUrl(src.Val, uri)
+		fixedSrc := libraries.FixUrl(src.Val, uri)
 		startTag = n.Data + " src='" + fixedSrc + "' width='" + width.Val + "'" + "' height='" + height.Val + "'"
 	}
 	return startTag

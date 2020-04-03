@@ -20,12 +20,12 @@ func (c HtmlCleaner) extractLinks(startTag string, n *html.Node, uri string, lin
 				title = attr
 			}
 		}
-		fixedURL := commons.FixUrl(href.Val, uri)
-		if commons.ExtractDomain(uri) == "en.wikipedia.org" &&
+		fixedURL := libraries.FixUrl(href.Val, uri)
+		if libraries.ExtractDomain(uri) == "en.wikipedia.org" &&
 			len(href.Val) > 0 &&
 			string(href.Val[0]) != "#" &&
 			title.Val != "" &&
-			!commons.StringContainsAnyInSlice(c.Config.IgnoreTitles, title.Val) {
+			!libraries.StringContainsAnyInSlice(c.Config.IgnoreTitles, title.Val) {
 
 			linkedEntities = append(linkedEntities,
 				models.Entity{

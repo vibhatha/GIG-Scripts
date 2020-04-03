@@ -37,26 +37,26 @@ func main() {
 
 	links := collectlinks.All(strings.NewReader(resp))
 
-	if err = commons.EnsureDirectory(downloadDir); err != nil {
+	if err = libraries.EnsureDirectory(downloadDir); err != nil {
 		panic(err)
 	}
 
-	baseDir := downloadDir + commons.ExtractDomain(uri) + "/"
+	baseDir := downloadDir + libraries.ExtractDomain(uri) + "/"
 	for _, link := range links {
-		if commons.FileTypeCheck(link, "pdf") {
+		if libraries.FileTypeCheck(link, "pdf") {
 			fmt.Println(link, uri)
-			absoluteUrl := commons.FixUrl(link, uri)
+			absoluteUrl := libraries.FixUrl(link, uri)
 			fmt.Println(absoluteUrl)
 
 			// make directory if not exist
-			if err = commons.EnsureDirectory(baseDir); err != nil {
+			if err = libraries.EnsureDirectory(baseDir); err != nil {
 				fmt.Println(err)
 			}
 
 			// download file
-			encodedFileName := commons.ExtractFileName(absoluteUrl)
+			encodedFileName := libraries.ExtractFileName(absoluteUrl)
 			filePath := baseDir + encodedFileName
-			err := commons.DownloadFile(filePath, absoluteUrl)
+			err := libraries.DownloadFile(filePath, absoluteUrl)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -69,7 +69,7 @@ func main() {
 			if err != nil {
 				fmt.Println(err)
 			}
-			if err = create_entity.CreateEntityFromText(textContent, commons.ExtractDomain(uri)+" - "+fileName, categories, entityTitles); err != nil {
+			if err = create_entity.CreateEntityFromText(textContent, libraries.ExtractDomain(uri)+" - "+fileName, categories, entityTitles); err != nil {
 				fmt.Println(err.Error(), absoluteUrl)
 			}
 
