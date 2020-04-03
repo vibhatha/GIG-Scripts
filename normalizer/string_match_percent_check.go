@@ -1,7 +1,7 @@
 package main
 
 import (
-	"GIG-SDK"
+	"GIG-SDK/libraries"
 	"fmt"
 )
 

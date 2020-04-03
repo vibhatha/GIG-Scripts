@@ -4,7 +4,6 @@ import (
 	"GIG-SDK/models"
 	"fmt"
 	"strings"
-	"time"
 )
 
 func Decode(result map[string]interface{}, entity *models.Entity) {
@@ -19,11 +18,9 @@ func Decode(result map[string]interface{}, entity *models.Entity) {
 			fmt.Println("	decoding content...")
 
 			entity.Title = pageObj["title"].(string)
-			tempEntity := entity.SetAttribute("", models.Value{
-				Type:      "wikiText",
-				RawValue:  pageObj["extract"].(string),
-				Date: time.Now(),
-			})
+			tempEntity := entity.SetAttribute("", models.Value{}.
+				SetType("wikiText").
+				SetValueString(pageObj["extract"].(string)))
 			entity.Attributes = tempEntity.Attributes
 		}
 
@@ -33,7 +30,7 @@ func Decode(result map[string]interface{}, entity *models.Entity) {
 
 			for _, link := range links {
 				linkObj := link.(map[string]interface{})
-				entity.Links = append(entity.Links, linkObj["title"].(string))
+				entity.Links = append(entity.Links, models.Link{}.SetTitle(linkObj["title"].(string)))
 			}
 		}
 

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"GIG-SDK"
+	"GIG-SDK/libraries"
 	"GIG-SDK/request_handlers"
 	"GIG-Scripts/crawlers/pdf_crawler/create_entity"
 	"GIG-Scripts/crawlers/pdf_crawler/parsers"

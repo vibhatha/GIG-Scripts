@@ -11,37 +11,37 @@ func MapToEntity(tender model.ETender) models.Entity {
 		AddCategory(tender.Category).
 		AddCategory(tender.Subcategory).
 		SetTitle(models.Value{
-			Type:     "string",
-			RawValue: tender.Title + " - " + tender.Location,
-			Date:     tender.SourceDate,
-			Source:   tender.SourceName,
+			ValueType:   "string",
+			ValueString: tender.Title + " - " + tender.Location,
+			Date:        tender.SourceDate,
+			Source:      tender.SourceName,
 		}).
 		SetAttribute("Source Date", models.Value{
-			Type:     "date",
-			RawValue: tender.SourceDate.String(),
+			ValueType:   "date",
+			ValueString: tender.SourceDate.String(),
 		}).
 		SetAttribute("Category", models.Value{
-			Type:     "string",
-			RawValue: tender.Category,
+			ValueType:   "string",
+			ValueString: tender.Category,
 		}).
 		SetAttribute("Subcategory", models.Value{
-			Type:     "string",
-			RawValue: tender.Subcategory,
+			ValueType:   "string",
+			ValueString: tender.Subcategory,
 		}).
 		SetAttribute("Closing Date", models.Value{
-			Type:     "date",
-			RawValue: tender.ClosingDate.String(),
+			ValueType:   "date",
+			ValueString: tender.ClosingDate.String(),
 		}).
 		SetAttribute("Source Name", models.Value{
-			Type:     "string",
-			RawValue: tender.SourceName,
+			ValueType:   "string",
+			ValueString: tender.SourceName,
 		}).
 		SetAttribute("Description", models.Value{
-			Type:     "string",
-			RawValue: tender.Description,
+			ValueType:   "string",
+			ValueString: tender.Description,
 		}).
 		SetAttribute("Value", models.Value{
-			Type:     "string",
-			RawValue: tender.Value,
+			ValueType:   "string",
+			ValueString: tender.Value,
 		})
 }

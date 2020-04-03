@@ -45,19 +45,19 @@ func main() {
 
 			companyEntity := models.Entity{
 			}.SetTitle(models.Value{
-				Type:     "string",
-				RawValue: tender.Company,
-				Source:   tender.SourceName,
-				Date:     tender.SourceDate,
+				ValueType:   "string",
+				ValueString: tender.Company,
+				Source:      tender.SourceName,
+				Date:        tender.SourceDate,
 			}).AddCategories([]string{"Organization", "Tenders",
 			})
 
 			locationEntity := models.Entity{
 			}.SetTitle(models.Value{
-				Type:     "string",
-				RawValue: tender.Location,
-				Source:   tender.SourceName,
-				Date:     tender.SourceDate,
+				ValueType:   "string",
+				ValueString: tender.Location,
+				Source:      tender.SourceName,
+				Date:        tender.SourceDate,
 			}).AddCategory("Location")
 
 			entity, _, addCompanyError := entity_handlers.AddEntityAsAttribute(entity, "Company", companyEntity)
