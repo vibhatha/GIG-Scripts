@@ -3,7 +3,6 @@ package daily_mirror
 import (
 	"GIG-SDK/libraries"
 	"GIG-SDK/request_handlers"
-	utils2 "GIG-Scripts/wikipedia/utils"
 	"Kavuda/models"
 	"Kavuda/utils"
 	"github.com/PuerkitoBio/goquery"
@@ -17,7 +16,7 @@ func (d DailyMirrorDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 	}
 
 	//convert html string to doc for element selection
-	doc, err := utils2.HTMLStringToDoc(resp)
+	doc, err := libraries.HTMLStringToDoc(resp)
 	if err != nil {
 		return nil, err
 	}

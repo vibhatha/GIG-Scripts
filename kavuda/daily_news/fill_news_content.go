@@ -1,7 +1,7 @@
 package daily_news
 
 import (
-	"GIG-Scripts/wikipedia/utils/clean_html"
+	"GIG-SDK/libraries/clean_html"
 	"Kavuda/models"
 )
 

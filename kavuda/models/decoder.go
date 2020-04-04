@@ -1,11 +1,10 @@
 package models
 
 import (
+	"GIG-SDK/libraries"
+	"GIG-SDK/libraries/clean_html"
 	"GIG-SDK/models"
 	"GIG-SDK/request_handlers"
-	"GIG-Scripts/wikipedia/utils"
-	"GIG-Scripts/wikipedia/utils/clean_html"
-	"GIG-Scripts/entity_handlers"
 	"golang.org/x/net/html"
 	"strings"
 )
@@ -23,7 +22,7 @@ func FillNewsContent(newsItem NewsItem, contentClass string, htmlCleaner clean_h
 		return newsItem, "", err
 	}
 
-	newsDoc, err := utils.HTMLStringToDoc(resp)
+	newsDoc, err := libraries.HTMLStringToDoc(resp)
 	if err != nil {
 		return newsItem, "", err
 	}
@@ -55,7 +54,7 @@ func UploadImagesToServer(newsItem NewsItem, imageList []models.Upload, defaultI
 
 	for _, image := range imageList {
 		go func(payload models.Upload) {
-			entity_handlers.UploadImage(payload)
+			request_handlers.UploadImage(payload)
 		}(image)
 	}
 

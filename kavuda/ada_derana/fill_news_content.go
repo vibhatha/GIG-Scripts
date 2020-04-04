@@ -1,7 +1,7 @@
 package ada_derana
 
 import (
-	"GIG-Scripts/wikipedia/utils/clean_html"
+	"GIG-SDK/libraries/clean_html"
 	"Kavuda/models"
 )
 
