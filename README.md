@@ -6,7 +6,7 @@ Include Code Snippets that can be used to crawl and feed data into GIG system
     NormalizeServer     string      Entity Name Normalization Service
 ## Crawlers:
 * [Crawler Documentation](crawlers/README.md)
-* [PDF Crawler Documentation](crawlers/pdf_crawler/README.md)
+* [PDF Crawler Documentation](../GIG-SDK/pdf_crawler/README.md)
 * [Wiki API Crawler Documentation](crawlers/wiki_api_crawler/README.md)
 * [Wiki Web Crawler Documentation](crawlers/wiki_web_crawler/README.md)
 ## Entity Handlers:

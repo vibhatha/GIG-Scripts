@@ -5,7 +5,7 @@ import (
 	"GIG-SDK/models"
 	"GIG-Scripts/crawlers/wiki_api_crawler/decoders"
 	"GIG-Scripts/crawlers/wiki_api_crawler/requests"
-	"GIG-Scripts/entity_handlers"
+	"GIG-SDK/entity_handlers"
 	"flag"
 	"fmt"
 	"os"

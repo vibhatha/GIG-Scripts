@@ -2,7 +2,7 @@ package main
 
 import (
 	"GIG-SDK/models"
-	"GIG-Scripts/entity_handlers"
+	"GIG-SDK/entity_handlers"
 	"GIG-Scripts/importers/etender/decoders"
 	"bufio"
 	"encoding/csv"

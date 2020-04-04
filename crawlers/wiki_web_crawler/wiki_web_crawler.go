@@ -2,10 +2,10 @@
 package main
 
 import (
-	"GIG-Scripts/crawlers/utils"
-	"GIG-Scripts/crawlers/utils/clean_html"
+	"GIG-SDK/utils"
+	"GIG-SDK/utils/clean_html"
 	"GIG-Scripts/crawlers/wiki_web_crawler/parsers"
-	"GIG-Scripts/entity_handlers"
+	"GIG-SDK/entity_handlers"
 	"GIG-SDK/models"
 	"GIG-SDK/request_handlers"
 	"flag"

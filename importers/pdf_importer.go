@@ -1,9 +1,9 @@
 package main
 
 import (
-	"GIG-Scripts/crawlers/pdf_crawler/create_entity"
-	"GIG-Scripts/crawlers/pdf_crawler/parsers"
-	"GIG-Scripts/crawlers/utils"
+	"GIG-SDK/pdf_crawler/create_entity"
+	"GIG-SDK/pdf_crawler/parsers"
+	"GIG-SDK/utils"
 	"flag"
 	"fmt"
 	"os"
