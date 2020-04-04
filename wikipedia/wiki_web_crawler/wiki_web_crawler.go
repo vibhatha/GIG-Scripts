@@ -2,12 +2,11 @@
 package main
 
 import (
-	"GIG-SDK/utils"
-	"GIG-SDK/utils/clean_html"
-	"GIG-Scripts/crawlers/wiki_web_crawler/parsers"
-	"GIG-SDK/entity_handlers"
+	"GIG-SDK/libraries"
+	"GIG-SDK/libraries/clean_html"
 	"GIG-SDK/models"
 	"GIG-SDK/request_handlers"
+	"GIG-Scripts/wikipedia/wiki_web_crawler/parsers"
 	"flag"
 	"fmt"
 	"golang.org/x/net/html"
@@ -33,7 +32,7 @@ func main() {
 			fmt.Println("enqueue error:", err.Error(), uri)
 		}
 		fmt.Println(entity.ImageURL)
-		_, err = entity_handlers.CreateEntity(entity)
+		_, err = request_handlers.CreateEntity(entity)
 		fmt.Println("entity added", entity.Title)
 		if err != nil {
 			fmt.Println(err.Error(), uri)
@@ -58,7 +57,7 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 		return entity, err
 	}
 
-	doc, err := utils.HTMLStringToDoc(resp)
+	doc, err := libraries.HTMLStringToDoc(resp)
 	if err != nil {
 		return entity, err
 	}
@@ -91,12 +90,12 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 
 	for _, image := range imageList {
 		go func(payload models.Upload) {
-			entity_handlers.UploadImage(payload)
+			request_handlers.UploadImage(payload)
 		}(image)
 	}
 
 	// save linkedEntities (create empty if not exist)
-	entity, err = entity_handlers.AddEntitiesAsLinks(entity, linkedEntities)
+	entity, err = request_handlers.AddEntitiesAsLinks(entity, linkedEntities)
 	entity = entity.SetAttribute("content", models.Value{
 		ValueType:   "html",
 		ValueString: result,

@@ -3,9 +3,9 @@ package main
 
 import (
 	"GIG-SDK/models"
-	"GIG-Scripts/crawlers/wiki_api_crawler/decoders"
-	"GIG-Scripts/crawlers/wiki_api_crawler/requests"
-	"GIG-SDK/entity_handlers"
+	"GIG-SDK/request_handlers"
+	"GIG-Scripts/wikipedia/wiki_api_crawler/decoders"
+	"GIG-Scripts/wikipedia/wiki_api_crawler/requests"
 	"flag"
 	"fmt"
 	"os"
@@ -29,7 +29,7 @@ func main() {
 		if title != "" {
 			entity := enqueue(title, queue)
 			if !entity.IsNil() {
-				_, err := entity_handlers.CreateEntity(entity)
+				_, err := request_handlers.CreateEntity(entity)
 				if err != nil {
 					fmt.Println(err.Error(), title)
 				}
@@ -77,11 +77,11 @@ func enqueue(title string, queue chan string) models.Entity {
 					}(link.GetTitle())
 				}
 				//add link as an entity
-				linkEntities = append(linkEntities, models.Entity{Title:link.GetTitle()})
+				linkEntities = append(linkEntities, models.Entity{Title: link.GetTitle()})
 			}
 		}
 
-		entity, err = entity_handlers.AddEntitiesAsLinks(entity, linkEntities)
+		entity, err = request_handlers.AddEntitiesAsLinks(entity, linkEntities)
 
 		if err != nil {
 			fmt.Println("error creating links:", err)

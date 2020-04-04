@@ -2,7 +2,7 @@ package decoders
 
 import (
 	"GIG-SDK/models"
-	"GIG-Scripts/importers/etender/model"
+	"GIG-Scripts/tenders/etender/model"
 )
 
 func MapToEntity(tender model.ETender) models.Entity {

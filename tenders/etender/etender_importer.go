@@ -2,8 +2,8 @@ package main
 
 import (
 	"GIG-SDK/models"
-	"GIG-SDK/entity_handlers"
-	"GIG-Scripts/importers/etender/decoders"
+	"GIG-SDK/request_handlers"
+	"GIG-Scripts/tenders/etender/decoders"
 	"bufio"
 	"encoding/csv"
 	"flag"
@@ -60,16 +60,16 @@ func main() {
 				Date:        tender.SourceDate,
 			}).AddCategory("Location")
 
-			entity, _, addCompanyError := entity_handlers.AddEntityAsAttribute(entity, "Company", companyEntity)
+			entity, _, addCompanyError := request_handlers.AddEntityAsAttribute(entity, "Company", companyEntity)
 			if addCompanyError != nil {
 				fmt.Println(addCompanyError)
 			}
-			entity, _, addLocationError := entity_handlers.AddEntityAsAttribute(entity, "Location", locationEntity)
+			entity, _, addLocationError := request_handlers.AddEntityAsAttribute(entity, "Location", locationEntity)
 			if addLocationError != nil {
 				fmt.Println(addLocationError)
 			}
 
-			savedEntity, saveErr := entity_handlers.CreateEntity(entity)
+			savedEntity, saveErr := request_handlers.CreateEntity(entity)
 
 			if saveErr != nil {
 				fmt.Println(saveErr.Error(), entity)

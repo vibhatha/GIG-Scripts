@@ -5,10 +5,10 @@ Include Code Snippets that can be used to crawl and feed data into GIG system
     NERServerUrl        string      Entity Recognition Service
     NormalizeServer     string      Entity Name Normalization Service
 ## Crawlers:
-* [Crawler Documentation](crawlers/README.md)
+* [Crawler Documentation](wikipedia/README.md)
 * [PDF Crawler Documentation](../GIG-SDK/pdf_crawler/README.md)
-* [Wiki API Crawler Documentation](crawlers/wiki_api_crawler/README.md)
-* [Wiki Web Crawler Documentation](crawlers/wiki_web_crawler/README.md)
+* [Wiki API Crawler Documentation](wikipedia/wiki_api_crawler/README.md)
+* [Wiki Web Crawler Documentation](wikipedia/wiki_web_crawler/README.md)
 ## Entity Handlers:
     1. AddEntitiesAsLinks -> Add list of related entities to a given entity
     2. AddEntityAsAttribute -> Add entity as an attribute to a given entity
@@ -18,6 +18,6 @@ Include Code Snippets that can be used to crawl and feed data into GIG system
     6. UploadImage -> Upload image to GIG server
 
 ## Importers:
-* [eTender Documentation](importers/etender/README.md)
+* [eTender Documentation](tenders/etender/README.md)
 ## Parsers:
     1. ParsePdf -> return the string content of a given PDF file

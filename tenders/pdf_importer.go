@@ -1,9 +1,8 @@
 package main
 
 import (
-	"GIG-SDK/pdf_crawler/create_entity"
-	"GIG-SDK/pdf_crawler/parsers"
-	"GIG-SDK/utils"
+	"GIG-SDK/libraries"
+	"GIG-SDK/request_handlers"
 	"flag"
 	"fmt"
 	"os"
@@ -24,12 +23,12 @@ func main() {
 	}
 	filePath := args[0]
 	//parse pdf
-	textContent := parsers.ParsePdf(filePath)
-	entityTitles, err := utils.ExtractEntityNames(textContent)
+	textContent := libraries.ParsePdf(filePath)
+	entityTitles, err := request_handlers.ExtractEntityNames(textContent)
 	if err != nil {
 		fmt.Println(err)
 	}
-	if err := create_entity.CreateEntityFromText(textContent, "Gazette 2015", pdfCategories, entityTitles); err != nil {
+	if err := request_handlers.CreateEntityFromText(textContent, "Gazette 2015", pdfCategories, entityTitles); err != nil {
 		fmt.Println(err.Error(), filePath)
 	}
 

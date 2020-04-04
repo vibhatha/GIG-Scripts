@@ -3,3 +3,6 @@
 .directory
 crawlers/cache/
 data
+orgchart/extracted
+orgchart/extracted_old
+tenders/data
