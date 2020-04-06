@@ -4,6 +4,7 @@ package main
 import (
 	"GIG-SDK/models"
 	"GIG-SDK/request_handlers"
+	"GIG-Scripts/wikipedia/wiki_api_crawler/decoders"
 	"GIG-Scripts/wikipedia/wiki_api_crawler/requests"
 	"flag"
 	"log"

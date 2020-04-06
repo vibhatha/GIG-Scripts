@@ -2,7 +2,7 @@ package the_island
 
 import (
 	"GIG-SDK/libraries/clean_html"
-	"Kavuda/models"
+	"GIG-Scripts/kavuda/models"
 )
 
 func (d TheIslandDecoder) FillNewsContent(newsItem models.NewsItem) (models.NewsItem, string, error) {

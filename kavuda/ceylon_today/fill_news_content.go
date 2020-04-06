@@ -3,9 +3,9 @@ package ceylon_today
 import (
 	models3 "GIG-SDK/models"
 	"GIG-SDK/request_handlers"
-	models2 "Kavuda/ceylon_today/models"
-	"Kavuda/models"
-	"Kavuda/utils"
+	models2 "GIG-Scripts/kavuda/ceylon_today/models"
+	"GIG-Scripts/kavuda/models"
+	"GIG-Scripts/kavuda/utils"
 	"encoding/json"
 )
 

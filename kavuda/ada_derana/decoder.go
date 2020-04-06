@@ -1,7 +1,7 @@
 package ada_derana
 
 import (
-	"Kavuda/models"
+	"GIG-Scripts/kavuda/models"
 )
 
 var newsSiteUrl = "http://www.adaderana.lk/hot-news/"

@@ -2,7 +2,7 @@ package utils
 
 import (
 	"GIG-SDK/models"
-	models2 "Kavuda/models"
+	models2 "GIG-Scripts/kavuda/models"
 	"time"
 )
 

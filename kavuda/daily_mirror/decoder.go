@@ -1,7 +1,7 @@
 package daily_mirror
 
 import (
-	"Kavuda/models"
+	"GIG-Scripts/kavuda/models"
 )
 
 var newsSiteUrl = "http://www.dailymirror.lk/top-storys/155"

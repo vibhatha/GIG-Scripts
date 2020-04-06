@@ -2,7 +2,7 @@ package daily_mirror
 
 import (
 	"GIG-SDK/libraries/clean_html"
-	"Kavuda/models"
+	"GIG-Scripts/kavuda/models"
 )
 
 func (d DailyMirrorDecoder) FillNewsContent(newsItem models.NewsItem) (models.NewsItem, string, error) {

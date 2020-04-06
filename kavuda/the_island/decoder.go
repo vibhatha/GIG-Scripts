@@ -1,7 +1,7 @@
 package the_island
 
 import (
-	"Kavuda/models"
+	"GIG-Scripts/kavuda/models"
 )
 
 var newsSiteUrl = "http://www.island.lk/index.php?page_cat=news-section&page=news-section&code_title=39"

@@ -3,8 +3,8 @@ package daily_mirror
 import (
 	"GIG-SDK/libraries"
 	"GIG-SDK/request_handlers"
-	"Kavuda/models"
-	"Kavuda/utils"
+	"GIG-Scripts/kavuda/models"
+	"GIG-Scripts/kavuda/utils"
 	"github.com/PuerkitoBio/goquery"
 )
 

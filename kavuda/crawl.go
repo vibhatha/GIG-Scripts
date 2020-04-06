@@ -1,13 +1,13 @@
 package main
 
 import (
-	"Kavuda/ada_derana"
-	"Kavuda/ceylon_today"
-	"Kavuda/daily_mirror"
-	"Kavuda/daily_news"
-	"Kavuda/models"
-	"Kavuda/the_island"
-	"Kavuda/utils"
+	"GIG-Scripts/kavuda/ada_derana"
+	"GIG-Scripts/kavuda/ceylon_today"
+	"GIG-Scripts/kavuda/daily_mirror"
+	"GIG-Scripts/kavuda/daily_news"
+	"GIG-Scripts/kavuda/models"
+	"GIG-Scripts/kavuda/the_island"
+	"GIG-Scripts/kavuda/utils"
 	"log"
 )
 

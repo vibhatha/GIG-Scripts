@@ -1,7 +1,7 @@
 package ceylon_today
 
 import (
-	"Kavuda/models"
+	"GIG-Scripts/kavuda/models"
 )
 
 var singleNewsUrl = "https://ceylontoday.lk/site-api/api/News/getSingleNews?Id="

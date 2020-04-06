@@ -3,8 +3,8 @@ package ceylon_today
 import (
 	"GIG-SDK/libraries"
 	"GIG-SDK/request_handlers"
-	models2 "Kavuda/ceylon_today/models"
-	"Kavuda/models"
+	models2 "GIG-Scripts/kavuda/ceylon_today/models"
+	"GIG-Scripts/kavuda/models"
 	"encoding/json"
 	"errors"
 	"strconv"

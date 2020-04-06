@@ -2,7 +2,7 @@ package ada_derana
 
 import (
 	"GIG-SDK/libraries/clean_html"
-	"Kavuda/models"
+	"GIG-Scripts/kavuda/models"
 )
 
 func (d AdaDeranaDecoder) FillNewsContent(newsItem models.NewsItem) (models.NewsItem, string, error) {

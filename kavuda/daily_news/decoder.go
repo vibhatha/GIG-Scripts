@@ -1,7 +1,7 @@
 package daily_news
 
 import (
-	"Kavuda/models"
+	"GIG-Scripts/kavuda/models"
 )
 
 var newsSiteUrl1 = "http://www.dailynews.lk/category/local"
