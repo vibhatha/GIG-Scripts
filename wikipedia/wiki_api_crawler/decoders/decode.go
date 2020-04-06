@@ -2,7 +2,7 @@ package decoders
 
 import (
 	"GIG-SDK/models"
-	"fmt"
+	"log"
 	"strings"
 )
 
@@ -15,7 +15,7 @@ func Decode(result map[string]interface{}, entity *models.Entity) {
 		pageObj := page.(map[string]interface{})
 
 		if pageObj["extract"] != nil {
-			fmt.Println("	decoding content...")
+			log.Println("	decoding content...")
 
 			entity.Title = pageObj["title"].(string)
 			tempEntity := entity.SetAttribute("", models.Value{}.
@@ -25,7 +25,7 @@ func Decode(result map[string]interface{}, entity *models.Entity) {
 		}
 
 		if pageObj["links"] != nil {
-			fmt.Println("	decoding links...")
+			log.Println("	decoding links...")
 			links := pageObj["links"].([]interface{})
 
 			for _, link := range links {
@@ -35,7 +35,7 @@ func Decode(result map[string]interface{}, entity *models.Entity) {
 		}
 
 		if pageObj["categories"] != nil {
-			fmt.Println("	decoding categories...")
+			log.Println("	decoding categories...")
 			categories := pageObj["categories"].([]interface{})
 
 			for _, category := range categories {

@@ -3,18 +3,18 @@ package utils
 import (
 	"GIG-SDK/models"
 	"GIG-SDK/request_handlers"
-	"fmt"
+	"log"
 )
 
 func ProcessAndSaveEntity(entity models.Entity, textContent string) {
 	//NER extraction
-	fmt.Println("		Running NER on the text content...")
+	log.Println("		Running NER on the text content...")
 	entityTitles, err := request_handlers.ExtractEntityNames(textContent)
 	if err != nil {
-		fmt.Println(err, entity.Title)
-		fmt.Println(entityTitles)
+		log.Println(err, entity.Title)
+		log.Println(entityTitles)
 	}
-	fmt.Println("		NER completed successfully.")
+	log.Println("		NER completed successfully.")
 
 	var entities []models.Entity
 
@@ -29,7 +29,7 @@ func ProcessAndSaveEntity(entity models.Entity, textContent string) {
 	//save to db
 	entity, saveErr := request_handlers.CreateEntity(entity)
 	if saveErr != nil {
-		fmt.Println(saveErr.Error(), entity.Title)
+		log.Println(saveErr.Error(), entity.Title)
 	}
-	fmt.Println("		News Article Saved.", entity.Title)
+	log.Println("		News Article Saved.", entity.Title)
 }

@@ -7,7 +7,7 @@ import (
 	"GIG-Scripts/wikipedia/wiki_api_crawler/decoders"
 	"GIG-Scripts/wikipedia/wiki_api_crawler/requests"
 	"flag"
-	"fmt"
+	"log"
 	"os"
 	"sync"
 )
@@ -17,9 +17,9 @@ var visited = make(map[string]bool)
 func main() {
 	flag.Parse()
 	args := flag.Args()
-	fmt.Println(args)
+	log.Println(args)
 	if len(args) < 1 {
-		fmt.Println("starting title not specified")
+		log.Println("starting title not specified")
 		os.Exit(1)
 	}
 	queue := make(chan string)
@@ -31,16 +31,16 @@ func main() {
 			if !entity.IsNil() {
 				_, err := request_handlers.CreateEntity(entity)
 				if err != nil {
-					fmt.Println(err.Error(), title)
+					log.Println(err.Error(), title)
 				}
 			}
 		}
 	}
-	fmt.Println("end")
+	log.Println("end")
 }
 
 func enqueue(title string, queue chan string) models.Entity {
-	fmt.Println("fetching", title)
+	log.Println("fetching", title)
 	visited[title] = true
 	entity := models.Entity{}
 
@@ -52,7 +52,7 @@ func enqueue(title string, queue chan string) models.Entity {
 			defer requestWorkGroup.Done()
 			result, err := requests.GetContent(prop, title)
 			if err != nil {
-				fmt.Println(err)
+				log.Println(err)
 			} else {
 				decoders.Decode(result, &entity)
 			}
@@ -70,10 +70,10 @@ func enqueue(title string, queue chan string) models.Entity {
 		for _, link := range entity.Links {
 			if link.GetTitle() != "" {
 				if !visited[link.GetTitle()] {
-					//fmt.Println("	passed link ->", link.Title)
+					//log.Println("	passed link ->", link.Title)
 					go func(title string) {
 						queue <- title
-						//fmt.Println("	queued link ->", link.Title)
+						//log.Println("	queued link ->", link.Title)
 					}(link.GetTitle())
 				}
 				//add link as an entity
@@ -84,7 +84,7 @@ func enqueue(title string, queue chan string) models.Entity {
 		entity, err = request_handlers.AddEntitiesAsLinks(entity, linkEntities)
 
 		if err != nil {
-			fmt.Println("error creating links:", err)
+			log.Println("error creating links:", err)
 		}
 	}
 	return entity

@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"fmt"
+	"log"
 	"time"
 )
 
@@ -12,7 +12,7 @@ func ExtractPublishedDate(layout string, timeString string) time.Time {
 	loc, _ := time.LoadLocation("Asia/Colombo")
 	t, err := time.ParseInLocation(layout, timeString,loc)
 	if err != nil {
-		fmt.Println("error in date", err)
+		log.Println("error in date", err)
 		t = time.Now().In(loc)
 	}
 	return t

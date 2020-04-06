@@ -8,8 +8,8 @@ import (
 	"GIG-SDK/request_handlers"
 	"GIG-Scripts/wikipedia/wiki_web_crawler/parsers"
 	"flag"
-	"fmt"
 	"golang.org/x/net/html"
+	"log"
 	"os"
 )
 
@@ -18,9 +18,9 @@ var visited = make(map[string]bool)
 func main() {
 	flag.Parse()
 	args := flag.Args()
-	fmt.Println(args)
+	log.Println(args)
 	if len(args) < 1 {
-		fmt.Println("starting url not specified")
+		log.Println("starting url not specified")
 		os.Exit(1)
 	}
 	queue := make(chan string)
@@ -29,19 +29,19 @@ func main() {
 	for uri := range queue {
 		entity, err := enqueue(uri, queue)
 		if err != nil {
-			fmt.Println("enqueue error:", err.Error(), uri)
+			log.Println("enqueue error:", err.Error(), uri)
 		}
-		fmt.Println(entity.ImageURL)
+		log.Println(entity.ImageURL)
 		_, err = request_handlers.CreateEntity(entity)
-		fmt.Println("entity added", entity.Title)
+		log.Println("entity added", entity.Title)
 		if err != nil {
-			fmt.Println(err.Error(), uri)
+			log.Println(err.Error(), uri)
 		}
 	}
 }
 
 func enqueue(uri string, queue chan string) (models.Entity, error) {
-	fmt.Println("fetching", uri)
+	log.Println("fetching", uri)
 	visited[uri] = true
 
 	var (

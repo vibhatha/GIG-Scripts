@@ -8,7 +8,7 @@ import (
 	"Kavuda/models"
 	"Kavuda/the_island"
 	"Kavuda/utils"
-	"fmt"
+	"log"
 )
 
 func main() {
@@ -26,21 +26,21 @@ func crawl(decoder models.IDecoder) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("News links extracted...")
-	fmt.Println(len(newsItems), "news items found\n ")
+	log.Println("News links extracted...")
+	log.Println(len(newsItems), "news items found\n ")
 
 	//for each news article
-	fmt.Println("Reading News...")
+	log.Println("Reading News...")
 	for _, newsItem := range newsItems {
 
-		fmt.Println("	Item: ", newsItem.Title)
-		fmt.Println("	News: ", newsItem.Link)
+		log.Println("	Item: ", newsItem.Title)
+		log.Println("	News: ", newsItem.Link)
 		newsItem, contentString, err := decoder.FillNewsContent(newsItem)
 		if err != nil {
 			panic(err)
 		}
 
-		fmt.Println("		Reading News Article Completed.")
+		log.Println("		Reading News Article Completed.")
 
 		//decode to entity
 		entity := utils.EntityFromNews(newsItem, decoder.GetSourceTitle()).SetSourceSignature("trusted")

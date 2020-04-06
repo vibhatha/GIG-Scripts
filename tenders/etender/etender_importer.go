@@ -7,7 +7,6 @@ import (
 	"bufio"
 	"encoding/csv"
 	"flag"
-	"fmt"
 	"io"
 	"log"
 	"os"
@@ -20,7 +19,7 @@ func main() {
 	flag.Parse()
 	args := flag.Args()
 	if len(args) < 1 {
-		fmt.Println("file path not specified")
+		log.Println("file path not specified")
 		os.Exit(1)
 	}
 	filePath := args[0]
@@ -62,19 +61,19 @@ func main() {
 
 			entity, _, addCompanyError := request_handlers.AddEntityAsAttribute(entity, "Company", companyEntity)
 			if addCompanyError != nil {
-				fmt.Println(addCompanyError)
+				log.Println(addCompanyError)
 			}
 			entity, _, addLocationError := request_handlers.AddEntityAsAttribute(entity, "Location", locationEntity)
 			if addLocationError != nil {
-				fmt.Println(addLocationError)
+				log.Println(addLocationError)
 			}
 
 			savedEntity, saveErr := request_handlers.CreateEntity(entity)
 
 			if saveErr != nil {
-				fmt.Println(saveErr.Error(), entity)
+				log.Println(saveErr.Error(), entity)
 			}
-			fmt.Println(savedEntity.Title)
+			log.Println(savedEntity.Title)
 		}
 	}
 }

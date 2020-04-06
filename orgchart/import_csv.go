@@ -9,7 +9,6 @@ import (
 	"encoding/csv"
 	"encoding/json"
 	"flag"
-	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -26,7 +25,7 @@ func main() {
 	flag.Parse()
 	args := flag.Args()
 	if len(args) < 1 {
-		fmt.Println("file path not specified")
+		log.Println("file path not specified")
 		os.Exit(1)
 	}
 	filePath := args[0]
@@ -41,17 +40,17 @@ func main() {
 	r.Comma = ';'
 	dataArray, err := r.ReadAll()
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		panic("error reading csv")
 	}
-	fmt.Println(fileName)
+	log.Println(fileName)
 
 	gazetteDate, err := time.Parse("gazette-2006-1-2.csv", fileName)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		panic("invalid filename")
 	}
-	fmt.Println(gazetteDate)
+	log.Println(gazetteDate)
 
 	if err != nil {
 		log.Fatalln("Error reading the csv file", err)
@@ -78,10 +77,10 @@ func main() {
 	}
 
 	for ministry, departments := range dataStructure {
-		fmt.Println(ministry)
+		log.Println(ministry)
 		var filteredDepartments []string
 		for _, department := range departments {
-			fmt.Println("	", department)
+			log.Println("	", department)
 			if department != "" {
 				filteredDepartments = append(filteredDepartments, department)
 			}
@@ -152,7 +151,7 @@ func main() {
 		//save to db
 		entity, saveErr := request_handlers.CreateEntity(entity)
 		if saveErr != nil {
-			fmt.Println(err.Error(), ministry)
+			log.Println(err.Error(), ministry)
 		}
 	}
 
@@ -174,7 +173,7 @@ func terminateEntities(fileName string, entityName string) {
 	}
 	resp, err := request_handlers.PostRequest(config.ApiUrl+"terminate", entity)
 	if err != nil {
-		fmt.Println("entity termination error:", err)
+		log.Println("entity termination error:", err)
 	}
-	fmt.Println("Entity Termination:", resp)
+	log.Println("Entity Termination:", resp)
 }
