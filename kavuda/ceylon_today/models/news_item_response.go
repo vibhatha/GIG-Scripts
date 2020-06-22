@@ -1,12 +1,15 @@
 package models
 
 type NewsItemsResponse struct {
-	SuccessMessage string             `json:"SuccessMessage"`
-	ErrorMessage   string             `json:"ErrorMessage"`
-	IsSuccess      bool               `json:"isSuccess"`
-	Data           []NewsItemResponse `json:"data"`
+	Count int                `json:"count"`
+	Data  []NewsItemResponse `json:"data"`
 }
 
 type NewsItemResponse struct {
-	NewsId int `json:"News_ID"`
+	NewsId int `json:"id"`
+	Title string `json:"title"`
+	Slug string `json:"slug"`
+	Image string `json:"image"`
+	ShortContent string `json:"short_content"`
+	PublishDate string `json:"publish_date"`
 }

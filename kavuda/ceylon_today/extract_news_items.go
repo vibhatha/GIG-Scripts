@@ -6,7 +6,7 @@ import (
 	models2 "GIG-Scripts/kavuda/ceylon_today/models"
 	"GIG-Scripts/kavuda/models"
 	"encoding/json"
-	"errors"
+	"fmt"
 	"strconv"
 )
 
@@ -16,6 +16,7 @@ func (d CeylonTodayDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println(resp)
 	var (
 		newsItemsResponse models2.NewsItemsResponse
 		newsItems         []models.NewsItem
@@ -24,21 +25,18 @@ func (d CeylonTodayDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 		return nil, err
 	}
 
-	if newsItemsResponse.SuccessMessage != "OK" {
-		return nil, errors.New("request success message not received")
-	}
-
 	var newsLinks []string
 
 	//create news item list from news item responses
 	for _, newsItemResponse := range newsItemsResponse.Data {
+		fmt.Println(newsItemResponse)
 		url := singleNewsUrl + strconv.Itoa(newsItemResponse.NewsId)
 		if !libraries.StringInSlice(newsLinks, url) { // if the link is not already enlisted before
 			newsLinks = append(newsLinks, url)
-			newsItem := models.NewsItem{
-				Link: url,
-			}
-			newsItems = append(newsItems, newsItem)
+			//newsItem := models.NewsItem{
+			//	Link: url,
+			//}
+			//newsItems = append(newsItems, newsItem)
 		}
 	}
 
