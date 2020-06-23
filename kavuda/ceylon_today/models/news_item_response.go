@@ -12,4 +12,5 @@ type NewsItemResponse struct {
 	Image string `json:"image"`
 	ShortContent string `json:"short_content"`
 	PublishDate string `json:"publish_date"`
+	Author string `json:"author_name"`
 }
