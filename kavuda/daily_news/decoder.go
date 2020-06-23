@@ -4,10 +4,12 @@ import (
 	"GIG-Scripts/kavuda/models"
 )
 
-var newsSiteUrl1 = "http://www.dailynews.lk/category/local"
-var newsSiteUrl2 = "http://www.dailynews.lk/category/political"
-var newsSiteUrl3 = "http://www.dailynews.lk/category/business"
 var defaultImageUrl = "http://www.dailynews.lk/sites/all/themes/dailynews/logo.png"
+var newsSources = []models.NewsSource{
+	{Link: "http://www.dailynews.lk/category/local", Categories: []string{"Local"}},
+	{Link: "http://www.dailynews.lk/category/political", Categories: []string{"Political"}},
+	{Link: "http://www.dailynews.lk/category/business", Categories: []string{"Business"}},
+}
 
 type DailyNewsDecoder struct {
 	models.IDecoder
