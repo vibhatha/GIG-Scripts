@@ -1,7 +1,7 @@
 package main
 
 import (
-	"GIG-Scripts/kavuda/ceylon_today"
+	"GIG-Scripts/kavuda/daily_news"
 	"GIG-Scripts/kavuda/models"
 	"GIG-Scripts/kavuda/utils"
 	"log"
@@ -10,9 +10,9 @@ import (
 func main() {
 
 	//crawl(ada_derana.AdaDeranaDecoder{})
-	crawl(ceylon_today.CeylonTodayDecoder{})
+	//crawl(ceylon_today.CeylonTodayDecoder{})
 	//crawl(daily_mirror.DailyMirrorDecoder{})
-	//crawl(daily_news.DailyNewsDecoder{})
+	crawl(daily_news.DailyNewsDecoder{})
 	//crawl(the_island.TheIslandDecoder{})
 }
 
@@ -39,7 +39,8 @@ func crawl(decoder models.IDecoder) {
 		log.Println("		Reading News Article Completed.")
 
 		//decode to entity
-		entity := utils.EntityFromNews(newsItem, decoder.GetSourceTitle()).SetSourceSignature("trusted")
+		entity := utils.EntityFromNews(newsItem, decoder.GetSourceTitle()).SetSourceSignature("trusted").
+			AddCategories(newsItem.Categories).SetSource(newsItem.Link)
 
 		//save entity with NER processing
 		utils.ProcessAndSaveEntity(entity, contentString)
