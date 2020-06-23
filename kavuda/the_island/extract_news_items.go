@@ -9,54 +9,50 @@ import (
 )
 
 func (d TheIslandDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
-	//get the page
-	resp, err := request_handlers.GetRequest(newsSiteUrl)
-	if err != nil {
-		return nil, err
-	}
-	resp1, err := request_handlers.GetRequest(newsSiteUrl1)
-	if err != nil {
-		return nil, err
-	}
-	//convert html string to doc for element selection
-	doc, err := libraries.HTMLStringToDoc(resp)
-	if err != nil {
-		return nil, err
-	}
-	doc1, err := libraries.HTMLStringToDoc(resp1)
-	if err != nil {
-		return nil, err
-	}
+	var allNewsItems []models.NewsItem
 
-	var newsLinks []string
+	for _, newsSource := range newsSources {
+		//get the page
+		resp, err := request_handlers.GetRequest(newsSource.Link)
+		if err != nil {
+			return nil, err
+		}
+		//convert html string to doc for element selection
+		doc, err := libraries.HTMLStringToDoc(resp)
+		if err != nil {
+			return nil, err
+		}
 
-	newsNodes := doc.Find(".col")
-	newsNodes1 := doc1.Find(".col")
+		var newsLinks []string
 
-	newsNodesNodes := append(newsNodes.Nodes, newsNodes1.Nodes...)
-	var newsItems []models.NewsItem
-	for _, node := range newsNodesNodes {
-		nodeDoc := goquery.NewDocumentFromNode(node)
-		dateString, _ := nodeDoc.Find(".article_date").First().Html()
+		newsNodes := doc.Find(".col")
 
-		if dateString != "" {
-			extractedUrl, _ := nodeDoc.Find("a").First().Attr("href")
-			if extractedUrl != "/" {
-				title := nodeDoc.Find("a").First().Nodes[0].FirstChild.Data
-				url := libraries.FixUrl(extractedUrl, newsSiteUrl)
+		var newsItems []models.NewsItem
+		for _, node := range newsNodes.Nodes {
+			nodeDoc := goquery.NewDocumentFromNode(node)
+			dateString, _ := nodeDoc.Find(".article_date").First().Html()
 
-				if !libraries.StringInSlice(newsLinks, url) { // if the link is not already enlisted before
-					newsLinks = append(newsLinks, url)
+			if dateString != "" {
+				extractedUrl, _ := nodeDoc.Find("a").First().Attr("href")
+				if extractedUrl != "/" {
+					title := nodeDoc.Find("a").First().Nodes[0].FirstChild.Data
+					url := libraries.FixUrl(extractedUrl, newsSource.Link)
 
-					newsItems = append(newsItems, models.NewsItem{
-						Title: title,
-						Link:  url,
-						Date:  utils.ExtractPublishedDate("January 2, 2006, 3:04 pm", dateString),
-					})
+					if !libraries.StringInSlice(newsLinks, url) { // if the link is not already enlisted before
+						newsLinks = append(newsLinks, url)
+
+						newsItems = append(newsItems, models.NewsItem{
+							Title: title,
+							Link:  url,
+							Date:  utils.ExtractPublishedDate("January 2, 2006, 3:04 pm", dateString),
+							Categories: newsSource.Categories,
+						})
+					}
 				}
 			}
 		}
+		allNewsItems = append(allNewsItems, newsItems...)
 	}
 
-	return newsItems, nil
+	return allNewsItems, nil
 }
