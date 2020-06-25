@@ -10,6 +10,6 @@ func (d TheIslandDecoder) FillNewsContent(newsItem models.NewsItem) (models.News
 		Config: clean_html.Config{
 			IgnoreElements: []string{"h1"},
 			IgnoreStrings:  []string{"Add new comment", "Print Edition", "Send to Friend"},
-			IgnoreClasses:  []string{"article_info_col"},
+			IgnoreClasses:  []string{"article_info_col","article_date"},
 		}}, d)
 }
