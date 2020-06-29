@@ -38,18 +38,19 @@ func (d AdaDeranaDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 
 				title := nodeDoc.Find("a").First().Nodes[0].FirstChild.Data
 				snippet := nodeDoc.Find("p").First().Nodes[0].FirstChild.Data
-				dateString := strings.Replace(nodeDoc.Find("span").First().Nodes[0].FirstChild.Data, "  ", " ", -1) // replacing double &nbsp; characters with space
+				dateString := strings.Replace(nodeDoc.Find("span").Last().Nodes[0].FirstChild.Data, "  ", " ", -1) // replacing double &nbsp; characters with space
+				dateString = strings.Replace(dateString, "| ", "", -1)
 
 				newsItems = append(newsItems, models.NewsItem{
-					Title:   title,
-					Link:    url,
-					Date:    utils.ExtractPublishedDate("| January 2, 2006 3:04 pm", dateString),
-					Snippet: snippet,
-					Categories:newsSource.Categories,
+					Title:      title,
+					Link:       url,
+					Date:       utils.ExtractPublishedDate("January 2, 2006 3:04 pm", dateString),
+					Snippet:    snippet,
+					Categories: newsSource.Categories,
 				})
 			}
 		}
-		allNewsItems=append(allNewsItems,newsItems...)
+		allNewsItems = append(allNewsItems, newsItems...)
 	}
 
 	return allNewsItems, nil

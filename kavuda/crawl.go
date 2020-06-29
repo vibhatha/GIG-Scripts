@@ -35,6 +35,7 @@ func crawl(decoder models.IDecoder) {
 
 		log.Println("	Item: ", newsItem.Title)
 		log.Println("	News: ", newsItem.Link)
+		log.Println("	Date: ", newsItem.Date)
 		newsItem, contentString, err := decoder.FillNewsContent(newsItem)
 		if err != nil {
 			panic(err)
