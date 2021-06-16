@@ -9,18 +9,29 @@ import (
 	"GIG-Scripts/kavuda/the_island"
 	"GIG-Scripts/kavuda/utils"
 	"log"
+	"sync"
 )
 
 func main() {
+	decoders := []models.IDecoder{
+		ada_derana.AdaDeranaDecoder{},
+		ceylon_today.CeylonTodayDecoder{},
+		daily_mirror.DailyMirrorDecoder{},
+		daily_news.DailyNewsDecoder{},
+		the_island.TheIslandDecoder{},
+	}
+	var waitGroup sync.WaitGroup
+	waitGroup.Add(len(decoders))
 
-	crawl(ada_derana.AdaDeranaDecoder{})
-	crawl(ceylon_today.CeylonTodayDecoder{})
-	crawl(daily_mirror.DailyMirrorDecoder{})
-	crawl(daily_news.DailyNewsDecoder{})
-	crawl(the_island.TheIslandDecoder{})
+	for _, decoder := range decoders {
+		go crawl(decoder, &waitGroup)
+	}
+
+	waitGroup.Wait()
+
 }
 
-func crawl(decoder models.IDecoder) {
+func crawl(decoder models.IDecoder, wg *sync.WaitGroup) {
 	//extract news items from site
 	newsItems, err := decoder.ExtractNewsItems()
 	if err != nil {
@@ -50,4 +61,5 @@ func crawl(decoder models.IDecoder) {
 		//save entity with NER processing
 		utils.ProcessAndSaveEntity(entity, contentString)
 	}
+	wg.Done()
 }
