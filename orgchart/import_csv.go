@@ -37,7 +37,7 @@ func main() {
 
 	// Parse the file
 	r := csv.NewReader(csvFile)
-	r.Comma = ';'
+	r.Comma = ','
 	dataArray, err := r.ReadAll()
 	if err != nil {
 		log.Println(err)
