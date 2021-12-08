@@ -25,17 +25,17 @@ func (d TheIslandDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 
 		var newsLinks []string
 
-		newsNodes := doc.Find(".col")
+		newsNodes := doc.Find(".mvp-blog-story-wrap")
 
 		var newsItems []models.NewsItem
 		for _, node := range newsNodes.Nodes {
 			nodeDoc := goquery.NewDocumentFromNode(node)
-			dateString, _ := nodeDoc.Find(".article_date").First().Html()
+			dateString, _ := nodeDoc.Find(".mvp-cd-date").First().Html()
 
 			if dateString != "" {
 				extractedUrl, _ := nodeDoc.Find("a").First().Attr("href")
 				if extractedUrl != "/" {
-					title := nodeDoc.Find("a").First().Nodes[0].FirstChild.Data
+					title := nodeDoc.Find("h2").First().Text()
 					url := libraries.FixUrl(extractedUrl, newsSource.Link)
 
 					if !libraries.StringInSlice(newsLinks, url) { // if the link is not already enlisted before

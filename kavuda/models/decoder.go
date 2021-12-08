@@ -16,7 +16,10 @@ type IDecoder interface {
 	GetDefaultImageUrl() string
 }
 
-func FillNewsContent(newsItem NewsItem, contentClass string, htmlCleaner clean_html.HtmlCleaner, decoder IDecoder) (NewsItem, string, error) {
+func FillNewsContent(newsItem NewsItem, contentClass string, imageClass string, htmlCleaner clean_html.HtmlCleaner, decoder IDecoder) (NewsItem, string, error) {
+	if imageClass == "" {
+		imageClass = contentClass
+	}
 	resp, err := request_handlers.GetRequest(newsItem.Link)
 	if err != nil {
 		return newsItem, "", err
@@ -38,10 +41,28 @@ func FillNewsContent(newsItem NewsItem, contentClass string, htmlCleaner clean_h
 		return newsItem, "", err
 	}
 
+	//for images in separate div
+	newsImageSelection := newsDoc.Find(imageClass).First()
+	newsImageHtml, err := newsImageSelection.Html()
+	if err != nil {
+		return newsItem, "", err
+	}
+	newsImage, err := html.Parse(strings.NewReader(newsImageHtml))
+	if err != nil {
+		return newsItem, "", err
+	}
+
 	//clean html code by removing unwanted information
 	var imageList []models.Upload
-	newsItem.Content, _, imageList, newsItem.ImageURL = htmlCleaner.CleanHTML(newsItem.Link, news)
+	var contentImageList []models.Upload
+	var imageUrl string
 
+	newsItem.Content, _, contentImageList, imageUrl = htmlCleaner.CleanHTML(newsItem.Link, news)
+	_, _, imageList, newsItem.ImageURL = htmlCleaner.CleanHTML(newsItem.Link, newsImage)
+	imageList = append(imageList, contentImageList...)
+	if newsItem.ImageURL == "" {
+		newsItem.ImageURL = imageUrl
+	}
 	return UploadImagesToServer(newsItem, imageList, decoder.GetDefaultImageUrl()), newsSelection.Text(), nil
 }
 

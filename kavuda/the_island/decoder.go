@@ -6,11 +6,11 @@ import (
 
 var	defaultImageUrl="http://island.lk/userfiles/image/danweem/island.gif"
 var newsSources = []models.NewsSource{
-	{Link: "http://www.island.lk/index.php?page_cat=news-section&page=news-section&code_title=39", Categories: []string{"Local"}},
-	{Link: "http://www.island.lk/index.php?page_cat=news-section&page=news-section&code_title=48", Categories: []string{"Local"}},
-	{Link: "http://www.island.lk/index.php?page_cat=news-section&page=news-section&code_title=49", Categories: []string{"Features"}},
-	{Link: "http://www.island.lk/index.php?page_cat=news-section&page=news-section&code_title=50", Categories: []string{"Sports"}},
-	{Link: "http://www.island.lk/index.php?page_cat=news-section&page=news-section&code_title=51", Categories: []string{"Business"}},
+	{Link: "https://island.lk/category/news/", Categories: []string{"Local"}},
+	{Link: "https://island.lk/category/features/", Categories: []string{"Features"}},
+	{Link: "https://island.lk/category/sports/", Categories: []string{"Sports"}},
+	{Link: "https://island.lk/category/business/", Categories: []string{"Business"}},
+	{Link: "https://island.lk/category/politics/", Categories: []string{"Politics"}},
 }
 
 type TheIslandDecoder struct {

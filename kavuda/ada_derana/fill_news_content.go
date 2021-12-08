@@ -6,6 +6,6 @@ import (
 )
 
 func (d AdaDeranaDecoder) FillNewsContent(newsItem models.NewsItem) (models.NewsItem, string, error) {
-	return models.FillNewsContent(newsItem, ".news-content", clean_html.HtmlCleaner{
-	},d)
+	return models.FillNewsContent(newsItem, ".news-content", "", clean_html.HtmlCleaner{
+	}, d)
 }
