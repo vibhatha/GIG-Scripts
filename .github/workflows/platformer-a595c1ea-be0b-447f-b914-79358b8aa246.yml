@@ -1,4 +1,4 @@
-name: Platformer Generated gig-scripts-dev-master-push Build
+name: Platformer Generated gig-scripts-dev Build
 'on':
   push:
     branches:
@@ -8,8 +8,8 @@ jobs:
     runs-on:
       - ubuntu-latest
     env:
-      SERVICE_NAME: docker.pkg.github.com/lsflk/gig-scripts/gig-scripts
-      CONTAINER_REGISTRY: docker.pkg.github.com
+      SERVICE_NAME: ghcr.io/lsflk/gig-scripts
+      CONTAINER_REGISTRY: ghcr.io
     steps:
       - uses: actions/checkout@v2
       - name: Set Version
@@ -20,7 +20,7 @@ jobs:
         with:
           registry: ${{ env.CONTAINER_REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.DOCKER_PASSWORD_653606FB_1780_4DE3_997D_EA4A78FF693F }}
+          password: ${{ secrets.DOCKER_PASSWORD_A595C1EA_BE0B_447F_B914_79358B8AA246 }}
       - name: Build the Docker image
         run: docker build --tag ${SERVICE_NAME}:${{steps.event-version.outputs.SOURCE_TAG }} --file Dockerfile .
       - name: GitHub Image Push
