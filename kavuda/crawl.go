@@ -2,7 +2,11 @@ package main
 
 import (
 	"GIG-Scripts/kavuda/ada_derana"
+	"GIG-Scripts/kavuda/ceylon_today"
+	"GIG-Scripts/kavuda/daily_mirror"
+	"GIG-Scripts/kavuda/daily_news"
 	"GIG-Scripts/kavuda/models"
+	"GIG-Scripts/kavuda/the_island"
 	"GIG-Scripts/kavuda/utils"
 	"log"
 	"sync"
@@ -11,10 +15,10 @@ import (
 func main() {
 	decoders := []models.IDecoder{
 		ada_derana.AdaDeranaDecoder{},
-		//ceylon_today.CeylonTodayDecoder{},
-		//daily_mirror.DailyMirrorDecoder{},
-		//daily_news.DailyNewsDecoder{},
-		//the_island.TheIslandDecoder{},
+		ceylon_today.CeylonTodayDecoder{},
+		daily_mirror.DailyMirrorDecoder{},
+		daily_news.DailyNewsDecoder{},
+		the_island.TheIslandDecoder{},
 	}
 	var waitGroup sync.WaitGroup
 	waitGroup.Add(len(decoders))
