@@ -7,13 +7,17 @@ import (
 	"GIG-SDK/models"
 	"GIG-SDK/request_handlers"
 	"GIG-Scripts/wikipedia/wiki_web_crawler/parsers"
+	"errors"
 	"flag"
 	"golang.org/x/net/html"
+	"io"
 	"log"
 	"os"
 )
 
 var visited = make(map[string]bool)
+
+const bufferFile = "wiki.log"
 
 func main() {
 	flag.Parse()
@@ -26,10 +30,33 @@ func main() {
 	queue := make(chan string)
 	go func() { queue <- args[0] }()
 
+	var f *os.File
+
+	if _, err := os.Stat(bufferFile); errors.Is(err, os.ErrNotExist) {
+		log.Println("create buffer file")
+		f, err = os.Create(bufferFile)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		//defer f.Close()
+	} else {
+		log.Println("open buffer file")
+		f, err = os.OpenFile(bufferFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+		//defer f.Close()
+	}
+
+	// open buffer if file exist
+	// else create new file
+
 	for uri := range queue {
-		entity, err := enqueue(uri, queue)
+		entity, err := enqueue(uri, queue, f)
 		if err != nil {
 			log.Println("enqueue error:", err.Error(), uri)
+			continue
 		}
 		log.Println(entity.ImageURL)
 		_, err = request_handlers.CreateEntity(entity)
@@ -37,10 +64,13 @@ func main() {
 		if err != nil {
 			log.Println(err.Error(), uri)
 		}
+		//TODO: remove added entity from buffer
 	}
+
+	defer f.Close()
 }
 
-func enqueue(uri string, queue chan string) (models.Entity, error) {
+func enqueue(uri string, queue chan string, f *os.File) (models.Entity, error) {
 	log.Println("fetching", uri)
 	visited[uri] = true
 
@@ -81,9 +111,12 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 	// queue new links for crawling
 	for _, linkedEntity := range linkedEntities {
 		if !visited[linkedEntity.GetSource()] {
-			go func(url string) {
+			go func(url string, file *os.File) {
 				queue <- url
-			}(linkedEntity.GetSource())
+				if _, err := io.WriteString(file, url+"\n"); err != nil {
+					log.Println("error writing to buffer: ", err)
+				}
+			}(linkedEntity.GetSource(), f)
 		}
 		entity = entity.AddLink(models.Link{}.SetTitle(linkedEntity.GetTitle()).AddDate(entity.GetSourceDate()))
 	}
