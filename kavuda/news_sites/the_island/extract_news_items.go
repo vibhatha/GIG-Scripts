@@ -2,6 +2,7 @@ package the_island
 
 import (
 	"GIG-SDK/libraries"
+	"GIG-Scripts/global_helpers"
 	"GIG-Scripts/kavuda/helpers"
 	"GIG-Scripts/kavuda/models"
 	"github.com/PuerkitoBio/goquery"
@@ -11,7 +12,7 @@ func (d TheIslandDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 	var allNewsItems []models.NewsItem
 
 	for _, newsSource := range newsSources {
-		doc, err := helpers.GetDocumentFromUrl(newsSource.Link)
+		doc, err := global_helpers.GetDocumentFromUrl(newsSource.Link)
 		if err != nil {
 			return nil, err
 		}

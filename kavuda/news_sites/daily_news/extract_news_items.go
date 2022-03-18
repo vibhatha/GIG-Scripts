@@ -2,6 +2,7 @@ package daily_news
 
 import (
 	"GIG-SDK/libraries"
+	"GIG-Scripts/global_helpers"
 	"GIG-Scripts/kavuda/helpers"
 	"GIG-Scripts/kavuda/models"
 	"github.com/PuerkitoBio/goquery"
@@ -25,7 +26,7 @@ func (d DailyNewsDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 }
 
 func extractNewItems(newsSource models.NewsSource) ([]models.NewsItem, error) {
-	doc, err := helpers.GetDocumentFromUrl(newsSource.Link)
+	doc, err := global_helpers.GetDocumentFromUrl(newsSource.Link)
 	if err != nil {
 		return nil, err
 	}

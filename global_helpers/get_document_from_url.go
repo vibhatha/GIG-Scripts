@@ -1,4 +1,4 @@
-package helpers
+package global_helpers
 
 import (
 	"GIG-SDK/libraries"

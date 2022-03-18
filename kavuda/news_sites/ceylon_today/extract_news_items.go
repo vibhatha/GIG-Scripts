@@ -3,9 +3,9 @@ package ceylon_today
 import (
 	"GIG-SDK/libraries"
 	"GIG-SDK/request_handlers"
-	models2 "GIG-Scripts/kavuda/news_sites/ceylon_today/models"
-	"GIG-Scripts/kavuda/models"
 	"GIG-Scripts/kavuda/helpers"
+	"GIG-Scripts/kavuda/models"
+	models2 "GIG-Scripts/kavuda/news_sites/ceylon_today/models"
 	"encoding/json"
 )
 

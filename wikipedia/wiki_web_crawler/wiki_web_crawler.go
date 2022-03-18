@@ -2,10 +2,10 @@
 package main
 
 import (
-	"GIG-SDK/libraries"
 	"GIG-SDK/libraries/clean_html"
 	"GIG-SDK/models"
 	"GIG-SDK/request_handlers"
+	"GIG-Scripts/global_helpers"
 	"GIG-Scripts/wikipedia/wiki_web_crawler/parsers"
 	"flag"
 	"golang.org/x/net/html"
@@ -52,12 +52,7 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 
 	entity = models.Entity{}.SetSource(uri).SetSourceSignature("trusted")
 
-	resp, err := request_handlers.GetRequest(uri)
-	if err != nil {
-		return entity, err
-	}
-
-	doc, err := libraries.HTMLStringToDoc(resp)
+	doc, err := global_helpers.GetDocumentFromUrl(uri)
 	if err != nil {
 		return entity, err
 	}

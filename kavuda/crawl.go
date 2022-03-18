@@ -1,13 +1,13 @@
 package main
 
 import (
+	"GIG-Scripts/kavuda/helpers"
+	"GIG-Scripts/kavuda/models"
 	"GIG-Scripts/kavuda/news_sites/ada_derana"
 	"GIG-Scripts/kavuda/news_sites/ceylon_today"
 	"GIG-Scripts/kavuda/news_sites/daily_mirror"
 	"GIG-Scripts/kavuda/news_sites/daily_news"
-	"GIG-Scripts/kavuda/models"
 	"GIG-Scripts/kavuda/news_sites/the_island"
-	"GIG-Scripts/kavuda/helpers"
 	"log"
 	"sync"
 )
