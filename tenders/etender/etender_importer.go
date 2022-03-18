@@ -1,9 +1,10 @@
 package main
 
 import (
-	"GIG-SDK/models"
 	"GIG-SDK/request_handlers"
+	"GIG-Scripts/tenders/etender/constants"
 	"GIG-Scripts/tenders/etender/decoders"
+	"GIG-Scripts/tenders/etender/helpers"
 	"bufio"
 	"encoding/csv"
 	"flag"
@@ -12,7 +13,7 @@ import (
 	"os"
 )
 
-var category = "Tenders"
+var category = constants.Tenders
 
 func main() {
 
@@ -41,29 +42,14 @@ func main() {
 			tender := decoders.Decode(line)
 
 			entity := decoders.MapToEntity(tender).AddCategory(category)
+			companyEntity := helpers.CreateCompanyEntity(tender)
+			locationEntity := helpers.CreateLocationEntity(tender)
 
-			companyEntity := models.Entity{
-			}.SetTitle(models.Value{
-				ValueType:   "string",
-				ValueString: tender.Company,
-				Source:      tender.SourceName,
-				Date:        tender.SourceDate,
-			}).AddCategories([]string{"Organization", "Tenders",
-			})
-
-			locationEntity := models.Entity{
-			}.SetTitle(models.Value{
-				ValueType:   "string",
-				ValueString: tender.Location,
-				Source:      tender.SourceName,
-				Date:        tender.SourceDate,
-			}).AddCategory("Location")
-
-			entity, _, addCompanyError := request_handlers.AddEntityAsAttribute(entity, "Company", companyEntity)
+			entity, _, addCompanyError := request_handlers.AddEntityAsAttribute(entity, constants.Company, companyEntity)
 			if addCompanyError != nil {
 				log.Println(addCompanyError)
 			}
-			entity, _, addLocationError := request_handlers.AddEntityAsAttribute(entity, "Location", locationEntity)
+			entity, _, addLocationError := request_handlers.AddEntityAsAttribute(entity, constants.Location, locationEntity)
 			if addLocationError != nil {
 				log.Println(addLocationError)
 			}
