@@ -2,9 +2,8 @@ package the_island
 
 import (
 	"GIG-SDK/libraries"
-	"GIG-SDK/request_handlers"
+	"GIG-Scripts/kavuda/helpers"
 	"GIG-Scripts/kavuda/models"
-	"GIG-Scripts/kavuda/utils"
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -12,13 +11,7 @@ func (d TheIslandDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 	var allNewsItems []models.NewsItem
 
 	for _, newsSource := range newsSources {
-		//get the page
-		resp, err := request_handlers.GetRequest(newsSource.Link)
-		if err != nil {
-			return nil, err
-		}
-		//convert html string to doc for element selection
-		doc, err := libraries.HTMLStringToDoc(resp)
+		doc, err := helpers.GetDocumentFromUrl(newsSource.Link)
 		if err != nil {
 			return nil, err
 		}
@@ -42,9 +35,9 @@ func (d TheIslandDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 						newsLinks = append(newsLinks, url)
 
 						newsItems = append(newsItems, models.NewsItem{
-							Title: title,
-							Link:  url,
-							Date:  utils.ExtractPublishedDate("January 2, 2006, 3:04 pm", dateString),
+							Title:      title,
+							Link:       url,
+							Date:       helpers.ExtractPublishedDate("January 2, 2006, 3:04 pm", dateString),
 							Categories: newsSource.Categories,
 						})
 					}

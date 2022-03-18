@@ -2,9 +2,8 @@ package daily_mirror
 
 import (
 	"GIG-SDK/libraries"
-	"GIG-SDK/request_handlers"
+	"GIG-Scripts/kavuda/helpers"
 	"GIG-Scripts/kavuda/models"
-	"GIG-Scripts/kavuda/utils"
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -12,14 +11,7 @@ func (d DailyMirrorDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 	var allNewsItems []models.NewsItem
 
 	for _, newsSource := range newsSources {
-		//get the page
-		resp, err := request_handlers.GetRequest(newsSource.Link)
-		if err != nil {
-			return nil, err
-		}
-
-		//convert html string to doc for element selection
-		doc, err := libraries.HTMLStringToDoc(resp)
+		doc, err := helpers.GetDocumentFromUrl(newsSource.Link)
 		if err != nil {
 			return nil, err
 		}
@@ -40,10 +32,10 @@ func (d DailyMirrorDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 				snippet := nodeDoc.Find("p").Last().Nodes[0].FirstChild.Data
 
 				newsItems = append(newsItems, models.NewsItem{
-					Title:   title,
-					Snippet: snippet,
-					Link:    url,
-					Date:    utils.ExtractPublishedDate("02 Jan 2006 ", dateString),
+					Title:      title,
+					Snippet:    snippet,
+					Link:       url,
+					Date:       helpers.ExtractPublishedDate("02 Jan 2006 ", dateString),
 					Categories: newsSource.Categories,
 				})
 			}

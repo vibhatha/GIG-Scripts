@@ -1,13 +1,13 @@
 package main
 
 import (
-	"GIG-Scripts/kavuda/ada_derana"
-	"GIG-Scripts/kavuda/ceylon_today"
-	"GIG-Scripts/kavuda/daily_mirror"
-	"GIG-Scripts/kavuda/daily_news"
+	"GIG-Scripts/kavuda/news_sites/ada_derana"
+	"GIG-Scripts/kavuda/news_sites/ceylon_today"
+	"GIG-Scripts/kavuda/news_sites/daily_mirror"
+	"GIG-Scripts/kavuda/news_sites/daily_news"
 	"GIG-Scripts/kavuda/models"
-	"GIG-Scripts/kavuda/the_island"
-	"GIG-Scripts/kavuda/utils"
+	"GIG-Scripts/kavuda/news_sites/the_island"
+	"GIG-Scripts/kavuda/helpers"
 	"log"
 	"sync"
 )
@@ -55,11 +55,11 @@ func crawl(decoder models.IDecoder, wg *sync.WaitGroup) {
 		log.Println("		Reading News Article Completed.")
 
 		//decode to entity
-		entity := utils.EntityFromNews(newsItem, decoder.GetSourceTitle()).SetSourceSignature("trusted").
+		entity := helpers.EntityFromNews(newsItem, decoder.GetSourceTitle()).SetSourceSignature("trusted").
 			AddCategories(newsItem.Categories).SetSource(newsItem.Link)
 
 		//save entity with NER processing
-		utils.ProcessAndSaveEntity(entity, contentString)
+		helpers.ProcessAndSaveEntity(entity, contentString)
 	}
 	wg.Done()
 }
