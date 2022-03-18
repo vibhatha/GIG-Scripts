@@ -2,6 +2,7 @@ package main
 
 import (
 	"GIG-SDK/request_handlers"
+	"GIG-Scripts/global_helpers"
 	"GIG-Scripts/tenders/etender/constants"
 	"GIG-Scripts/tenders/etender/decoders"
 	"GIG-Scripts/tenders/etender/helpers"
@@ -36,6 +37,7 @@ func main() {
 		} else if err != nil {
 			log.Fatal(err)
 		}
+
 		if ignoreHeaders {
 			ignoreHeaders = false
 		} else {
@@ -46,19 +48,13 @@ func main() {
 			locationEntity := helpers.CreateLocationEntity(tender)
 
 			entity, _, addCompanyError := request_handlers.AddEntityAsAttribute(entity, constants.Company, companyEntity)
-			if addCompanyError != nil {
-				log.Println(addCompanyError)
-			}
+			global_helpers.HandleError(addCompanyError)
+
 			entity, _, addLocationError := request_handlers.AddEntityAsAttribute(entity, constants.Location, locationEntity)
-			if addLocationError != nil {
-				log.Println(addLocationError)
-			}
+			global_helpers.HandleError(addLocationError)
 
 			savedEntity, saveErr := request_handlers.CreateEntity(entity)
-
-			if saveErr != nil {
-				log.Println(saveErr.Error(), entity)
-			}
+			global_helpers.HandleError(saveErr)
 			log.Println(savedEntity.Title)
 		}
 	}
