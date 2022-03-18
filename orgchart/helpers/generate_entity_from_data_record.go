@@ -2,12 +2,13 @@ package helpers
 
 import (
 	"GIG-SDK/models"
+	"GIG-Scripts/orgchart/constants"
 	"encoding/json"
 	"log"
 	"time"
 )
 
-var categories = []string{"OrgChart"}
+var categories = []string{constants.OrgChartCategory}
 
 func GenerateEntityFromDataRecord(fileName string, ministry string, departments []string, gazetteDate time.Time, nameStructure map[string]string) models.Entity {
 	var filteredDepartments []string
@@ -32,7 +33,7 @@ func GenerateEntityFromDataRecord(fileName string, ministry string, departments 
 	entity := models.Entity{
 		Title: ministryName,
 	}.
-		SetSource("Gazette " + fileName).
+		SetSource(constants.SourceName + fileName).
 		SetSourceDate(gazetteDate).
 		SetSourceSignature("trusted").
 		AddCategories(categories).
@@ -40,7 +41,7 @@ func GenerateEntityFromDataRecord(fileName string, ministry string, departments 
 			models.Value{
 				ValueType:   "json",
 				ValueString: string(jsonDepartments),
-				Source:      "Gazette " + fileName,
+				Source:      constants.SourceName + fileName,
 				Date:        gazetteDate,
 				UpdatedAt:   time.Now(),
 			})
@@ -51,7 +52,7 @@ func GenerateEntityFromDataRecord(fileName string, ministry string, departments 
 			models.Value{
 				ValueType:   "string",
 				ValueString: ministry,
-				Source:      "Gazette " + fileName,
+				Source:      constants.SourceName + fileName,
 				Date:        gazetteDate,
 				UpdatedAt:   time.Now(),
 			})
