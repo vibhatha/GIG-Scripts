@@ -2,9 +2,8 @@ package ada_derana
 
 import (
 	"GIG-SDK/libraries"
-	"GIG-SDK/request_handlers"
+	"GIG-Scripts/kavuda/helpers"
 	"GIG-Scripts/kavuda/models"
-	"GIG-Scripts/kavuda/utils"
 	"github.com/PuerkitoBio/goquery"
 	"strings"
 )
@@ -13,13 +12,7 @@ func (d AdaDeranaDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 	var allNewsItems []models.NewsItem
 
 	for _, newsSource := range newsSources {
-		//get the page
-		resp, err := request_handlers.GetRequest(newsSource.Link)
-		if err != nil {
-			return nil, err
-		}
-		//convert html string to doc for element selection
-		doc, err := libraries.HTMLStringToDoc(resp)
+		doc, err := helpers.GetDocumentFromUrl(newsSource.Link)
 		if err != nil {
 			return nil, err
 		}
@@ -44,7 +37,7 @@ func (d AdaDeranaDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 				newsItems = append(newsItems, models.NewsItem{
 					Title:      title,
 					Link:       url,
-					Date:       utils.ExtractPublishedDate("January 2, 2006 3:04 pm", dateString),
+					Date:       helpers.ExtractPublishedDate("January 2, 2006 3:04 pm", dateString),
 					Snippet:    snippet,
 					Categories: newsSource.Categories,
 				})

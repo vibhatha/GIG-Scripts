@@ -2,9 +2,8 @@ package daily_news
 
 import (
 	"GIG-SDK/libraries"
-	"GIG-SDK/request_handlers"
+	"GIG-Scripts/kavuda/helpers"
 	"GIG-Scripts/kavuda/models"
-	"GIG-Scripts/kavuda/utils"
 	"github.com/PuerkitoBio/goquery"
 	"log"
 	"strings"
@@ -26,14 +25,7 @@ func (d DailyNewsDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 }
 
 func extractNewItems(newsSource models.NewsSource) ([]models.NewsItem, error) {
-	//get the page
-	resp, err := request_handlers.GetRequest(newsSource.Link)
-	if err != nil {
-		return nil, err
-	}
-
-	//convert html string to doc for element selection
-	doc, err := libraries.HTMLStringToDoc(resp)
+	doc, err := helpers.GetDocumentFromUrl(newsSource.Link)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +51,7 @@ func extractNewItems(newsSource models.NewsSource) ([]models.NewsItem, error) {
 					newsItems = append(newsItems, models.NewsItem{
 						Title:      title,
 						Link:       url,
-						Date:       utils.ExtractPublishedDate("2006 01 02", dateString),
+						Date:       helpers.ExtractPublishedDate("2006 01 02", dateString),
 						Categories: newsSource.Categories,
 					})
 				}

@@ -3,9 +3,9 @@ package ceylon_today
 import (
 	"GIG-SDK/libraries"
 	"GIG-SDK/request_handlers"
-	models2 "GIG-Scripts/kavuda/ceylon_today/models"
+	models2 "GIG-Scripts/kavuda/news_sites/ceylon_today/models"
 	"GIG-Scripts/kavuda/models"
-	"GIG-Scripts/kavuda/utils"
+	"GIG-Scripts/kavuda/helpers"
 	"encoding/json"
 )
 
@@ -34,11 +34,11 @@ func (d CeylonTodayDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 			if !libraries.StringInSlice(newsLinks, url) { // if the link is not already enlisted before
 				newsLinks = append(newsLinks, url)
 				newsItem := models.NewsItem{
-					Link:    url,
-					Title:   newsItemResponse.Title,
-					Snippet: newsItemResponse.ShortContent,
-					Date:    utils.ExtractPublishedDate("2006-01-02 15:04:05", newsItemResponse.PublishDate),
-					Author:  newsItemResponse.Author,
+					Link:       url,
+					Title:      newsItemResponse.Title,
+					Snippet:    newsItemResponse.ShortContent,
+					Date:       helpers.ExtractPublishedDate("2006-01-02 15:04:05", newsItemResponse.PublishDate),
+					Author:     newsItemResponse.Author,
 					Categories: newsSource.Categories,
 				}
 				newsItems = append(newsItems, newsItem)
