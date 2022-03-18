@@ -2,7 +2,7 @@ package global_helpers
 
 import "log"
 
-func HandleError(err error) {
+func ReportErrorWithoutCrash(err error) {
 	if err!=nil{
 		log.Println(err)
 	}

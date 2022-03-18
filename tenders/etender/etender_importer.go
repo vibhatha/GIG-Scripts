@@ -48,13 +48,13 @@ func main() {
 			locationEntity := helpers.CreateLocationEntity(tender)
 
 			entity, _, addCompanyError := request_handlers.AddEntityAsAttribute(entity, constants.Company, companyEntity)
-			global_helpers.HandleError(addCompanyError)
+			global_helpers.ReportErrorWithoutCrash(addCompanyError)
 
 			entity, _, addLocationError := request_handlers.AddEntityAsAttribute(entity, constants.Location, locationEntity)
-			global_helpers.HandleError(addLocationError)
+			global_helpers.ReportErrorWithoutCrash(addLocationError)
 
 			savedEntity, saveErr := request_handlers.CreateEntity(entity)
-			global_helpers.HandleError(saveErr)
+			global_helpers.ReportErrorWithoutCrash(saveErr)
 			log.Println(savedEntity.Title)
 		}
 	}
