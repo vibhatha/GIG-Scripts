@@ -1,10 +1,10 @@
 package main
 
 import (
+	"GIG-Scripts"
 	"GIG-Scripts/press-releases/helpers"
 	"flag"
 	"github.com/lsflk/gig-sdk/models"
-	"github.com/lsflk/gig-sdk/request_handlers"
 	"log"
 	"os"
 )
@@ -23,7 +23,7 @@ func main() {
 	}
 	uri := args[0]
 
-	resp, err := request_handlers.GetRequest(uri)
+	resp, err := GIG_Scripts.GigClient.GetRequest(uri)
 
 	if err != nil {
 		panic(err)
@@ -41,13 +41,13 @@ func main() {
 				entities = append(entities, childEntity)
 			}
 
-			entity, err = request_handlers.AddEntitiesAsLinks(entity, entities)
+			entity, err = GIG_Scripts.GigClient.AddEntitiesAsLinks(entity, entities)
 			if err != nil {
 				panic(err)
 			}
 
 			//save to db
-			entity, saveErr := request_handlers.CreateEntity(entity)
+			entity, saveErr := GIG_Scripts.GigClient.CreateEntity(entity)
 			if saveErr != nil {
 				log.Println(err.Error(), img)
 			}

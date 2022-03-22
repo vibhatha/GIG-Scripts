@@ -1,15 +1,15 @@
 package requests
 
 import (
+	"GIG-Scripts"
 	"encoding/json"
-	"github.com/lsflk/gig-sdk/request_handlers"
 	"net/url"
 )
 
 const apiURL = "https://en.wikipedia.org/w/api.php?action=query&format=json"
 
 func GetContent(propType string, title string) (map[string]interface{}, error) {
-	resp, err := request_handlers.GetRequest(generateURL(propType, title))
+	resp, err := GIG_Scripts.GigClient.GetRequest(generateURL(propType, title))
 	if err != nil {
 		return nil, err
 	}

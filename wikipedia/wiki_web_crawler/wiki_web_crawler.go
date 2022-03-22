@@ -2,12 +2,12 @@
 package main
 
 import (
+	"GIG-Scripts"
 	"GIG-Scripts/global_helpers"
 	"GIG-Scripts/wikipedia/wiki_web_crawler/parsers"
 	"flag"
 	"github.com/lsflk/gig-sdk/libraries/clean_html"
 	"github.com/lsflk/gig-sdk/models"
-	"github.com/lsflk/gig-sdk/request_handlers"
 	"golang.org/x/net/html"
 	"log"
 	"os"
@@ -32,7 +32,7 @@ func main() {
 			log.Println("enqueue error:", err.Error(), uri)
 		}
 		log.Println(entity.ImageURL)
-		_, err = request_handlers.CreateEntity(entity)
+		_, err = GIG_Scripts.GigClient.CreateEntity(entity)
 		log.Println("entity added", entity.Title)
 		if err != nil {
 			log.Println(err.Error(), uri)
@@ -85,12 +85,12 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 
 	for _, image := range imageList {
 		go func(payload models.Upload) {
-			request_handlers.UploadImage(payload)
+			GIG_Scripts.GigClient.UploadImage(payload)
 		}(image)
 	}
 
 	// save linkedEntities (create empty if not exist)
-	entity, err = request_handlers.AddEntitiesAsLinks(entity, linkedEntities)
+	entity, err = GIG_Scripts.GigClient.AddEntitiesAsLinks(entity, linkedEntities)
 	entity = entity.SetAttribute("content", models.Value{
 		ValueType:   "html",
 		ValueString: result,

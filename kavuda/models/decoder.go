@@ -1,10 +1,10 @@
 package models
 
 import (
+	"GIG-Scripts"
 	"github.com/lsflk/gig-sdk/libraries"
 	"github.com/lsflk/gig-sdk/libraries/clean_html"
 	"github.com/lsflk/gig-sdk/models"
-	"github.com/lsflk/gig-sdk/request_handlers"
 	"golang.org/x/net/html"
 	"strings"
 )
@@ -20,7 +20,7 @@ func FillNewsContent(newsItem NewsItem, contentClass string, imageClass string, 
 	if imageClass == "" {
 		imageClass = contentClass
 	}
-	resp, err := request_handlers.GetRequest(newsItem.Link)
+	resp, err := GIG_Scripts.GigClient.GetRequest(newsItem.Link)
 	if err != nil {
 		return newsItem, "", err
 	}
@@ -75,7 +75,7 @@ func UploadImagesToServer(newsItem NewsItem, imageList []models.Upload, defaultI
 
 	for _, image := range imageList {
 		go func(payload models.Upload) {
-			request_handlers.UploadImage(payload)
+			GIG_Scripts.GigClient.UploadImage(payload)
 		}(image)
 	}
 

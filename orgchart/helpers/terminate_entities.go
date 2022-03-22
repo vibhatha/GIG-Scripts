@@ -1,9 +1,9 @@
 package helpers
 
 import (
+	"GIG-Scripts"
 	"GIG-Scripts/orgchart/constants"
 	"github.com/lsflk/gig-sdk/models"
-	"github.com/lsflk/gig-sdk/request_handlers"
 	"log"
 	"time"
 )
@@ -22,7 +22,7 @@ func TerminateEntities(fileName string, entityName string) {
 	if entityName != "All" {
 		entity.Title = entityName
 	}
-	resp, err := request_handlers.PostRequest(config.ApiUrl+"terminate", entity)
+	resp, err := GIG_Scripts.GigClient.PostRequest(GIG_Scripts.GigClient.ApiUrl+"terminate", entity)
 	if err != nil {
 		log.Println("entity termination error:", err)
 	}

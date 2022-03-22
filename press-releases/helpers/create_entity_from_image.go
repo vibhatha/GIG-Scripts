@@ -1,9 +1,9 @@
 package helpers
 
 import (
+	"GIG-Scripts"
 	"GIG-Scripts/press-releases/constants"
 	"github.com/lsflk/gig-sdk/models"
-	"github.com/lsflk/gig-sdk/request_handlers"
 	"log"
 	"strings"
 	"time"
@@ -19,12 +19,12 @@ func CreateEntityFromImage(img string) (models.Entity, []models.NERResult, time.
 		panic("invalid filename")
 	}
 
-	textContent, err := request_handlers.GetRequest(config.OCRServer + imageUrl)
+	textContent, err := GIG_Scripts.GigClient.GetRequest(GIG_Scripts.GigClient.OcrServerUrl + imageUrl)
 	if err != nil {
 		panic(err)
 	}
 	//NER extraction
-	entityTitles, err := request_handlers.ExtractEntityNames(textContent)
+	entityTitles, err := GIG_Scripts.GigClient.ExtractEntityNames(textContent)
 	if err != nil {
 		log.Println(err)
 	}

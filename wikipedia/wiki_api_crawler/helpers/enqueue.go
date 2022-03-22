@@ -1,8 +1,8 @@
 package helpers
 
 import (
+	"GIG-Scripts"
 	"github.com/lsflk/gig-sdk/models"
-	"github.com/lsflk/gig-sdk/request_handlers"
 	"log"
 )
 
@@ -17,7 +17,7 @@ func Enqueue(title string, queue chan string) models.Entity {
 
 		linkEntities := ConvertLinksToEntities(entity, queue)
 		var err error
-		entity, err = request_handlers.AddEntitiesAsLinks(entity, linkEntities)
+		entity, err = GIG_Scripts.GigClient.AddEntitiesAsLinks(entity, linkEntities)
 
 		if err != nil {
 			log.Println("error creating links:", err)

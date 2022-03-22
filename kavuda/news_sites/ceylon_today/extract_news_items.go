@@ -1,12 +1,12 @@
 package ceylon_today
 
 import (
+	"GIG-Scripts"
 	"GIG-Scripts/kavuda/helpers"
 	"GIG-Scripts/kavuda/models"
 	models2 "GIG-Scripts/kavuda/news_sites/ceylon_today/models"
 	"encoding/json"
 	"github.com/lsflk/gig-sdk/libraries"
-	"github.com/lsflk/gig-sdk/request_handlers"
 )
 
 func (d CeylonTodayDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
@@ -14,7 +14,7 @@ func (d CeylonTodayDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 
 	for _, newsSource := range newsSources {
 		//get the page
-		resp, err := request_handlers.GetRequest(newsSource.Link)
+		resp, err := GIG_Scripts.GigClient.GetRequest(newsSource.Link)
 		if err != nil {
 			return nil, err
 		}

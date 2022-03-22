@@ -1,9 +1,9 @@
 package main
 
 import (
+	"GIG-Scripts"
 	"flag"
 	"github.com/lsflk/gig-sdk/libraries"
-	"github.com/lsflk/gig-sdk/request_handlers"
 	"log"
 	"os"
 )
@@ -24,11 +24,11 @@ func main() {
 	filePath := args[0]
 	//parse pdf
 	textContent := libraries.ParsePdf(filePath)
-	entityTitles, err := request_handlers.ExtractEntityNames(textContent)
+	entityTitles, err := GIG_Scripts.GigClient.ExtractEntityNames(textContent)
 	if err != nil {
 		log.Println(err)
 	}
-	if err := request_handlers.CreateEntityFromText(textContent, "Gazette 2015", pdfCategories, entityTitles); err != nil {
+	if err := GIG_Scripts.GigClient.CreateEntityFromText(textContent, "Gazette 2015", pdfCategories, entityTitles); err != nil {
 		log.Println(err.Error(), filePath)
 	}
 

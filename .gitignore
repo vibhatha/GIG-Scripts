@@ -8,3 +8,4 @@ orgchart/extracted_old
 tenders/data
 wikipedia/tmp
 *.log
+config.go

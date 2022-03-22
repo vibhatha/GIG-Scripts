@@ -1,10 +1,10 @@
 package main
 
 import (
+	"GIG-Scripts"
 	"flag"
 	"github.com/JackDanger/collectlinks"
 	"github.com/lsflk/gig-sdk/libraries"
-	"github.com/lsflk/gig-sdk/request_handlers"
 	"log"
 	"net/url"
 	"os"
@@ -30,7 +30,7 @@ func main() {
 	}
 	uri := args[0]
 
-	resp, err := request_handlers.GetRequest(uri)
+	resp, err := GIG_Scripts.GigClient.GetRequest(uri)
 
 	if err != nil {
 		panic(err)
@@ -55,10 +55,10 @@ func main() {
 			//parse pdf
 			textContent := libraries.ParsePdf(filePath)
 			//NER extraction
-			entityTitles, err := request_handlers.ExtractEntityNames(textContent)
+			entityTitles, err := GIG_Scripts.GigClient.ExtractEntityNames(textContent)
 			libraries.ReportErrorWithoutCrash(err)
 
-			err = request_handlers.CreateEntityFromText(textContent, libraries.ExtractDomain(uri)+" - "+fileName, categories, entityTitles)
+			err = GIG_Scripts.GigClient.CreateEntityFromText(textContent, libraries.ExtractDomain(uri)+" - "+fileName, categories, entityTitles)
 			libraries.ReportErrorWithoutCrash(err)
 		}
 	}

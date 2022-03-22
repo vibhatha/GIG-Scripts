@@ -1,10 +1,10 @@
 package main
 
 import (
+	"GIG-Scripts"
 	"GIG-Scripts/orgchart/helpers"
 	"flag"
 	"github.com/lsflk/gig-sdk/models"
-	"github.com/lsflk/gig-sdk/request_handlers"
 	"log"
 	"os"
 )
@@ -37,13 +37,13 @@ func main() {
 			entities = append(entities, childEntity)
 		}
 
-		entity, err = request_handlers.AddEntitiesAsLinks(entity, entities)
+		entity, err = GIG_Scripts.GigClient.AddEntitiesAsLinks(entity, entities)
 		if err != nil {
 			panic(err)
 		}
 
 		//save to db
-		entity, saveErr := request_handlers.CreateEntity(entity)
+		entity, saveErr := GIG_Scripts.GigClient.CreateEntity(entity)
 		if saveErr != nil {
 			log.Println(err.Error(), ministry)
 		}

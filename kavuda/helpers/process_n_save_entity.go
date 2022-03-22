@@ -1,15 +1,15 @@
 package helpers
 
 import (
+	"GIG-Scripts"
 	"github.com/lsflk/gig-sdk/models"
-	"github.com/lsflk/gig-sdk/request_handlers"
 	"log"
 )
 
 func ProcessAndSaveEntity(entity models.Entity, textContent string) {
 	//NER extraction
 	log.Println("		Running NER on the text content...")
-	entityTitles, err := request_handlers.ExtractEntityNames(textContent)
+	entityTitles, err := GIG_Scripts.GigClient.ExtractEntityNames(textContent)
 	if err != nil {
 		log.Println(err, entity.Title)
 		log.Println(entityTitles)
@@ -25,9 +25,9 @@ func ProcessAndSaveEntity(entity models.Entity, textContent string) {
 		}
 	}
 
-	entity, err = request_handlers.AddEntitiesAsLinks(entity, entities)
+	entity, err = GIG_Scripts.GigClient.AddEntitiesAsLinks(entity, entities)
 	//save to db
-	entity, saveErr := request_handlers.CreateEntity(entity)
+	entity, saveErr := GIG_Scripts.GigClient.CreateEntity(entity)
 	if saveErr != nil {
 		log.Println(saveErr.Error(), entity.Title)
 	}
