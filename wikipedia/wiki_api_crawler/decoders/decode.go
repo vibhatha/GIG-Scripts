@@ -1,7 +1,7 @@
 package decoders
 
 import (
-	"GIG-SDK/models"
+	"github.com/lsflk/gig-sdk/models"
 	"log"
 	"strings"
 )

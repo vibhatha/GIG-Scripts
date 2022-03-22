@@ -1,12 +1,12 @@
 package ceylon_today
 
 import (
-	"GIG-SDK/libraries"
-	"GIG-SDK/request_handlers"
 	"GIG-Scripts/kavuda/helpers"
 	"GIG-Scripts/kavuda/models"
 	models2 "GIG-Scripts/kavuda/news_sites/ceylon_today/models"
 	"encoding/json"
+	"github.com/lsflk/gig-sdk/libraries"
+	"github.com/lsflk/gig-sdk/request_handlers"
 )
 
 func (d CeylonTodayDecoder) ExtractNewsItems() ([]models.NewsItem, error) {

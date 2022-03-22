@@ -1,8 +1,8 @@
 package requests
 
 import (
-	"GIG-SDK/request_handlers"
 	"encoding/json"
+	"github.com/lsflk/gig-sdk/request_handlers"
 	"net/url"
 )
 

@@ -1,7 +1,7 @@
 package helpers
 
 import (
-	"GIG-SDK/request_handlers"
+	"github.com/lsflk/gig-sdk/request_handlers"
 	"log"
 )
 

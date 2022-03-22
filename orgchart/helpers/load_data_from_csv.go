@@ -1,8 +1,8 @@
 package helpers
 
 import (
-	"GIG-SDK/libraries"
 	"encoding/csv"
+	"github.com/lsflk/gig-sdk/libraries"
 	"log"
 	"os"
 	"time"

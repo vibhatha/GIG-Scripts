@@ -1,8 +1,8 @@
 package helpers
 
 import (
-	"GIG-SDK/models"
 	models2 "GIG-Scripts/kavuda/models"
+	"github.com/lsflk/gig-sdk/models"
 	"time"
 )
 

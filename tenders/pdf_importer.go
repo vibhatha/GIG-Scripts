@@ -1,9 +1,9 @@
 package main
 
 import (
-	"GIG-SDK/libraries"
-	"GIG-SDK/request_handlers"
 	"flag"
+	"github.com/lsflk/gig-sdk/libraries"
+	"github.com/lsflk/gig-sdk/request_handlers"
 	"log"
 	"os"
 )

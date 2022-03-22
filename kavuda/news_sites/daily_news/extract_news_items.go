@@ -1,11 +1,11 @@
 package daily_news
 
 import (
-	"GIG-SDK/libraries"
 	"GIG-Scripts/global_helpers"
 	"GIG-Scripts/kavuda/helpers"
 	"GIG-Scripts/kavuda/models"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/lsflk/gig-sdk/libraries"
 	"log"
 	"strings"
 )

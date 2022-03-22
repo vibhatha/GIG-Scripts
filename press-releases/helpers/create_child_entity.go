@@ -1,9 +1,9 @@
 package helpers
 
 import (
-	"GIG-SDK/enums/ValueType"
-	"GIG-SDK/models"
 	"GIG-Scripts/press-releases/constants"
+	"github.com/lsflk/gig-sdk/enums/ValueType"
+	"github.com/lsflk/gig-sdk/models"
 	"time"
 )
 

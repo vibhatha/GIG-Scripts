@@ -1,12 +1,12 @@
 package the_island
 
 import (
-	"GIG-SDK/libraries"
 	"GIG-Scripts/global_helpers"
 	"GIG-Scripts/kavuda/helpers"
 	"GIG-Scripts/kavuda/models"
 	"errors"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/lsflk/gig-sdk/libraries"
 	"golang.org/x/net/html"
 )
 

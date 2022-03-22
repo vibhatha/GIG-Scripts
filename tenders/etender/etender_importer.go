@@ -1,7 +1,6 @@
 package main
 
 import (
-	"GIG-SDK/request_handlers"
 	"GIG-Scripts/global_helpers"
 	"GIG-Scripts/tenders/etender/constants"
 	"GIG-Scripts/tenders/etender/decoders"
@@ -9,6 +8,7 @@ import (
 	"bufio"
 	"encoding/csv"
 	"flag"
+	"github.com/lsflk/gig-sdk/request_handlers"
 	"io"
 	"log"
 	"os"

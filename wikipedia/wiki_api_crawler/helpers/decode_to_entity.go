@@ -1,9 +1,9 @@
 package helpers
 
 import (
-	"GIG-SDK/models"
 	"GIG-Scripts/wikipedia/wiki_api_crawler/decoders"
 	"GIG-Scripts/wikipedia/wiki_api_crawler/requests"
+	"github.com/lsflk/gig-sdk/models"
 	"log"
 	"sync"
 )

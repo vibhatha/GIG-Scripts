@@ -1,6 +1,6 @@
 package helpers
 
-import "GIG-SDK/models"
+import "github.com/lsflk/gig-sdk/models"
 
 func ConvertLinksToEntities(entity models.Entity, queue chan string) []models.Entity {
 	var (

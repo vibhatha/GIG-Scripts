@@ -2,12 +2,12 @@
 package main
 
 import (
-	"GIG-SDK/libraries/clean_html"
-	"GIG-SDK/models"
-	"GIG-SDK/request_handlers"
 	"GIG-Scripts/global_helpers"
 	"GIG-Scripts/wikipedia/wiki_web_crawler/parsers"
 	"flag"
+	"github.com/lsflk/gig-sdk/libraries/clean_html"
+	"github.com/lsflk/gig-sdk/models"
+	"github.com/lsflk/gig-sdk/request_handlers"
 	"golang.org/x/net/html"
 	"log"
 	"os"

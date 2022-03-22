@@ -1,10 +1,10 @@
 package main
 
 import (
-	"GIG-SDK/models"
-	"GIG-SDK/request_handlers"
 	"GIG-Scripts/orgchart/helpers"
 	"flag"
+	"github.com/lsflk/gig-sdk/models"
+	"github.com/lsflk/gig-sdk/request_handlers"
 	"log"
 	"os"
 )

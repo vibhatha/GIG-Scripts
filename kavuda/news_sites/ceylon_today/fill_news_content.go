@@ -1,8 +1,8 @@
 package ceylon_today
 
 import (
-	"GIG-SDK/libraries/clean_html"
 	"GIG-Scripts/kavuda/models"
+	"github.com/lsflk/gig-sdk/libraries/clean_html"
 )
 
 func (d CeylonTodayDecoder) FillNewsContent(newsItem models.NewsItem) (models.NewsItem, string, error) {

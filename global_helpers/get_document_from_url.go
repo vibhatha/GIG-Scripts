@@ -1,9 +1,9 @@
 package global_helpers
 
 import (
-	"GIG-SDK/libraries"
-	"GIG-SDK/request_handlers"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/lsflk/gig-sdk/libraries"
+	"github.com/lsflk/gig-sdk/request_handlers"
 )
 
 func GetDocumentFromUrl(link string) (*goquery.Document, error) {

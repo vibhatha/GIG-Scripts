@@ -1,10 +1,10 @@
 package helpers
 
 import (
-	"GIG-SDK/enums/ValueType"
-	"GIG-SDK/models"
 	"GIG-Scripts/tenders/etender/constants"
 	"GIG-Scripts/tenders/etender/model"
+	"github.com/lsflk/gig-sdk/enums/ValueType"
+	"github.com/lsflk/gig-sdk/models"
 )
 
 func CreateCompanyEntity(tender model.ETender) models.Entity {

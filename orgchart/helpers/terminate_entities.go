@@ -1,10 +1,9 @@
 package helpers
 
 import (
-	"GIG-SDK"
-	"GIG-SDK/models"
-	"GIG-SDK/request_handlers"
 	"GIG-Scripts/orgchart/constants"
+	"github.com/lsflk/gig-sdk/models"
+	"github.com/lsflk/gig-sdk/request_handlers"
 	"log"
 	"time"
 )

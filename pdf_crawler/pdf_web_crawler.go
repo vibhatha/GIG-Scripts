@@ -1,10 +1,10 @@
 package main
 
 import (
-	"GIG-SDK/libraries"
-	"GIG-SDK/request_handlers"
 	"flag"
 	"github.com/JackDanger/collectlinks"
+	"github.com/lsflk/gig-sdk/libraries"
+	"github.com/lsflk/gig-sdk/request_handlers"
 	"log"
 	"net/url"
 	"os"
@@ -58,7 +58,7 @@ func main() {
 			entityTitles, err := request_handlers.ExtractEntityNames(textContent)
 			libraries.ReportErrorWithoutCrash(err)
 
-			err = request_handlers.CreateEntityFromText(textContent, libraries.ExtractDomain(uri)+" - "+fileName, categories, entityTitles);
+			err = request_handlers.CreateEntityFromText(textContent, libraries.ExtractDomain(uri)+" - "+fileName, categories, entityTitles)
 			libraries.ReportErrorWithoutCrash(err)
 		}
 	}
