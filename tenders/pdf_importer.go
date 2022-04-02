@@ -25,13 +25,10 @@ func main() {
 	//parse pdf
 	textContent := libraries.ParsePdf(filePath)
 	entityTitles, err := GIG_Scripts.GigClient.ExtractEntityNames(textContent)
-	if err != nil {
-		log.Println(err)
-	}
+	libraries.ReportError(err)
 	if err := GIG_Scripts.GigClient.CreateEntityFromText(textContent, "Gazette 2015", pdfCategories, entityTitles); err != nil {
 		log.Println(err.Error(), filePath)
+	} else {
+		log.Println("pdf importing completed")
 	}
-
-	log.Println("pdf importing completed")
-
 }
