@@ -3,8 +3,8 @@ package helpers
 import (
 	"GIG-Scripts/wikipedia/wiki_api_crawler/decoders"
 	"GIG-Scripts/wikipedia/wiki_api_crawler/requests"
+	"github.com/lsflk/gig-sdk/libraries"
 	"github.com/lsflk/gig-sdk/models"
-	"log"
 	"sync"
 )
 
@@ -17,9 +17,8 @@ func DecodeToEntity(title string) models.Entity {
 		go func(prop string) {
 			defer requestWorkGroup.Done()
 			result, err := requests.GetContent(prop, title)
-			if err != nil {
-				log.Println(err)
-			} else {
+			libraries.ReportError(err)
+			if err == nil {
 				decoders.Decode(result, &entity)
 			}
 		}(propType)

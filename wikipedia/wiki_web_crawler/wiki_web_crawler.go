@@ -6,6 +6,7 @@ import (
 	"GIG-Scripts/global_helpers"
 	"GIG-Scripts/wikipedia/wiki_web_crawler/parsers"
 	"flag"
+	"github.com/lsflk/gig-sdk/libraries"
 	"github.com/lsflk/gig-sdk/libraries/clean_html"
 	"github.com/lsflk/gig-sdk/models"
 	"golang.org/x/net/html"
@@ -34,9 +35,7 @@ func main() {
 		log.Println(entity.ImageURL)
 		_, err = GIG_Scripts.GigClient.CreateEntity(entity)
 		log.Println("entity added", entity.Title)
-		if err != nil {
-			log.Println(err.Error(), uri)
-		}
+		libraries.ReportError(err, uri)
 	}
 }
 
@@ -85,7 +84,7 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 
 	for _, image := range imageList {
 		go func(payload models.Upload) {
-			GIG_Scripts.GigClient.UploadImage(payload)
+			GIG_Scripts.GigClient.UploadFile(payload)
 		}(image)
 	}
 

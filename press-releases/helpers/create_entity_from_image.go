@@ -3,6 +3,7 @@ package helpers
 import (
 	"GIG-Scripts"
 	"GIG-Scripts/press-releases/constants"
+	"github.com/lsflk/gig-sdk/libraries"
 	"github.com/lsflk/gig-sdk/models"
 	"log"
 	"strings"
@@ -25,9 +26,7 @@ func CreateEntityFromImage(img string) (models.Entity, []models.NERResult, time.
 	}
 	//NER extraction
 	entityTitles, err := GIG_Scripts.GigClient.ExtractEntityNames(textContent)
-	if err != nil {
-		log.Println(err)
-	}
+	libraries.ReportError(err)
 	title := strings.Replace(img, "/images/", "", -1)
 	title = strings.Replace(title, "/", "_", -1)
 

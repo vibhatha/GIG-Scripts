@@ -4,6 +4,7 @@ import (
 	"GIG-Scripts"
 	"GIG-Scripts/orgchart/helpers"
 	"flag"
+	"github.com/lsflk/gig-sdk/libraries"
 	"github.com/lsflk/gig-sdk/models"
 	"log"
 	"os"
@@ -44,9 +45,7 @@ func main() {
 
 		//save to db
 		entity, saveErr := GIG_Scripts.GigClient.CreateEntity(entity)
-		if saveErr != nil {
-			log.Println(err.Error(), ministry)
-		}
+		libraries.ReportError(saveErr, ministry)
 	}
 
 }
