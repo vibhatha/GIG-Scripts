@@ -2,13 +2,13 @@ package main
 
 import (
 	"GIG-Scripts"
-	"GIG-Scripts/global_helpers"
 	"GIG-Scripts/tenders/etender/constants"
 	"GIG-Scripts/tenders/etender/decoders"
 	"GIG-Scripts/tenders/etender/helpers"
 	"bufio"
 	"encoding/csv"
 	"flag"
+	"github.com/lsflk/gig-sdk/libraries"
 	"io"
 	"log"
 	"os"
@@ -48,13 +48,13 @@ func main() {
 			locationEntity := helpers.CreateLocationEntity(tender)
 
 			entity, _, addCompanyError := GIG_Scripts.GigClient.AddEntityAsAttribute(entity, constants.Company, companyEntity)
-			global_helpers.ReportErrorWithoutCrash(addCompanyError)
+			libraries.ReportError(addCompanyError)
 
 			entity, _, addLocationError := GIG_Scripts.GigClient.AddEntityAsAttribute(entity, constants.Location, locationEntity)
-			global_helpers.ReportErrorWithoutCrash(addLocationError)
+			libraries.ReportError(addLocationError)
 
 			savedEntity, saveErr := GIG_Scripts.GigClient.CreateEntity(entity)
-			global_helpers.ReportErrorWithoutCrash(saveErr)
+			libraries.ReportError(saveErr)
 			log.Println(savedEntity.Title)
 		}
 	}

@@ -56,10 +56,10 @@ func main() {
 			textContent := libraries.ParsePdf(filePath)
 			//NER extraction
 			entityTitles, err := GIG_Scripts.GigClient.ExtractEntityNames(textContent)
-			libraries.ReportErrorWithoutCrash(err)
+			libraries.ReportError(err)
 
 			err = GIG_Scripts.GigClient.CreateEntityFromText(textContent, libraries.ExtractDomain(uri)+" - "+fileName, categories, entityTitles)
-			libraries.ReportErrorWithoutCrash(err)
+			libraries.ReportError(err)
 		}
 	}
 

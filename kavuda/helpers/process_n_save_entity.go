@@ -11,10 +11,10 @@ func ProcessAndSaveEntity(entity models.Entity, textContent string) {
 	log.Println("		Running NER on the text content...")
 	entityTitles, err := GIG_Scripts.GigClient.ExtractEntityNames(textContent)
 	if err != nil {
-		log.Println(err, entity.Title)
-		log.Println(entityTitles)
+		log.Println("		NER failed:",err, entity.Title,entityTitles)
+	}else {
+		log.Println("		NER completed successfully.")
 	}
-	log.Println("		NER completed successfully.")
 
 	var entities []models.Entity
 
@@ -30,6 +30,7 @@ func ProcessAndSaveEntity(entity models.Entity, textContent string) {
 	entity, saveErr := GIG_Scripts.GigClient.CreateEntity(entity)
 	if saveErr != nil {
 		log.Println(saveErr.Error(), entity.Title)
+	}else {
+		log.Println("		News Article Saved.", entity.Title)
 	}
-	log.Println("		News Article Saved.", entity.Title)
 }
