@@ -75,7 +75,7 @@ func UploadImagesToServer(newsItem NewsItem, imageList []models.Upload, defaultI
 
 	for _, image := range imageList {
 		go func(payload models.Upload) {
-			GIG_Scripts.GigClient.UploadImage(payload)
+			GIG_Scripts.GigClient.UploadFile(payload)
 		}(image)
 	}
 
