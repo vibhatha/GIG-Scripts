@@ -1,7 +1,5 @@
 package GIG_Scripts
-
-import "github.com/lsflk/gig-sdk/client"
-
+//import "github.com/lsflk/gig-sdk/client"
 /**
 Set the GIG server API url here for crawlers
  */
