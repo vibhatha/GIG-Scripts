@@ -35,7 +35,7 @@ func crawl(decoder models.IDecoder, wg *sync.WaitGroup) {
 	//extract news items from site
 	newsItems, err := decoder.ExtractNewsItems()
 	if err != nil {
-		log.Println("Error extracting news from:",decoder.GetSourceTitle(), "Crawler might be outdated!")
+		log.Println("Error extracting news from:",decoder.GetSourceTitle(), ". Crawler might be outdated!")
 	}
 	log.Println("News links extracted...")
 	log.Println(len(newsItems), "news items found\n ")
