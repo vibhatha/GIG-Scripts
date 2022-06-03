@@ -3,6 +3,7 @@ package main
 
 import (
 	"GIG-Scripts"
+	"GIG-Scripts/extended_models"
 	"GIG-Scripts/global_helpers"
 	"GIG-Scripts/wikipedia/wiki_web_crawler/parsers"
 	"flag"
@@ -44,21 +45,21 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 	visited[uri] = true
 
 	var (
-		entity models.Entity
-		err    error
-		body   *html.Node
+		wikiArticle extended_models.WikipediaArticle
+		err         error
+		body        *html.Node
 	)
 
-	entity = models.Entity{}.SetSource(uri).SetSourceSignature("trusted")
+	wikiArticle.Entity = models.Entity{}.SetSource(uri).SetSourceSignature("trusted")
 
 	doc, err := global_helpers.GetDocumentFromUrl(uri)
 	if err != nil {
-		return entity, err
+		return wikiArticle.Entity, err
 	}
 
-	entity.Title, body, err = parsers.ParseHTMLContent(doc)
+	wikiArticle.Title, body, err = parsers.ParseHTMLContent(doc)
 	if err != nil {
-		return entity, err
+		return wikiArticle.Entity, err
 	}
 
 	//clean html code by removing unwanted information
@@ -70,7 +71,7 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 		IgnoreClasses:  []string{"box-Multiple_issues"},
 	}}
 	result, linkedEntities, imageList, defaultImageSource := htmlCleaner.CleanHTML(uri, body)
-	entity.ImageURL = defaultImageSource
+	wikiArticle.ImageURL = defaultImageSource
 
 	// queue new links for crawling
 	for _, linkedEntity := range linkedEntities {
@@ -79,20 +80,20 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 				queue <- url
 			}(linkedEntity.GetSource())
 		}
-		entity = entity.AddLink(models.Link{}.SetTitle(linkedEntity.GetTitle()).AddDate(entity.GetSourceDate()))
+		wikiArticle.Entity = wikiArticle.AddLink(models.Link{}.SetTitle(linkedEntity.GetTitle()).AddDate(wikiArticle.GetSourceDate()))
 	}
 
 	for _, image := range imageList {
 		go func(payload models.Upload) {
-			GIG_Scripts.GigClient.UploadFile(payload)
+			uploadErr := GIG_Scripts.GigClient.UploadFile(payload)
+			if uploadErr != nil {
+				log.Println("Error uploading file:", payload.Title, uploadErr)
+			}
 		}(image)
 	}
 
 	// save linkedEntities (create empty if not exist)
-	entity, err = GIG_Scripts.GigClient.AddEntitiesAsLinks(entity, linkedEntities)
-	entity = entity.SetAttribute("content", models.Value{
-		ValueType:   "html",
-		ValueString: result,
-	}).AddCategory("Wikipedia")
-	return entity, nil
+	wikiArticle.Entity, err = GIG_Scripts.GigClient.AddEntitiesAsLinks(wikiArticle.Entity, linkedEntities)
+
+	return wikiArticle.SetContent(result).Entity, nil
 }

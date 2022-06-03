@@ -18,6 +18,10 @@ func (w WikipediaArticle) SetContent(content string) WikipediaArticle {
 	return w
 }
 
-func (w WikipediaArticle) GetContent() (models.Attribute, error) {
-	return w.GetAttribute("content")
+func (w WikipediaArticle) GetContents() ([]models.Value, error) {
+	attribute, err := w.GetAttribute("content")
+	if err != nil {
+		return nil, err
+	}
+	return attribute.GetValues(), nil
 }
