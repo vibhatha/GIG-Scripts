@@ -1,6 +1,7 @@
 package daily_news
 
 import (
+	"GIG-Scripts/extended_models"
 	"GIG-Scripts/global_helpers"
 	"GIG-Scripts/kavuda/helpers"
 	"GIG-Scripts/kavuda/models"
@@ -10,8 +11,8 @@ import (
 	"strings"
 )
 
-func (d DailyNewsDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
-	var allNewsItems []models.NewsItem
+func (d DailyNewsDecoder) ExtractNewsItems() ([]extended_models.NewsArticle, error) {
+	var allNewsItems []extended_models.NewsArticle
 
 	for _, newsSource := range newsSources {
 		newsItems, err := extractNewItems(newsSource)
@@ -25,7 +26,7 @@ func (d DailyNewsDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 	return allNewsItems, nil
 }
 
-func extractNewItems(newsSource models.NewsSource) ([]models.NewsItem, error) {
+func extractNewItems(newsSource models.NewsSource) ([]extended_models.NewsArticle, error) {
 	doc, err := global_helpers.GetDocumentFromUrl(newsSource.Link)
 	if err != nil {
 		return nil, err
@@ -34,7 +35,7 @@ func extractNewItems(newsSource models.NewsSource) ([]models.NewsItem, error) {
 	var newsLinks []string
 
 	newsNodes := doc.Find(".field-content")
-	var newsItems []models.NewsItem
+	var newsItems []extended_models.NewsArticle
 	for _, node := range newsNodes.Nodes {
 		nodeDoc := goquery.NewDocumentFromNode(node)
 		extractedUrl, exist := nodeDoc.Find("a").First().Attr("href")
@@ -49,7 +50,7 @@ func extractNewItems(newsSource models.NewsSource) ([]models.NewsItem, error) {
 
 					extractDate := strings.Split(extractedUrl, "/")
 					dateString := extractDate[1] + " " + extractDate[2] + " " + extractDate[3]
-					newsItems = append(newsItems, models.NewsItem{
+					newsItems = append(newsItems, extended_models.NewsArticle{
 						Title:      title,
 						Link:       url,
 						Date:       helpers.ExtractPublishedDate("2006 01 02", dateString),
