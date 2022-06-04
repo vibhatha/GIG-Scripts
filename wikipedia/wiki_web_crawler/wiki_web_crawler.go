@@ -50,7 +50,7 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 		body        *html.Node
 	)
 
-	wikiArticle.Entity = models.Entity{}.SetSource(uri).SetSourceSignature("trusted")
+	wikiArticle.SetSource(uri).SetSourceSignature("trusted")
 
 	doc, err := global_helpers.GetDocumentFromUrl(uri)
 	if err != nil {
@@ -80,7 +80,9 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 				queue <- url
 			}(linkedEntity.GetSource())
 		}
-		wikiArticle.Entity = wikiArticle.AddLink(models.Link{}.SetTitle(linkedEntity.GetTitle()).AddDate(wikiArticle.GetSourceDate()))
+		newLink := models.Link{}
+		newLink.SetTitle(linkedEntity.GetTitle()).AddDate(wikiArticle.GetSourceDate())
+		wikiArticle.AddLink(newLink)
 	}
 
 	for _, image := range imageList {
