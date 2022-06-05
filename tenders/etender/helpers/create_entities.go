@@ -1,29 +1,31 @@
 package helpers
 
 import (
+	"GIG-Scripts/extended_models"
 	"GIG-Scripts/tenders/etender/constants"
-	"GIG-Scripts/tenders/etender/model"
 	"github.com/lsflk/gig-sdk/enums/ValueType"
 	"github.com/lsflk/gig-sdk/models"
 )
 
-func CreateCompanyEntity(tender model.ETender) models.Entity {
-	return models.Entity{
-	}.SetTitle(models.Value{
+func CreateCompanyEntity(tender extended_models.Tender) models.Entity {
+	entity := models.Entity{}
+	entity.SetTitle(models.Value{
 		ValueType:   ValueType.String,
-		ValueString: tender.Company,
-		Source:      tender.SourceName,
+		ValueString: tender.GetCompany(),
+		Source:      tender.Source,
 		Date:        tender.SourceDate,
-	}).AddCategories([]string{constants.Organization, constants.Tenders,
-	})
+	}).AddCategories([]string{constants.Organization, constants.Tenders})
+	return entity
 }
 
-func CreateLocationEntity(tender model.ETender)models.Entity{
-	return models.Entity{
-	}.SetTitle(models.Value{
+func CreateLocationEntity(tender extended_models.Tender) models.Entity {
+	entity := models.Entity{}
+	entity.SetTitle(models.Value{
 		ValueType:   ValueType.String,
-		ValueString: tender.Location,
-		Source:      tender.SourceName,
+		ValueString: tender.GetLocation(),
+		Source:      tender.Source,
 		Date:        tender.SourceDate,
 	}).AddCategory(constants.Location)
+
+	return entity
 }
