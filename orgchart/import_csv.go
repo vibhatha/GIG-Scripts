@@ -30,21 +30,21 @@ func main() {
 	for ministry, departments := range dataStructure {
 		log.Println(ministry)
 
-		entity := helpers.GenerateEntityFromDataRecord(fileName, ministry, departments, gazetteDate, nameStructure)
+		organization := helpers.GenerateOrganizationFromDataRecord(fileName, ministry, departments, gazetteDate, nameStructure)
 
 		var entities []models.Entity
 		for _, departmentName := range departments {
-			childEntity := helpers.CreateChildEntity(fileName, departmentName, gazetteDate, ministry)
-			entities = append(entities, childEntity)
+			childEntity := helpers.CreateChildOrganization(fileName, departmentName, gazetteDate, ministry)
+			entities = append(entities, childEntity.Entity)
 		}
 
-		entity, err = GIG_Scripts.GigClient.AddEntitiesAsLinks(entity, entities)
+		err = GIG_Scripts.GigClient.AddEntitiesAsLinks(&organization.Entity, entities)
 		if err != nil {
 			panic(err)
 		}
 
 		//save to db
-		entity, saveErr := GIG_Scripts.GigClient.CreateEntity(entity)
+		_, saveErr := GIG_Scripts.GigClient.CreateEntity(organization.Entity)
 		libraries.ReportError(saveErr, ministry)
 	}
 

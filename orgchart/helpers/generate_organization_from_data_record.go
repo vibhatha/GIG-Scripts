@@ -1,16 +1,17 @@
 package helpers
 
 import (
+	"GIG-Scripts/extended_models"
 	"GIG-Scripts/orgchart/constants"
 	"encoding/json"
-	"github.com/lsflk/gig-sdk/models"
 	"log"
 	"time"
 )
 
 var categories = []string{constants.OrgChartCategory}
 
-func GenerateEntityFromDataRecord(fileName string, ministry string, departments []string, gazetteDate time.Time, nameStructure map[string]string) models.Entity {
+func GenerateOrganizationFromDataRecord(fileName string, ministry string, departments []string, gazetteDate time.Time,
+	nameStructure map[string]string) extended_models.Organization {
 	var filteredDepartments []string
 	for _, department := range departments {
 		log.Println("	", department)
@@ -30,30 +31,17 @@ func GenerateEntityFromDataRecord(fileName string, ministry string, departments 
 		ministryName = oldName
 	}
 
-	entity := models.Entity{Title: ministryName}
-	entity.SetSource(constants.SourceName+fileName).
+	organization := extended_models.Organization{}
+	organization.SetOrganizationTitle(ministryName, constants.SourceName+fileName, gazetteDate).
+		SetChildOrganizations(string(jsonDepartments), constants.SourceName+fileName, gazetteDate).
+		SetSource(constants.SourceName + fileName).
 		SetSourceDate(gazetteDate).
 		SetSourceSignature("trusted").
-		AddCategories(categories).
-		SetAttribute("organizations",
-			models.Value{
-				ValueType:   "json",
-				ValueString: string(jsonDepartments),
-				Source:      constants.SourceName + fileName,
-				Date:        gazetteDate,
-				UpdatedAt:   time.Now(),
-			})
+		AddCategories(categories)
 
 	// detect entity name changes and include it in attributes
 	if _, newTitleFound := nameStructure[ministry]; newTitleFound {
-		entity.SetAttribute("new_title",
-			models.Value{
-				ValueType:   "string",
-				ValueString: ministry,
-				Source:      constants.SourceName + fileName,
-				Date:        gazetteDate,
-				UpdatedAt:   time.Now(),
-			})
+		organization.SetNewTitle(ministry, constants.SourceName+fileName, gazetteDate)
 	}
-	return entity
+	return organization
 }
