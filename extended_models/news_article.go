@@ -11,7 +11,7 @@ type NewsArticle struct {
 }
 
 func (n NewsArticle) SetNewsTitle(title string) NewsArticle {
-	n.Entity = n.SetTitle(models.Value{
+	n.SetTitle(models.Value{
 		ValueType:   ValueType.String,
 		ValueString: title,
 	})
@@ -19,7 +19,7 @@ func (n NewsArticle) SetNewsTitle(title string) NewsArticle {
 }
 
 func (n NewsArticle) SetContent(content string) NewsArticle {
-	n.Entity = n.SetAttribute("content", models.Value{
+	n.SetAttribute("content", models.Value{
 		ValueType:   ValueType.HTML,
 		ValueString: content,
 	})
@@ -27,7 +27,7 @@ func (n NewsArticle) SetContent(content string) NewsArticle {
 }
 
 func (n NewsArticle) SetDate(date time.Time) NewsArticle {
-	n.Entity = n.SetAttribute("date", models.Value{
+	n.SetAttribute("date", models.Value{
 		ValueType:   ValueType.Date,
 		ValueString: date.String(),
 	})
@@ -36,7 +36,7 @@ func (n NewsArticle) SetDate(date time.Time) NewsArticle {
 }
 
 func (n NewsArticle) SetAuthor(author string) NewsArticle {
-	n.Entity = n.SetAttribute("date", models.Value{
+	n.SetAttribute("date", models.Value{
 		ValueType:   ValueType.String,
 		ValueString: author,
 	})

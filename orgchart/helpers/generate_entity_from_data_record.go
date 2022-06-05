@@ -30,10 +30,8 @@ func GenerateEntityFromDataRecord(fileName string, ministry string, departments 
 		ministryName = oldName
 	}
 
-	entity := models.Entity{
-		Title: ministryName,
-	}.
-		SetSource(constants.SourceName + fileName).
+	entity := models.Entity{Title: ministryName}
+	entity.SetSource(constants.SourceName+fileName).
 		SetSourceDate(gazetteDate).
 		SetSourceSignature("trusted").
 		AddCategories(categories).
@@ -48,7 +46,7 @@ func GenerateEntityFromDataRecord(fileName string, ministry string, departments 
 
 	// detect entity name changes and include it in attributes
 	if _, newTitleFound := nameStructure[ministry]; newTitleFound {
-		entity = entity.SetAttribute("new_title",
+		entity.SetAttribute("new_title",
 			models.Value{
 				ValueType:   "string",
 				ValueString: ministry,

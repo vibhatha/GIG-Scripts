@@ -10,11 +10,12 @@ import (
 var childCategories = []string{"Organization", "OrgChart-Level1"}
 
 func CreateChildEntity(fileName string, departmentName string, gazetteDate time.Time, ministry string) models.Entity {
-	return models.Entity{}.
+	childEntity := models.Entity{}
+	childEntity.
 		SetTitle(models.Value{ValueType: ValueType.String, ValueString: departmentName, Source: constants.SourceName + fileName, Date: gazetteDate}).
-		SetSource(constants.SourceName + fileName).
+		SetSource(constants.SourceName+fileName).
 		SetSourceDate(gazetteDate).
-		AddCategories(childCategories).AddLink(models.Link{}.SetTitle(ministry).AddDate(gazetteDate)).
+		AddCategories(childCategories).AddLink(*new(models.Link).SetTitle(ministry).AddDate(gazetteDate)).
 		SetAttribute("parent", models.Value{
 			ValueType:   "string",
 			ValueString: ministry,
@@ -22,4 +23,6 @@ func CreateChildEntity(fileName string, departmentName string, gazetteDate time.
 			Source:      constants.SourceName + fileName,
 			UpdatedAt:   time.Now(),
 		})
+
+	return childEntity
 }
