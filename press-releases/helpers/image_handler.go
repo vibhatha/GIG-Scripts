@@ -21,8 +21,10 @@ func GetTime(img string) (time.Time, error) {
 	return time.Parse("2006.01.02", strings.Split(img, "/")[2])
 }
 
-// if your img's are properly formed with doublequotes then use this, it's more efficient.
-// var imgRE = regexp.MustCompile(`<img[^>]+\bsrc="([^"]+)"`)
+/*
+FindImages - if your img's are properly formed with doublequotes then use this, it's more efficient.
+var imgRE = regexp.MustCompile(`<img[^>]+\bsrc="([^"]+)"`)
+*/
 func FindImages(htm string) []string {
 	imgs := imgRE.FindAllStringSubmatch(htm, -1)
 	out := make([]string, len(imgs))

@@ -32,8 +32,8 @@ func CreateEntityFromImage(img string) (models.Entity, []models.NERResult, time.
 
 	entity := models.Entity{
 		Title: title,
-	}.
-		SetSource(constants.SourceString + img).
+	}
+	entity.SetSource(constants.SourceString+img).
 		SetSourceDate(releaseDate).
 		SetSourceSignature("trusted").
 		AddCategories(categories).
