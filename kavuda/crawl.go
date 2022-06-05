@@ -10,12 +10,13 @@ import (
 	"GIG-Scripts/kavuda/news_sites/the_island"
 	"log"
 	"sync"
+	"time"
 )
 
 func main() {
 	decoders := []models.IDecoder{
 		ada_derana.AdaDeranaDecoder{},
-		ceylon_today.CeylonTodayDecoder{},
+		ceylon_today.CeylonTodayDecoder{}, // TODO: outdated - the api has been removed from the site so change to crawl the html page
 		daily_mirror.DailyMirrorDecoder{},
 		daily_news.DailyNewsDecoder{},
 		the_island.TheIslandDecoder{},
@@ -35,7 +36,7 @@ func crawl(decoder models.IDecoder, wg *sync.WaitGroup) {
 	//extract news items from site
 	newsItems, err := decoder.ExtractNewsItems()
 	if err != nil {
-		log.Println("Error extracting news from:",decoder.GetSourceTitle(), ". Crawler might be outdated!")
+		log.Println("Error extracting news from:", decoder.GetSourceTitle(), ". Crawler might be outdated!")
 	}
 	log.Println("News links extracted...")
 	log.Println(len(newsItems), "news items found\n ")
@@ -44,9 +45,9 @@ func crawl(decoder models.IDecoder, wg *sync.WaitGroup) {
 	log.Println("Reading News...")
 	for _, newsItem := range newsItems {
 
-		log.Println("	Item: ", newsItem.Title)
-		log.Println("	News: ", newsItem.Link)
-		log.Println("	Date: ", newsItem.Date)
+		log.Println("	Item: ", newsItem.GetTitle())
+		log.Println("	News: ", newsItem.Source)
+		log.Println("	Date: ", newsItem.SourceDate)
 		newsItem, contentString, err := decoder.FillNewsContent(newsItem)
 		if err != nil {
 			panic(err)
@@ -55,11 +56,12 @@ func crawl(decoder models.IDecoder, wg *sync.WaitGroup) {
 		log.Println("		Reading News Article Completed.")
 
 		//decode to entity
-		entity := helpers.EntityFromNews(newsItem, decoder.GetSourceTitle()).SetSourceSignature("trusted").
-			AddCategories(newsItem.Categories).SetSource(newsItem.Link)
+		newsItem.UpdatedAt = time.Now()
+		newsItem.SetContent(contentString).AddCategory("News").AddCategory(decoder.GetSourceTitle()).SetSourceSignature("trusted").
+			AddCategories(newsItem.Categories)
 
 		//save entity with NER processing
-		helpers.ProcessAndSaveEntity(entity, contentString)
+		helpers.ProcessAndSaveEntity(newsItem.Entity, contentString)
 	}
 	wg.Done()
 }

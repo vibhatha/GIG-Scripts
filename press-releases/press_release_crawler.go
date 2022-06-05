@@ -13,7 +13,7 @@ import (
 /**
 input a web url containing pdf files
 automatically download and create entities for all of pdf files
- */
+*/
 
 func main() {
 	flag.Parse()
@@ -42,7 +42,7 @@ func main() {
 				entities = append(entities, childEntity)
 			}
 
-			entity, err = GIG_Scripts.GigClient.AddEntitiesAsLinks(entity, entities)
+			err = GIG_Scripts.GigClient.AddEntitiesAsLinks(&entity, entities)
 			if err != nil {
 				panic(err)
 			}

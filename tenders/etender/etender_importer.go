@@ -42,12 +42,11 @@ func main() {
 			ignoreHeaders = false
 		} else {
 			tender := decoders.Decode(line)
-
-			entity := decoders.MapToEntity(tender).AddCategory(category)
+			tender.AddCategory(category)
 			companyEntity := helpers.CreateCompanyEntity(tender)
 			locationEntity := helpers.CreateLocationEntity(tender)
 
-			entity, _, addCompanyError := GIG_Scripts.GigClient.AddEntityAsAttribute(entity, constants.Company, companyEntity)
+			entity, _, addCompanyError := GIG_Scripts.GigClient.AddEntityAsAttribute(tender.Entity, constants.Company, companyEntity)
 			libraries.ReportError(addCompanyError)
 
 			entity, _, addLocationError := GIG_Scripts.GigClient.AddEntityAsAttribute(entity, constants.Location, locationEntity)

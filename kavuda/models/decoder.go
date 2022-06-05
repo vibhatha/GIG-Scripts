@@ -2,6 +2,7 @@ package models
 
 import (
 	"GIG-Scripts"
+	"GIG-Scripts/extended_models"
 	"github.com/lsflk/gig-sdk/libraries"
 	"github.com/lsflk/gig-sdk/libraries/clean_html"
 	"github.com/lsflk/gig-sdk/models"
@@ -10,17 +11,17 @@ import (
 )
 
 type IDecoder interface {
-	ExtractNewsItems() ([]NewsItem, error)
-	FillNewsContent(newsItem NewsItem) (NewsItem, string, error)
+	ExtractNewsItems() ([]extended_models.NewsArticle, error)
+	FillNewsContent(newsItem extended_models.NewsArticle) (extended_models.NewsArticle, string, error)
 	GetSourceTitle() string
 	GetDefaultImageUrl() string
 }
 
-func FillNewsContent(newsItem NewsItem, contentClass string, imageClass string, htmlCleaner clean_html.HtmlCleaner, decoder IDecoder) (NewsItem, string, error) {
+func FillNewsContent(newsItem extended_models.NewsArticle, contentClass string, imageClass string, htmlCleaner clean_html.HtmlCleaner, decoder IDecoder) (extended_models.NewsArticle, string, error) {
 	if imageClass == "" {
 		imageClass = contentClass
 	}
-	resp, err := GIG_Scripts.GigClient.GetRequest(newsItem.Link)
+	resp, err := GIG_Scripts.GigClient.GetRequest(newsItem.Source)
 	if err != nil {
 		return newsItem, "", err
 	}
@@ -57,8 +58,9 @@ func FillNewsContent(newsItem NewsItem, contentClass string, imageClass string, 
 	var contentImageList []models.Upload
 	var imageUrl string
 
-	newsItem.Content, _, contentImageList, imageUrl = htmlCleaner.CleanHTML(newsItem.Link, news)
-	_, _, imageList, newsItem.ImageURL = htmlCleaner.CleanHTML(newsItem.Link, newsImage)
+	content, _, contentImageList, imageUrl := htmlCleaner.CleanHTML(newsItem.Source, news)
+	newsItem.SetContent(content)
+	_, _, imageList, newsItem.ImageURL = htmlCleaner.CleanHTML(newsItem.Source, newsImage)
 	imageList = append(imageList, contentImageList...)
 	if newsItem.ImageURL == "" {
 		newsItem.ImageURL = imageUrl
@@ -66,7 +68,7 @@ func FillNewsContent(newsItem NewsItem, contentClass string, imageClass string, 
 	return UploadImagesToServer(newsItem, imageList, decoder.GetDefaultImageUrl()), newsSelection.Text(), nil
 }
 
-func UploadImagesToServer(newsItem NewsItem, imageList []models.Upload, defaultImageUrl string) NewsItem {
+func UploadImagesToServer(newsItem extended_models.NewsArticle, imageList []models.Upload, defaultImageUrl string) extended_models.NewsArticle {
 	if newsItem.ImageURL == "" {
 		var imageUploadClass models.Upload
 		newsItem.ImageURL, imageUploadClass = clean_html.GenerateImagePath(defaultImageUrl, defaultImageUrl)

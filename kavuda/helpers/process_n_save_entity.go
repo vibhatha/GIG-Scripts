@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"GIG-Scripts"
+	"github.com/lsflk/gig-sdk/enums/ValueType"
 	"github.com/lsflk/gig-sdk/models"
 	"log"
 )
@@ -11,8 +12,8 @@ func ProcessAndSaveEntity(entity models.Entity, textContent string) {
 	log.Println("		Running NER on the text content...")
 	entityTitles, err := GIG_Scripts.GigClient.ExtractEntityNames(textContent)
 	if err != nil {
-		log.Println("		NER failed:",err, entity.Title,entityTitles)
-	}else {
+		log.Println("		NER failed:", err, entity.Title, entityTitles)
+	} else {
 		log.Println("		NER completed successfully.")
 	}
 
@@ -21,16 +22,26 @@ func ProcessAndSaveEntity(entity models.Entity, textContent string) {
 	for _, entityObject := range entityTitles {
 		normalizedName := entityObject.EntityName
 		if err == nil {
-			entities = append(entities, models.Entity{Title: normalizedName}.AddCategory(entityObject.Category))
+			titleValue := models.Value{
+				ValueType:   ValueType.String,
+				ValueString: normalizedName,
+				Source:      entity.Source,
+				Date:        entity.SourceDate}
+			childEntity := models.Entity{}
+			childEntity.SetTitle(titleValue).AddCategory(entityObject.Category)
+			entities = append(entities, childEntity)
 		}
 	}
-
-	entity, err = GIG_Scripts.GigClient.AddEntitiesAsLinks(entity, entities)
+	testEntity := models.Entity{}
+	err = GIG_Scripts.GigClient.AddEntitiesAsLinks(&testEntity, entities)
+	if err != nil {
+		log.Println(err.Error(), entity.Title)
+	}
 	//save to db
 	entity, saveErr := GIG_Scripts.GigClient.CreateEntity(entity)
 	if saveErr != nil {
 		log.Println(saveErr.Error(), entity.Title)
-	}else {
+	} else {
 		log.Println("		News Article Saved.", entity.Title)
 	}
 }
