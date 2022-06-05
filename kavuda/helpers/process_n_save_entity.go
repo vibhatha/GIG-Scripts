@@ -27,11 +27,16 @@ func ProcessAndSaveEntity(entity models.Entity, textContent string) {
 				ValueString: normalizedName,
 				Source:      entity.Source,
 				Date:        entity.SourceDate}
-			entities = append(entities, *new(models.Entity).SetTitle(titleValue).AddCategory(entityObject.Category))
+			childEntity := models.Entity{}
+			childEntity.SetTitle(titleValue).AddCategory(entityObject.Category)
+			entities = append(entities, childEntity)
 		}
 	}
-
-	err = GIG_Scripts.GigClient.AddEntitiesAsLinks(&entity, entities)
+	testEntity := models.Entity{}
+	err = GIG_Scripts.GigClient.AddEntitiesAsLinks(&testEntity, entities)
+	if err != nil {
+		log.Println(err.Error(), entity.Title)
+	}
 	//save to db
 	entity, saveErr := GIG_Scripts.GigClient.CreateEntity(entity)
 	if saveErr != nil {
