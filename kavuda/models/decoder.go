@@ -59,7 +59,7 @@ func FillNewsContent(newsItem extended_models.NewsArticle, contentClass string, 
 	var imageUrl string
 
 	content, _, contentImageList, imageUrl := htmlCleaner.CleanHTML(newsItem.Source, news)
-	newsItem = newsItem.SetContent(content)
+	newsItem.SetContent(content)
 	_, _, imageList, newsItem.ImageURL = htmlCleaner.CleanHTML(newsItem.Source, newsImage)
 	imageList = append(imageList, contentImageList...)
 	if newsItem.ImageURL == "" {

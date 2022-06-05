@@ -57,8 +57,7 @@ func crawl(decoder models.IDecoder, wg *sync.WaitGroup) {
 
 		//decode to entity
 		newsItem.UpdatedAt = time.Now()
-		newsItem = newsItem.SetContent(contentString)
-		newsItem.Entity = newsItem.AddCategory("News").AddCategory(decoder.GetSourceTitle()).SetSourceSignature("trusted").
+		newsItem.SetContent(contentString).AddCategory("News").AddCategory(decoder.GetSourceTitle()).SetSourceSignature("trusted").
 			AddCategories(newsItem.Categories)
 
 		//save entity with NER processing

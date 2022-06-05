@@ -10,7 +10,7 @@ type NewsArticle struct {
 	models.Entity
 }
 
-func (n NewsArticle) SetNewsTitle(title string) NewsArticle {
+func (n *NewsArticle) SetNewsTitle(title string) *NewsArticle {
 	n.SetTitle(models.Value{
 		ValueType:   ValueType.String,
 		ValueString: title,
@@ -18,7 +18,7 @@ func (n NewsArticle) SetNewsTitle(title string) NewsArticle {
 	return n
 }
 
-func (n NewsArticle) SetContent(content string) NewsArticle {
+func (n *NewsArticle) SetContent(content string) *NewsArticle {
 	n.SetAttribute("content", models.Value{
 		ValueType:   ValueType.HTML,
 		ValueString: content,
@@ -26,7 +26,7 @@ func (n NewsArticle) SetContent(content string) NewsArticle {
 	return n
 }
 
-func (n NewsArticle) SetDate(date time.Time) NewsArticle {
+func (n *NewsArticle) SetDate(date time.Time) *NewsArticle {
 	n.SetAttribute("date", models.Value{
 		ValueType:   ValueType.Date,
 		ValueString: date.String(),
@@ -35,7 +35,7 @@ func (n NewsArticle) SetDate(date time.Time) NewsArticle {
 	return n
 }
 
-func (n NewsArticle) SetAuthor(author string) NewsArticle {
+func (n *NewsArticle) SetAuthor(author string) *NewsArticle {
 	n.SetAttribute("date", models.Value{
 		ValueType:   ValueType.String,
 		ValueString: author,

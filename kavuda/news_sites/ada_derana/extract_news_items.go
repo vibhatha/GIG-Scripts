@@ -49,10 +49,11 @@ func createNewsItem(nodeDoc *goquery.Document, url string, newsSource models.New
 	dateString := strings.Replace(nodeDoc.Find("span").Last().Nodes[0].FirstChild.Data, "  ", " ", -1) // replacing double &nbsp; characters with space
 	dateString = strings.Replace(dateString, "| ", "", -1)
 
-	newsItem := extended_models.NewsArticle{}.SetNewsTitle(title)
-	newsItem.Source = url
+	newsItem := *new(extended_models.NewsArticle).
+		SetNewsTitle(title).
+		SetDate(helpers.ExtractPublishedDate("January 2, 2006 3:04 pm", dateString))
+	newsItem.AddCategories(newsSource.Categories).SetSource(url)
 	newsItem.Snippet = snippet
-	newsItem = newsItem.SetDate(helpers.ExtractPublishedDate("January 2, 2006 3:04 pm", dateString))
-	newsItem.Entity = newsItem.AddCategories(newsSource.Categories)
+
 	return newsItem
 }

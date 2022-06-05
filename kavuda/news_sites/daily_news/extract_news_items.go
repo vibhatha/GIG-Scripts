@@ -50,12 +50,10 @@ func extractNewItems(newsSource models.NewsSource) ([]extended_models.NewsArticl
 
 					extractDate := strings.Split(extractedUrl, "/")
 					dateString := extractDate[1] + " " + extractDate[2] + " " + extractDate[3]
-					newsItems = append(newsItems, extended_models.NewsArticle{
-						Title:      title,
-						Link:       url,
-						Date:       helpers.ExtractPublishedDate("2006 01 02", dateString),
-						Categories: newsSource.Categories,
-					})
+					newsItem := *new(extended_models.NewsArticle).SetNewsTitle(title)
+					newsItem.SetSource(url).SetSourceDate(helpers.ExtractPublishedDate("2006 01 02", dateString)).
+						AddCategories(newsSource.Categories)
+					newsItems = append(newsItems, newsItem)
 				}
 			}
 		}

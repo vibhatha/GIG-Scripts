@@ -1,6 +1,7 @@
 package the_island
 
 import (
+	"GIG-Scripts/extended_models"
 	"GIG-Scripts/global_helpers"
 	"GIG-Scripts/kavuda/helpers"
 	"GIG-Scripts/kavuda/models"
@@ -10,8 +11,8 @@ import (
 	"golang.org/x/net/html"
 )
 
-func (d TheIslandDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
-	var allNewsItems []models.NewsItem
+func (d TheIslandDecoder) ExtractNewsItems() ([]extended_models.NewsArticle, error) {
+	var allNewsItems []extended_models.NewsArticle
 
 	for _, newsSource := range newsSources {
 		doc, err := global_helpers.GetDocumentFromUrl(newsSource.Link)
@@ -23,7 +24,7 @@ func (d TheIslandDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 
 		newsNodes := doc.Find(".mvp-blog-story-wrap")
 
-		var newsItems []models.NewsItem
+		var newsItems []extended_models.NewsArticle
 		for _, node := range newsNodes.Nodes {
 			newsItem, url, err := generateNewsItem(node, newsSource)
 			if !libraries.StringInSlice(newsLinks, url) && err == nil { // if the link is not already enlisted before
@@ -37,7 +38,7 @@ func (d TheIslandDecoder) ExtractNewsItems() ([]models.NewsItem, error) {
 	return allNewsItems, nil
 }
 
-func generateNewsItem(node *html.Node, newsSource models.NewsSource) (models.NewsItem, string, error) {
+func generateNewsItem(node *html.Node, newsSource models.NewsSource) (extended_models.NewsArticle, string, error) {
 	nodeDoc := goquery.NewDocumentFromNode(node)
 	dateString, _ := nodeDoc.Find(".mvp-cd-date").First().Html()
 
@@ -46,17 +47,13 @@ func generateNewsItem(node *html.Node, newsSource models.NewsSource) (models.New
 		if extractedUrl != "/" {
 			title := nodeDoc.Find("h2").First().Text()
 			url := libraries.FixUrl(extractedUrl, newsSource.Link)
-
-			newsItem := models.NewsItem{
-				Title:      title,
-				Link:       url,
-				Date:       helpers.ExtractPublishedDate("January 2, 2006, 3:04 pm", dateString),
-				Categories: newsSource.Categories,
-			}
+			newsItem := *new(extended_models.NewsArticle).SetNewsTitle(title)
+			newsItem.SetSource(url).SetSourceDate(helpers.ExtractPublishedDate("January 2, 2006, 3:04 pm", dateString)).
+				AddCategories(newsSource.Categories)
 			return newsItem, url, nil
 
 		}
 	}
 
-	return models.NewsItem{}, "", errors.New("news item not found")
+	return extended_models.NewsArticle{}, "", errors.New("news item not found")
 }
