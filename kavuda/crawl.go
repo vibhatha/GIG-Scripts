@@ -16,7 +16,7 @@ import (
 func main() {
 	decoders := []models.IDecoder{
 		ada_derana.AdaDeranaDecoder{},
-		ceylon_today.CeylonTodayDecoder{},
+		ceylon_today.CeylonTodayDecoder{}, // TODO: outdated - the api has been removed from the site so change to crawl the html page
 		daily_mirror.DailyMirrorDecoder{},
 		daily_news.DailyNewsDecoder{},
 		the_island.TheIslandDecoder{},
