@@ -1,7 +1,7 @@
 package main
 
 import (
-	"GIG-Scripts/my_local/data_models"
+	"GIG-Scripts/my_local/decoders"
 	"GIG-Scripts/my_local/helpers"
 )
 
@@ -11,6 +11,9 @@ const (
 
 func main() {
 	// open file
-	filename := DataPath + "country.tsv"
-	helpers.ImportFile(filename, data_models.MyLocalCountryDecoder{})
+	countrySource := DataPath + "country.tsv"
+	provinceSource := DataPath + "province.tsv"
+
+	helpers.AddDecodedData(countrySource, decoders.MyLocalCountryDecoder{})
+	helpers.AddDecodedData(provinceSource, decoders.MyLocalProvinceDecoder{})
 }

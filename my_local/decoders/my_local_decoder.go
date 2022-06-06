@@ -1,4 +1,4 @@
-package data_models
+package decoders
 
 import "github.com/lsflk/gig-sdk/models"
 

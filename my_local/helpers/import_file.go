@@ -2,7 +2,7 @@ package helpers
 
 import (
 	GIG_Scripts "GIG-Scripts"
-	"GIG-Scripts/my_local/data_models"
+	"GIG-Scripts/my_local/decoders"
 	"encoding/csv"
 	"fmt"
 	"io"
@@ -10,11 +10,11 @@ import (
 	"os"
 )
 
-func ImportFile(filename string, decoder data_models.MyLocalDecoder) {
+func AddDecodedData(filename string, decoder decoders.MyLocalDecoder) {
 	source := "MyLocal - " + filename
 	f, err := os.Open(filename)
 	if err != nil {
-		log.Fatal(err)
+		log.Panicf("unable to locate file:%s", source)
 	}
 
 	// remember to close the file at the end of the program
@@ -23,9 +23,10 @@ func ImportFile(filename string, decoder data_models.MyLocalDecoder) {
 	// read tsv values using csv.Reader
 	tsvReader := csv.NewReader(f)
 	tsvReader.Comma = '\t'
+
 	headers, err := tsvReader.Read()
 	if err != nil {
-		log.Panicf("headers not found in %s", filename)
+		log.Panicf("headers not found in %s: %s", filename, err)
 	}
 	log.Println("header found:", headers)
 
