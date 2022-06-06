@@ -95,7 +95,10 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 	}
 
 	// save linkedEntities (create empty if not exist)
-	wikiArticle.Entity, err = GIG_Scripts.GigClient.AddEntitiesAsLinks(wikiArticle.Entity, linkedEntities)
-
-	return wikiArticle.SetContent(result).Entity, nil
+	err = GIG_Scripts.GigClient.AddEntitiesAsLinks(&wikiArticle.Entity, linkedEntities)
+	if err != nil {
+		log.Fatal(err)
+	}
+	wikiArticle.SetContent(result)
+	return wikiArticle.Entity, nil
 }

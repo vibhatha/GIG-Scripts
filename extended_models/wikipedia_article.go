@@ -9,7 +9,7 @@ type WikipediaArticle struct {
 	models.Entity
 }
 
-func (w WikipediaArticle) SetContent(content string) WikipediaArticle {
+func (w *WikipediaArticle) SetContent(content string) *WikipediaArticle {
 	w.SetAttribute("content", models.Value{
 		ValueType:   ValueType.HTML,
 		ValueString: content,
