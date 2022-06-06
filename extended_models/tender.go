@@ -69,7 +69,7 @@ func (t *Tender) SetDescription(description string) *Tender {
 
 func (t *Tender) SetTenderValue(value string) *Tender {
 	t.SetAttribute("Description", models.Value{
-		ValueType:   ValueType.String,
+		ValueType:   ValueType.Number,
 		ValueString: value,
 	})
 	return t

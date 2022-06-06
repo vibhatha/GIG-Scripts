@@ -6,15 +6,15 @@ import (
 	"github.com/lsflk/gig-sdk/models"
 )
 
-type Country struct {
+type Province struct {
 	extended_models.Location
 }
 
-func (c *Country) SetCountryId(countryId string, source string) *Country {
-	c.SetAttribute("country_id", models.Value{
+func (p *Province) SetProvinceId(countryId string, source string) *Province {
+	p.SetAttribute("province_id", models.Value{
 		ValueType:   ValueType.String,
 		ValueString: countryId,
 		Source:      source,
 	})
-	return c
+	return p
 }
