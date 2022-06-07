@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/JackDanger/collectlinks v0.0.0-20160421202702-24c4ee2870ba
 	github.com/PuerkitoBio/goquery v1.8.0
-	github.com/lsflk/gig-sdk v0.2.26
+	github.com/lsflk/gig-sdk v0.2.27
 	golang.org/x/net v0.0.0-20220531201128-c960675eff93
 )
 

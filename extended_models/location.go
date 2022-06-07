@@ -20,6 +20,15 @@ func (l *Location) SetLocationId(countryId string, source string) *Location {
 	return l
 }
 
+func (l *Location) SetParent(parentName string, source string) *Location {
+	l.SetAttribute("parent", models.Value{
+		ValueType:   ValueType.String,
+		ValueString: parentName,
+		Source:      source,
+	})
+	return l
+}
+
 func (l *Location) SetName(name string, source string) *Location {
 	l.SetTitle(models.Value{
 		ValueType:   ValueType.String,
