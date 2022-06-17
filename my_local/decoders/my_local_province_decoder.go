@@ -3,6 +3,7 @@ package decoders
 import (
 	GIG_Scripts "GIG-Scripts"
 	"GIG-Scripts/my_local/data_models"
+	"github.com/lsflk/gig-sdk/constants/routes"
 	"github.com/lsflk/gig-sdk/models"
 	"log"
 )
@@ -11,12 +12,6 @@ const GeoDataSource = "gig-data-master/geo/province/"
 
 type MyLocalProvinceDecoder struct {
 	MyLocalDecoder
-}
-
-type Payload struct {
-	Title     string       `json:"title"`
-	Attribute string       `json:"attribute"`
-	Value     models.Value `json:"value"`
 }
 
 func (d MyLocalProvinceDecoder) DecodeToEntity(record []string, source string) models.Entity {
@@ -29,12 +24,14 @@ func (d MyLocalProvinceDecoder) DecodeToEntity(record []string, source string) m
 		AddCategory("Province").AddLink(models.Link{Title: "Sri Lanka"})
 
 	//update parent entity
-	payload := Payload{
-		Title:     "Sri Lanka",
-		Attribute: "provinces",
-		Value:     *new(models.Value).SetSource(source).SetValueString(entity.GetTitle()),
+	payload := models.UpdateEntity{
+		//Title:     "Sri Lanka",
+		SearchAttribute: "attributes.location_id",
+		SearchValue:     *new(models.Value).SetValueString("LK"),
+		Attribute:       "provinces_test",
+		Value:           *new(models.Value).SetSource(source).SetValueString(entity.GetTitle()),
 	}
-	if _, err := GIG_Scripts.GigClient.PostRequest(GIG_Scripts.GigClient.ApiUrl+"append", payload); err != nil {
+	if _, err := GIG_Scripts.GigClient.PostRequest(GIG_Scripts.GigClient.ApiUrl+routes.Append, payload); err != nil {
 		log.Fatal("error updating parent entity", err)
 	}
 
