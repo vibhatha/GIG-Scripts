@@ -3,12 +3,11 @@ package decoders
 import (
 	GIG_Scripts "GIG-Scripts"
 	"GIG-Scripts/my_local/data_models"
-	"github.com/lsflk/gig-sdk/constants/routes"
 	"github.com/lsflk/gig-sdk/models"
 	"log"
 )
 
-const GeoDataSource = "gig-data-master/geo/province/"
+const ProvinceDataSource = "gig-data-master/geo/province/"
 
 type MyLocalProvinceDecoder struct {
 	MyLocalDecoder
@@ -20,7 +19,7 @@ func (d MyLocalProvinceDecoder) DecodeToEntity(record []string, source string) m
 		SetCentroid(record[3], source).
 		SetPopulation(record[4], source).
 		SetParent("Sri Lanka", source).
-		SetGeoCoordinates(GeoDataSource + record[1] + ".json").
+		SetGeoCoordinates(ProvinceDataSource + record[1] + ".json").
 		AddCategory("Province").AddLink(models.Link{Title: "Sri Lanka"})
 
 	//update parent entity
@@ -31,7 +30,7 @@ func (d MyLocalProvinceDecoder) DecodeToEntity(record []string, source string) m
 		Attribute:       "provinces_test",
 		Value:           *new(models.Value).SetSource(source).SetValueString(entity.GetTitle()),
 	}
-	if _, err := GIG_Scripts.GigClient.PostRequest(GIG_Scripts.GigClient.ApiUrl+routes.Append, payload); err != nil {
+	if _, err := GIG_Scripts.GigClient.AppendToEntity(payload); err != nil {
 		log.Fatal("error updating parent entity", err)
 	}
 
