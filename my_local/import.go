@@ -13,9 +13,11 @@ func main() {
 	// open file
 	//countrySource := DataPath + "country.tsv"
 	//provinceSource := DataPath + "province.tsv"
-	districtSource := DataPath + "district.tsv"
+	//districtSource := DataPath + "district.tsv"
+	dsdSource := DataPath + "dsd.tsv"
 
 	//helpers.AddDecodedData(countrySource, decoders.MyLocalCountryDecoder{})
 	//helpers.AddDecodedData(provinceSource, decoders.MyLocalProvinceDecoder{})
-	helpers.AddDecodedData(districtSource, decoders.MyLocalDistrictDecoder{})
+	//helpers.AddDecodedData(districtSource, decoders.MyLocalDistrictDecoder{})
+	helpers.AddDecodedData(dsdSource, decoders.MyLocalDSDDecoder{})
 }
