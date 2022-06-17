@@ -21,7 +21,7 @@ func (d MyLocalDistrictDecoder) DecodeToEntity(record []string, source string) m
 	}
 
 	entity := *new(data_models.Province).SetLocationId(record[1], source).
-		SetName(record[3], source).
+		SetName(record[3]+" District", source).
 		SetCentroid(record[4], source).
 		SetPopulation(record[5], source).
 		SetParent(parentEntity.GetTitle(), source).
