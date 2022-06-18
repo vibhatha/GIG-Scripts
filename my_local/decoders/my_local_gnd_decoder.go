@@ -7,33 +7,35 @@ import (
 	"log"
 )
 
-const DistrictDataSource = "gig-data-master/geo/district/"
+const GNDDataSource = "gig-data-master/geo/gnd/"
 
-type MyLocalDistrictDecoder struct {
+type MyLocalGNDDecoder struct {
 	MyLocalDecoder
 }
 
-func (d MyLocalDistrictDecoder) DecodeToEntity(record []string, source string) models.Entity {
-	parentId := record[2]
+func (d MyLocalGNDDecoder) DecodeToEntity(record []string, source string) models.Entity {
+
+	//0-id	1-gnd_id	2-gnd_num	3-name	4-province_id	5-district_id	6-dsd_id	7-centroid	8-population
+	parentId := record[5]
 	parentEntity, err := GIG_Scripts.GigClient.GetEntityByAttribute("attributes.location_id", parentId)
 	if err != nil {
 		log.Fatal("err fetching parent entity", parentId)
 	}
 
-	entity := *new(extended_models.Location).SetLocationId(record[1], source).
-		SetName(record[3]+" District", source).
-		SetCentroid(record[4], source).
-		SetPopulation(record[5], source).
+	entity := *new(extended_models.Location).
+		SetLocationId(record[6], source).
+		SetName(record[3], source).
+		SetCentroid(record[7], source).
+		SetPopulation(record[8], source).
 		SetParent(parentEntity.GetTitle(), source).
-		SetGeoCoordinates(DistrictDataSource + record[1] + ".json").
-		AddCategory("District").AddLink(models.Link{Title: parentEntity.GetTitle()})
+		SetGeoCoordinates(DSDDataSource + record[6] + ".json").
+		AddCategory("Grama Niladhari Division").AddLink(models.Link{Title: parentEntity.GetTitle()})
 
 	//update parent entity
 	payload := models.UpdateEntity{
-		//Title:     "Sri Lanka",
 		SearchAttribute: "attributes.location_id",
 		SearchValue:     *new(models.Value).SetValueString(parentId),
-		Attribute:       "districts",
+		Attribute:       "grama_niladhari_divisions",
 		Value:           *new(models.Value).SetSource(source).SetValueString(entity.GetTitle()),
 	}
 	if _, err := GIG_Scripts.GigClient.AppendToEntity(payload); err != nil {

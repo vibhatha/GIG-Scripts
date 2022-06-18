@@ -2,7 +2,7 @@ package decoders
 
 import (
 	GIG_Scripts "GIG-Scripts"
-	"GIG-Scripts/my_local/data_models"
+	"GIG-Scripts/extended_models"
 	"github.com/lsflk/gig-sdk/models"
 	"log"
 )
@@ -20,7 +20,7 @@ func (d MyLocalDSDDecoder) DecodeToEntity(record []string, source string) models
 		log.Fatal("err fetching parent entity", parentId)
 	}
 
-	entity := *new(data_models.Province).
+	entity := *new(extended_models.Location).
 		SetLocationId(record[1], source).
 		SetName(record[2], source).
 		SetCentroid(record[5], source).
