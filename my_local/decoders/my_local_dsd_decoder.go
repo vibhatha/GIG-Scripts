@@ -1,45 +1,30 @@
 package decoders
 
 import (
-	GIG_Scripts "GIG-Scripts"
-	"GIG-Scripts/extended_models"
 	"github.com/lsflk/gig-sdk/models"
-	"log"
 )
 
-const DSDDataSource = "gig-data-master/geo/dsd/"
-
 type MyLocalDSDDecoder struct {
-	MyLocalDecoder
+	MyLocalDecoderInterface
 }
 
 func (d MyLocalDSDDecoder) DecodeToEntity(record []string, source string) models.Entity {
-	parentId := record[4]
-	parentEntity, err := GIG_Scripts.GigClient.GetEntityByAttribute("attributes.location_id", parentId)
-	if err != nil {
-		log.Fatal("err fetching parent entity", parentId)
-	}
 
-	entity := *new(extended_models.Location).
-		SetLocationId(record[1], source).
-		SetName(record[2], source).
-		SetCentroid(record[5], source).
-		SetPopulation(record[6], source).
-		SetParent(parentEntity.GetTitle(), source).
-		SetGeoCoordinates(DSDDataSource + record[1] + ".json").
-		AddCategory("Divisional Secretariats Division").AddLink(models.Link{Title: parentEntity.GetTitle()})
-
-	//update parent entity
-	payload := models.UpdateEntity{
-		//Title:     "Sri Lanka",
-		SearchAttribute: "attributes.location_id",
-		SearchValue:     *new(models.Value).SetValueString(parentId),
-		Attribute:       "divisional_secretariats_divisions",
-		Value:           *new(models.Value).SetSource(source).SetValueString(entity.GetTitle()),
+	// 0-id	1-dsd_id	2-name	3-province_id	4-district_id	5-centroid	6-population
+	decoder := MyLocalLocationDecoder{
+		LocationId: record[1],
+		Name:       record[2],
+		Centroid:   record[5],
+		Population: record[6],
+		ParentId:   record[4],
+		GeoSource:  "dsd",
+		Category:   "Divisional Secretariats Division",
+		Attribute:  "divisional_secretariats_divisions",
+		Source:     source,
 	}
-	if _, err := GIG_Scripts.GigClient.AppendToEntity(payload); err != nil {
-		log.Fatal("error updating parent entity", err)
-	}
+	decoder.ParentEntity = decoder.GetParentEntity()
+	entity := decoder.MapToEntity()
+	decoder.AppendToParentEntity(entity)
 
 	return entity
 }

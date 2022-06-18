@@ -10,7 +10,7 @@ import (
 	"os"
 )
 
-func AddDecodedData(filename string, decoder decoders.MyLocalDecoder) {
+func AddDecodedData(filename string, decoder decoders.MyLocalDecoderInterface) {
 	source := "MyLocal - " + filename
 	f, err := os.Open(filename)
 	if err != nil {

@@ -1,44 +1,29 @@
 package decoders
 
 import (
-	GIG_Scripts "GIG-Scripts"
-	"GIG-Scripts/extended_models"
 	"github.com/lsflk/gig-sdk/models"
-	"log"
 )
 
-const DistrictDataSource = "gig-data-master/geo/district/"
-
 type MyLocalDistrictDecoder struct {
-	MyLocalDecoder
+	MyLocalDecoderInterface
 }
 
 func (d MyLocalDistrictDecoder) DecodeToEntity(record []string, source string) models.Entity {
-	parentId := record[2]
-	parentEntity, err := GIG_Scripts.GigClient.GetEntityByAttribute("attributes.location_id", parentId)
-	if err != nil {
-		log.Fatal("err fetching parent entity", parentId)
+	// 0-id		1-district_id	2-province_id	3-name		4-centroid		5-population
+	decoder := MyLocalLocationDecoder{
+		LocationId: record[1],
+		Name:       record[3] + " District",
+		Centroid:   record[4],
+		Population: record[5],
+		ParentId:   record[2],
+		GeoSource:  "district",
+		Category:   "District",
+		Attribute:  "districts",
+		Source:     source,
 	}
-
-	entity := *new(extended_models.Location).SetLocationId(record[1], source).
-		SetName(record[3]+" District", source).
-		SetCentroid(record[4], source).
-		SetPopulation(record[5], source).
-		SetParent(parentEntity.GetTitle(), source).
-		SetGeoCoordinates(DistrictDataSource + record[1] + ".json").
-		AddCategory("District").AddLink(models.Link{Title: parentEntity.GetTitle()})
-
-	//update parent entity
-	payload := models.UpdateEntity{
-		//Title:     "Sri Lanka",
-		SearchAttribute: "attributes.location_id",
-		SearchValue:     *new(models.Value).SetValueString(parentId),
-		Attribute:       "districts",
-		Value:           *new(models.Value).SetSource(source).SetValueString(entity.GetTitle()),
-	}
-	if _, err := GIG_Scripts.GigClient.AppendToEntity(payload); err != nil {
-		log.Fatal("error updating parent entity", err)
-	}
+	decoder.ParentEntity = decoder.GetParentEntity()
+	entity := decoder.MapToEntity()
+	decoder.AppendToParentEntity(entity)
 
 	return entity
 }

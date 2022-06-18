@@ -6,10 +6,11 @@ import (
 )
 
 type MyLocalCountryDecoder struct {
-	MyLocalDecoder
+	MyLocalDecoderInterface
 }
 
 func (d MyLocalCountryDecoder) DecodeToEntity(record []string, source string) models.Entity {
+	// 0-id	1-country_id	2-name	3-population
 	entity := *new(extended_models.Location).
 		SetLocationId(record[1], source).
 		SetName(record[2], source).

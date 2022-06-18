@@ -59,10 +59,10 @@ func (l *Location) SetPopulation(population string, source string) *Location {
 func (l *Location) SetGeoCoordinates(sourcePath string) *Location {
 	file, err := ioutil.ReadFile(sourcePath)
 	if err != nil {
-		log.Fatal("error loading coordinate file", sourcePath)
+		log.Fatal("error loading coordinate file:", sourcePath)
 	}
 	if err != nil {
-		log.Fatal("error reading coordinate file", sourcePath)
+		log.Fatal("error reading coordinate file:", sourcePath)
 	}
 
 	l.SetAttribute("geo_boundary_coordinates",
