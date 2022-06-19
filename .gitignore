@@ -1,11 +1,7 @@
 .git/
 .idea/
 .directory
-crawlers/cache/
-data
-orgchart/extracted2
-orgchart/extracted_old
-tenders/data
 wikipedia/tmp
 *.log
 config.go
+my_local/gig-data-master
