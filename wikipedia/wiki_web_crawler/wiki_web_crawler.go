@@ -3,40 +3,50 @@ package main
 
 import (
 	"GIG-Scripts"
-	"GIG-Scripts/extended_models"
-	"GIG-Scripts/global_helpers"
-	"GIG-Scripts/wikipedia/wiki_web_crawler/parsers"
-	"flag"
+	"GIG-Scripts/wikipedia/wiki_web_crawler/helpers"
 	"github.com/lsflk/gig-sdk/libraries"
-	"github.com/lsflk/gig-sdk/libraries/clean_html"
 	"github.com/lsflk/gig-sdk/models"
-	"golang.org/x/net/html"
 	"log"
 	"os"
+	"os/signal"
+	"syscall"
 )
 
 var visited = make(map[string]bool)
 
 func main() {
-	flag.Parse()
-	args := flag.Args()
-	log.Println(args)
-	if len(args) < 1 {
-		log.Println("starting url not specified")
-		os.Exit(1)
-	}
+	exit := make(chan os.Signal, 1)
+	signal.Notify(exit, os.Interrupt, syscall.SIGTERM)
+	args := helpers.CheckArgs()
+
 	queue := make(chan string)
 	go func() { queue <- args[0] }()
 
 	for uri := range queue {
-		entity, err := enqueue(uri, queue)
-		if err != nil {
-			log.Println("enqueue error:", err.Error(), uri)
+		select {
+		case <-exit:
+			log.Println("termination detected. Saving current progress...")
+			//log.Println("exiting now.1")
+			//os.Exit(0)
+			for {
+				select {
+				case url := <-queue:
+					log.Println(url)
+				default:
+					log.Println("exiting now.")
+					os.Exit(0)
+				}
+			}
+		default:
+			entity, err := enqueue(uri, queue)
+			if err != nil {
+				log.Println("enqueue error:", err.Error(), uri)
+			}
+			log.Println(entity.ImageURL)
+			_, err = GIG_Scripts.GigClient.CreateEntity(entity)
+			log.Println("entity added", entity.Title)
+			libraries.ReportError(err, uri)
 		}
-		log.Println(entity.ImageURL)
-		_, err = GIG_Scripts.GigClient.CreateEntity(entity)
-		log.Println("entity added", entity.Title)
-		libraries.ReportError(err, uri)
 	}
 }
 
@@ -44,34 +54,11 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 	log.Println("fetching", uri)
 	visited[uri] = true
 
-	var (
-		wikiArticle extended_models.WikipediaArticle
-		err         error
-		body        *html.Node
-	)
-
-	wikiArticle.SetSource(uri).SetSourceSignature("trusted")
-
-	doc, err := global_helpers.GetDocumentFromUrl(uri)
+	entity, linkedEntities, imageList, err := helpers.DecodeWikiContent(uri)
 	if err != nil {
-		return wikiArticle.Entity, err
+		log.Fatal("error decoding response to entity")
 	}
-
-	wikiArticle.Title, body, err = parsers.ParseHTMLContent(doc)
-	if err != nil {
-		return wikiArticle.Entity, err
-	}
-
-	//clean html code by removing unwanted information
-	htmlCleaner := clean_html.HtmlCleaner{Config: clean_html.Config{
-		LineBreakers:   []string{"div", "caption"},
-		IgnoreElements: []string{"noscript", "script", "style", "input"},
-		IgnoreStrings:  []string{"[", "]", "edit", "Jump to search", "Jump to navigation"},
-		IgnoreTitles:   []string{"(page does not exist)", ":"},
-		IgnoreClasses:  []string{"box-Multiple_issues"},
-	}}
-	result, linkedEntities, imageList, defaultImageSource := htmlCleaner.CleanHTML(uri, body)
-	wikiArticle.ImageURL = defaultImageSource
+	helpers.UploadImages(imageList)
 
 	// queue new links for crawling
 	for _, linkedEntity := range linkedEntities {
@@ -81,24 +68,15 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 			}(linkedEntity.GetSource())
 		}
 		newLink := models.Link{}
-		newLink.SetTitle(linkedEntity.GetTitle()).AddDate(wikiArticle.GetSourceDate())
-		wikiArticle.AddLink(newLink)
-	}
-
-	for _, image := range imageList {
-		go func(payload models.Upload) {
-			uploadErr := GIG_Scripts.GigClient.UploadFile(payload)
-			if uploadErr != nil {
-				log.Println("Error uploading file:", payload.Title, uploadErr)
-			}
-		}(image)
+		newLink.SetTitle(linkedEntity.GetTitle()).AddDate(entity.GetSourceDate())
+		entity.AddLink(newLink)
 	}
 
 	// save linkedEntities (create empty if not exist)
-	err = GIG_Scripts.GigClient.AddEntitiesAsLinks(&wikiArticle.Entity, linkedEntities)
+	err = GIG_Scripts.GigClient.AddEntitiesAsLinks(&entity, linkedEntities)
 	if err != nil {
 		log.Fatal(err)
 	}
-	wikiArticle.SetContent(result)
-	return wikiArticle.Entity, nil
+
+	return entity, nil
 }
