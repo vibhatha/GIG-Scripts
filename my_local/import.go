@@ -3,6 +3,10 @@ package main
 import (
 	"GIG-Scripts/my_local/decoders"
 	"GIG-Scripts/my_local/helpers"
+	"log"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 const (
@@ -10,7 +14,8 @@ const (
 )
 
 func main() {
-	// TODO: graceful shutdown
+	exit := make(chan os.Signal, 1) // we need to reserve to buffer size 1, so the notifier are not blocked
+	signal.Notify(exit, os.Interrupt, syscall.SIGTERM)
 	// open file
 	// country_id	province_id	district_id	dsd_id	gnd_id	ed_id	pd_id	lg_name		lg_id	moh_id
 	//countrySource := DataPath + "country.tsv"
@@ -20,10 +25,13 @@ func main() {
 	//gndSource := DataPath + "gnd.tsv"
 	edSource := DataPath + "ed.tsv"
 
-	//helpers.AddDecodedData(countrySource, decoders.MyLocalCountryDecoder{})
-	//helpers.AddDecodedData(provinceSource, decoders.MyLocalProvinceDecoder{})
-	//helpers.AddDecodedData(districtSource, decoders.MyLocalDistrictDecoder{})
-	//helpers.AddDecodedData(dsdSource, decoders.MyLocalDSDDecoder{})
-	//helpers.AddDecodedData(gndSource, decoders.MyLocalGNDDecoder{})
-	helpers.AddDecodedData(edSource, decoders.MyLocalEDDecoder{})
+	//Needs to run decoder in the exact order to allow connecting with parents
+	//helpers.AddDecodedData(countrySource, decoders.MyLocalCountryDecoder{}, exit)
+	//helpers.AddDecodedData(provinceSource, decoders.MyLocalProvinceDecoder{}, exit)
+	//helpers.AddDecodedData(districtSource, decoders.MyLocalDistrictDecoder{}, exit)
+	//helpers.AddDecodedData(dsdSource, decoders.MyLocalDSDDecoder{}, exit)
+	//helpers.AddDecodedData(gndSource, decoders.MyLocalGNDDecoder{}, exit)
+	helpers.AddDecodedData(edSource, decoders.MyLocalEDDecoder{}, exit)
+
+	log.Println("Completed importing MyLocal data.")
 }

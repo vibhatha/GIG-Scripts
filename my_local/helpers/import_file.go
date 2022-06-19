@@ -10,7 +10,7 @@ import (
 	"os"
 )
 
-func AddDecodedData(filename string, decoder decoders.MyLocalDecoderInterface) {
+func AddDecodedData(filename string, decoder decoders.MyLocalDecoderInterface, exit chan os.Signal) {
 	source := "MyLocal - " + filename
 	f, err := os.Open(filename)
 	if err != nil {
@@ -31,20 +31,27 @@ func AddDecodedData(filename string, decoder decoders.MyLocalDecoderInterface) {
 	log.Println("header found:", headers)
 
 	for {
-		rec, err := tsvReader.Read()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Fatal(err)
-		}
-		// do something with read line
-		fmt.Printf("%+v\n", rec)
-		entity := decoder.DecodeToEntity(rec, source)
-		//save to db
-		_, saveErr := GIG_Scripts.GigClient.CreateEntity(entity)
-		if saveErr != nil {
-			log.Fatal(saveErr)
+		select {
+		case <-exit:
+			log.Println("exiting the decoder")
+			os.Exit(0)
+		default:
+			rec, err := tsvReader.Read()
+			if err == io.EOF {
+				break
+			}
+			if err != nil {
+				log.Fatal(err)
+			}
+			// do something with read line
+			fmt.Printf("%+v\n", rec)
+			entity := decoder.DecodeToEntity(rec, source)
+			//save to db
+			_, saveErr := GIG_Scripts.GigClient.CreateEntity(entity)
+			if saveErr != nil {
+				log.Fatal(saveErr)
+			}
+			log.Println("saved record:", rec)
 		}
 	}
 }
