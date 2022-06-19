@@ -33,7 +33,7 @@ func AddDecodedData(filename string, decoder decoders.MyLocalDecoderInterface, e
 	for {
 		select {
 		case <-exit:
-			log.Println("exiting the decoder")
+			log.Println("exiting the decoder. Terminated by user")
 			os.Exit(0)
 		default:
 			rec, err := tsvReader.Read()
