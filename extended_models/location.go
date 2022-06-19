@@ -56,7 +56,7 @@ func (l *Location) SetPopulation(population string, source string) *Location {
 	return l
 }
 
-func (l *Location) SetGeoCoordinates(sourcePath string) *Location {
+func (l *Location) SetGeoCoordinates(sourcePath string, source string) *Location {
 	file, err := ioutil.ReadFile(sourcePath)
 	if err != nil {
 		log.Fatal("error loading coordinate file:", sourcePath)
@@ -67,6 +67,8 @@ func (l *Location) SetGeoCoordinates(sourcePath string) *Location {
 
 	l.SetAttribute("geo_boundary_coordinates",
 		*new(models.Value).
-			SetType(ValueType.JSON).SetValueString(string(file)))
+			SetType(ValueType.JSON).
+			SetSource(source).
+			SetValueString(string(file)))
 	return l
 }

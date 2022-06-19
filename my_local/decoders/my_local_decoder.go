@@ -67,7 +67,7 @@ func (d MyLocalLocationDecoder) MapToEntity() models.Entity {
 		SetCentroid(d.Centroid, d.Source).
 		SetPopulation(d.Population, d.Source).
 		SetParent(d.ParentEntity.GetTitle(), d.Source).
-		SetGeoCoordinates("gig-data-master/geo/" + d.GeoSource + "/" + d.LocationId + ".json").
+		SetGeoCoordinates("gig-data-master/geo/"+d.GeoSource+"/"+d.LocationId+".json", d.Source).
 		AddCategory(d.Category).
 		AddLink(models.Link{Title: d.ParentEntity.GetTitle()})
 
