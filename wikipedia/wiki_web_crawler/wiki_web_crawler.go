@@ -4,7 +4,6 @@ package main
 import (
 	"GIG-Scripts"
 	"GIG-Scripts/wikipedia/wiki_web_crawler/helpers"
-	"github.com/lsflk/gig-sdk/libraries"
 	"github.com/lsflk/gig-sdk/models"
 	"log"
 	"os"
@@ -25,27 +24,20 @@ func main() {
 	for uri := range queue {
 		select {
 		case <-exit:
-			log.Println("termination detected. Saving current progress...")
-			//log.Println("exiting now.1")
-			//os.Exit(0)
-			for {
-				select {
-				case url := <-queue:
-					log.Println(url)
-				default:
-					log.Println("exiting now.")
-					os.Exit(0)
-				}
-			}
+			helpers.GracefulShutdown(queue)
 		default:
 			entity, err := enqueue(uri, queue)
 			if err != nil {
 				log.Println("enqueue error:", err.Error(), uri)
+				helpers.GracefulShutdown(queue)
 			}
 			log.Println(entity.ImageURL)
 			_, err = GIG_Scripts.GigClient.CreateEntity(entity)
+			if err != nil {
+				log.Println("create entity error:", err.Error(), uri)
+				helpers.GracefulShutdown(queue)
+			}
 			log.Println("entity added", entity.Title)
-			libraries.ReportError(err, uri)
 		}
 	}
 }
@@ -56,7 +48,7 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 
 	entity, linkedEntities, imageList, err := helpers.DecodeWikiContent(uri)
 	if err != nil {
-		log.Fatal("error decoding response to entity")
+		return entity, err
 	}
 	helpers.UploadImages(imageList)
 
@@ -74,9 +66,5 @@ func enqueue(uri string, queue chan string) (models.Entity, error) {
 
 	// save linkedEntities (create empty if not exist)
 	err = GIG_Scripts.GigClient.AddEntitiesAsLinks(&entity, linkedEntities)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return entity, nil
+	return entity, err
 }
