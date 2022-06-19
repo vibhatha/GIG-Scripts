@@ -14,28 +14,33 @@ import (
 var visited = make(map[string]bool)
 
 func main() {
+
 	exit := make(chan os.Signal, 1)
 	signal.Notify(exit, os.Interrupt, syscall.SIGTERM)
-	args := helpers.CheckArgs()
 
 	queue := make(chan string)
-	go func() { queue <- args[0] }()
+
+	// initialize queue from log or command arguments
+	if err := helpers.LoadQueueFromLog(queue); err != nil {
+		args := helpers.CheckArgs()
+		log.Println("initializing queue from command arguments")
+		go func(url string) { queue <- url }(args[0])
+	}
 
 	for uri := range queue {
 		select {
 		case <-exit:
-			helpers.GracefulShutdown(queue)
+			helpers.GracefulShutdown(queue, 0)
 		default:
 			entity, err := enqueue(uri, queue)
 			if err != nil {
 				log.Println("enqueue error:", err.Error(), uri)
-				helpers.GracefulShutdown(queue)
+				helpers.GracefulShutdown(queue, 1)
 			}
-			log.Println(entity.ImageURL)
 			_, err = GIG_Scripts.GigClient.CreateEntity(entity)
 			if err != nil {
 				log.Println("create entity error:", err.Error(), uri)
-				helpers.GracefulShutdown(queue)
+				helpers.GracefulShutdown(queue, 1)
 			}
 			log.Println("entity added", entity.Title)
 		}

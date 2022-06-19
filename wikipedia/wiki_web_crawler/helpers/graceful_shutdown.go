@@ -8,7 +8,7 @@ import (
 
 const QueueLog = "tmp/wiki_web_queue-"
 
-func GracefulShutdown(queue chan string) {
+func GracefulShutdown(queue chan string, errorCode int) {
 	log.Println("termination detected. Saving current progress...")
 	currentTime := time.Now()
 	filename := QueueLog + currentTime.Format(time.RFC3339) + ".log"
@@ -24,7 +24,7 @@ func GracefulShutdown(queue chan string) {
 		default:
 			file.Close()
 			log.Println("exiting now.")
-			os.Exit(0)
+			os.Exit(errorCode)
 		}
 	}
 }
