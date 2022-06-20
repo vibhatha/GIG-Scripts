@@ -18,8 +18,19 @@ func main() {
 	exit := make(chan os.Signal, 1)
 	signal.Notify(exit, os.Interrupt, syscall.SIGTERM)
 
-	queue := make(chan string)
+	err := helpers.EnsureLogDirectories()
+	if err != nil {
+		log.Println("error initializing log directories:", err)
+		os.Exit(1)
+	}
 
+	// initialize visited
+	visited, err = helpers.LoadVisitedFromLog(visited)
+	if err != nil {
+		log.Println("error initializing visited list:", err)
+	}
+
+	queue := make(chan string)
 	// initialize queue from log or command arguments
 	if err := helpers.LoadQueueFromLog(queue); err != nil {
 		args := helpers.CheckArgs()
@@ -30,17 +41,17 @@ func main() {
 	for uri := range queue {
 		select {
 		case <-exit:
-			helpers.GracefulShutdown(queue, 0)
+			helpers.GracefulShutdown(queue, visited, 0)
 		default:
 			entity, err := enqueue(uri, queue)
 			if err != nil {
 				log.Println("enqueue error:", err.Error(), uri)
-				helpers.GracefulShutdown(queue, 1)
+				helpers.GracefulShutdown(queue, visited, 1)
 			}
 			_, err = GIG_Scripts.GigClient.CreateEntity(entity)
 			if err != nil {
 				log.Println("create entity error:", err.Error(), uri)
-				helpers.GracefulShutdown(queue, 1)
+				helpers.GracefulShutdown(queue, visited, 1)
 			}
 			log.Println("entity added", entity.Title)
 		}

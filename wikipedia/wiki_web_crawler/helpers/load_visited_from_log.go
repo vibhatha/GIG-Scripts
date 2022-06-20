@@ -8,14 +8,14 @@ import (
 	"os"
 )
 
-func LoadQueueFromLog(queue chan string) error {
-	files, err := getAllLogs(constants.QueueLogDir)
+func LoadVisitedFromLog(visited map[string]bool) (map[string]bool, error) {
+	files, err := getAllLogs(constants.VisitedLogDir)
 	//if no log files exist
 	if err != nil {
-		return err
+		return visited, err
 	}
 	if len(files) == 1 {
-		return errors.New("no log files found")
+		return visited, errors.New("no log files found")
 	}
 
 	lastLog := files[len(files)-1]
@@ -24,18 +24,18 @@ func LoadQueueFromLog(queue chan string) error {
 	lastLogFile, err := os.Open(lastLog)
 
 	if err != nil {
-		return err
+		return visited, err
 	}
 	logScanner := bufio.NewScanner(lastLogFile)
 	logScanner.Split(bufio.ScanLines)
 
 	for logScanner.Scan() {
-		go func(url string) { queue <- url }(logScanner.Text())
+		visited[logScanner.Text()] = true
 	}
 	err = lastLogFile.Close()
 	if err != nil {
-		return err
+		return visited, err
 	}
-	log.Println("queue initialized from log")
-	return nil
+	log.Println("visited initialized from log")
+	return visited, nil
 }
