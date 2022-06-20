@@ -3,7 +3,6 @@ package helpers
 import (
 	"GIG-Scripts/wikipedia/wiki_web_crawler/constants"
 	"bufio"
-	"errors"
 	"log"
 	"os"
 )
@@ -14,11 +13,10 @@ func LoadVisitedFromLog(visited map[string]bool) (map[string]bool, error) {
 	if err != nil {
 		return visited, err
 	}
-	if len(files) == 1 {
-		return visited, errors.New("no log files found")
+	lastLog, err := getLastFile(files)
+	if err != nil {
+		return visited, err
 	}
-
-	lastLog := files[len(files)-1]
 
 	//open log file
 	lastLogFile, err := os.Open(lastLog)

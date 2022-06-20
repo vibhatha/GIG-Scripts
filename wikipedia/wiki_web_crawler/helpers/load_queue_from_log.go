@@ -3,7 +3,6 @@ package helpers
 import (
 	"GIG-Scripts/wikipedia/wiki_web_crawler/constants"
 	"bufio"
-	"errors"
 	"log"
 	"os"
 )
@@ -14,11 +13,10 @@ func LoadQueueFromLog(queue chan string) error {
 	if err != nil {
 		return err
 	}
-	if len(files) == 1 {
-		return errors.New("no log files found")
+	lastLog, err := getLastFile(files)
+	if err != nil {
+		return err
 	}
-
-	lastLog := files[len(files)-1]
 
 	//open log file
 	lastLogFile, err := os.Open(lastLog)
