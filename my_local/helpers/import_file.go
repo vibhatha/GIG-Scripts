@@ -38,7 +38,7 @@ func AddDecodedData(filename string, decoder decoders.MyLocalDecoderInterface, e
 		default:
 			rec, err := tsvReader.Read()
 			if err == io.EOF {
-				break
+				return
 			}
 			if err != nil {
 				log.Fatal(err)
