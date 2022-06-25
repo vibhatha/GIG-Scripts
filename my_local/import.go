@@ -18,19 +18,19 @@ func main() {
 	signal.Notify(exit, os.Interrupt, syscall.SIGTERM)
 	// open file
 	// country_id	province_id	district_id	dsd_id	gnd_id	ed_id	pd_id	lg_name		lg_id	moh_id
-	//countrySource := DataPath + "country.tsv"
-	//provinceSource := DataPath + "province.tsv"
-	//districtSource := DataPath + "district.tsv"
-	//dsdSource := DataPath + "dsd.tsv"
-	//gndSource := DataPath + "gnd.tsv"
+	countrySource := DataPath + "country.tsv"
+	provinceSource := DataPath + "province.tsv"
+	districtSource := DataPath + "district.tsv"
+	dsdSource := DataPath + "dsd.tsv"
+	gndSource := DataPath + "gnd.tsv"
 	edSource := DataPath + "ed.tsv"
 
 	//Needs to run decoder in the exact order to allow connecting with parents
-	//helpers.AddDecodedData(countrySource, decoders.MyLocalCountryDecoder{}, exit)
-	//helpers.AddDecodedData(provinceSource, decoders.MyLocalProvinceDecoder{}, exit)
-	//helpers.AddDecodedData(districtSource, decoders.MyLocalDistrictDecoder{}, exit)
-	//helpers.AddDecodedData(dsdSource, decoders.MyLocalDSDDecoder{}, exit)
-	//helpers.AddDecodedData(gndSource, decoders.MyLocalGNDDecoder{}, exit)
+	helpers.AddDecodedData(countrySource, decoders.MyLocalCountryDecoder{}, exit)
+	helpers.AddDecodedData(provinceSource, decoders.MyLocalProvinceDecoder{}, exit)
+	helpers.AddDecodedData(districtSource, decoders.MyLocalDistrictDecoder{}, exit)
+	helpers.AddDecodedData(dsdSource, decoders.MyLocalDSDDecoder{}, exit)
+	helpers.AddDecodedData(gndSource, decoders.MyLocalGNDDecoder{}, exit)
 	helpers.AddDecodedData(edSource, decoders.MyLocalEDDecoder{}, exit)
 
 	log.Println("Completed importing MyLocal data.")
