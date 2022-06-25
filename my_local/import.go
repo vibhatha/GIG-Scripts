@@ -24,6 +24,9 @@ func main() {
 	dsdSource := DataPath + "dsd.tsv"
 	gndSource := DataPath + "gnd.tsv"
 	edSource := DataPath + "ed.tsv"
+	pdSource := DataPath + "pd.tsv"
+	lgSource := DataPath + "lg.tsv"
+	mohSource := DataPath + "moh.tsv"
 
 	//Needs to run decoder in the exact order to allow connecting with parents
 	helpers.AddDecodedData(countrySource, decoders.MyLocalCountryDecoder{}, exit)
@@ -32,6 +35,9 @@ func main() {
 	helpers.AddDecodedData(dsdSource, decoders.MyLocalDSDDecoder{}, exit)
 	helpers.AddDecodedData(gndSource, decoders.MyLocalGNDDecoder{}, exit)
 	helpers.AddDecodedData(edSource, decoders.MyLocalEDDecoder{}, exit)
+	helpers.AddDecodedData(pdSource, decoders.MyLocalPDDecoder{}, exit)
+	helpers.AddDecodedData(lgSource, decoders.MyLocalLGDecoder{}, exit)
+	helpers.AddDecodedData(mohSource, decoders.MyLocalMOHDecoder{}, exit)
 
 	log.Println("Completed importing MyLocal data.")
 }

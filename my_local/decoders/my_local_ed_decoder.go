@@ -13,7 +13,7 @@ func (d MyLocalEDDecoder) DecodeToEntity(record []string, source string) models.
 	// 0-id	1-name	2-country_id	3-province_id	4-ed_id		5-centroid	6-population
 	decoder := MyLocalLocationDecoder{
 		LocationId: record[0],
-		Name:       record[1] + " District",
+		Name:       record[1] + " Electoral District",
 		Centroid:   record[5],
 		Population: record[6],
 		ParentId:   record[3],
