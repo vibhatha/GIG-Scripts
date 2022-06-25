@@ -17,6 +17,7 @@ func (d MyLocalMOHDecoder) DecodeToEntity(record []string, source string) models
 		SetName(record[2]+" MOH", source).
 		SetCentroid(record[3], source).
 		SetPopulation(record[4], source).
+		SetGeoCoordinates("gig-data-master/geo/moh/"+record[0], source).
 		AddCategory("MOH")
 	return entity
 }
