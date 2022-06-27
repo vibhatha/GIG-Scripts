@@ -18,6 +18,6 @@ func (d MyLocalLGDecoder) DecodeToEntity(record []string, source string) models.
 		SetCentroid(record[3], source).
 		SetPopulation(record[4], source).
 		SetGeoCoordinates("gig-data-master/geo/lg/"+record[0]+".json", source).
-		AddCategory("Local Government")
+		AddCategory("Local Government").AddCategory("LOCATION")
 	return entity
 }

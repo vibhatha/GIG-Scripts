@@ -23,6 +23,7 @@ func (d MyLocalDistrictDecoder) DecodeToEntity(record []string, source string) m
 	}
 	decoder.ParentEntity = decoder.GetParentEntity()
 	entity := decoder.MapToEntity()
+	entity.AddCategory("LOCATION")
 	decoder.AppendToParentEntity(entity)
 
 	return entity

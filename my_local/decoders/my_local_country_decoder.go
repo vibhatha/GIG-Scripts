@@ -15,6 +15,6 @@ func (d MyLocalCountryDecoder) DecodeToEntity(record []string, source string) mo
 		SetLocationId(record[1], source).
 		SetName(record[2], source).
 		SetPopulation(record[3], source).
-		AddCategory("Country")
+		AddCategory("Country").AddCategory("LOCATION")
 	return entity
 }

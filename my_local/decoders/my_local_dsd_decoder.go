@@ -24,6 +24,7 @@ func (d MyLocalDSDDecoder) DecodeToEntity(record []string, source string) models
 	}
 	decoder.ParentEntity = decoder.GetParentEntity()
 	entity := decoder.MapToEntity()
+	entity.AddCategory("LOCATION")
 	decoder.AppendToParentEntity(entity)
 
 	return entity
