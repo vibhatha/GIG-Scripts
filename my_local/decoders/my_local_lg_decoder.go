@@ -9,7 +9,7 @@ type MyLocalLGDecoder struct {
 	MyLocalDecoderInterface
 }
 
-func (d MyLocalLGDecoder) DecodeToEntity(record []string, source string) models.Entity {
+func (d MyLocalLGDecoder) DecodeToEntity(record []string, source string, headers []string) models.Entity {
 
 	// 0-id		1-lg_id		2-name	3-centroid	4-population
 	entity := *new(extended_models.Location).

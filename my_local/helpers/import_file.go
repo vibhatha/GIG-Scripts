@@ -45,7 +45,7 @@ func AddDecodedData(filename string, decoder decoders.MyLocalDecoderInterface, e
 			}
 			// do something with read line
 			fmt.Printf("%+v\n", rec)
-			entity := decoder.DecodeToEntity(rec, source)
+			entity := decoder.DecodeToEntity(rec, source, headers)
 			//save to db
 			_, saveErr := GIG_Scripts.GigClient.CreateEntity(entity)
 			if saveErr != nil {

@@ -8,7 +8,7 @@ type MyLocalDistrictDecoder struct {
 	MyLocalDecoderInterface
 }
 
-func (d MyLocalDistrictDecoder) DecodeToEntity(record []string, source string) models.Entity {
+func (d MyLocalDistrictDecoder) DecodeToEntity(record []string, source string, headers []string) models.Entity {
 	// 0-id		1-district_id	2-province_id	3-name		4-centroid		5-population
 	decoder := MyLocalLocationDecoder{
 		LocationId: record[1],

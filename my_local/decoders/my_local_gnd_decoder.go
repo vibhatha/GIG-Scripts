@@ -8,7 +8,7 @@ type MyLocalGNDDecoder struct {
 	MyLocalDecoderInterface
 }
 
-func (d MyLocalGNDDecoder) DecodeToEntity(record []string, source string) models.Entity {
+func (d MyLocalGNDDecoder) DecodeToEntity(record []string, source string, headers []string) models.Entity {
 
 	//0-id	1-gnd_id	2-gnd_num	3-name	4-province_id	5-district_id	6-dsd_id	7-centroid	8-population
 	decoder := MyLocalLocationDecoder{

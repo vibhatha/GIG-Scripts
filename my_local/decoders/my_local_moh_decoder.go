@@ -9,7 +9,7 @@ type MyLocalMOHDecoder struct {
 	MyLocalDecoderInterface
 }
 
-func (d MyLocalMOHDecoder) DecodeToEntity(record []string, source string) models.Entity {
+func (d MyLocalMOHDecoder) DecodeToEntity(record []string, source string, headers []string) models.Entity {
 
 	// 0-id		1-moh_id	2-name	3-centroid	4-population
 	entity := *new(extended_models.Location).
