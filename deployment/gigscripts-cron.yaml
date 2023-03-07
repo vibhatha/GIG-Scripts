@@ -7,10 +7,8 @@ metadata:
   namespace: applications
 spec:
   jobTemplate:
-    metadata:
     spec:
       template:
-        metadata:
         spec:
           containers:
             - image: gigscripts.azurecr.io/gig-scripts
@@ -24,7 +22,7 @@ spec:
                   cpu: 500m
                   memory: 512Mi
               volumeMounts:
-                - mountPath: /go/src/GIG-SDK/config.go
+                - mountPath: /go/src/GIG-Scripts/config.go
                   name: gig-sdk-config
                   subPath: config.go
           restartPolicy: OnFailure
