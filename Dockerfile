@@ -1,5 +1,5 @@
 #build/running stage
-FROM golang:1.14-alpine AS builder
+FROM golang:1.18-alpine AS builder
 WORKDIR /go/src/GIG-Scripts
 COPY . .
 RUN apk add --no-cache git
