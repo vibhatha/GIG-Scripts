@@ -1,0 +1,39 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  annotations:
+    reloader.stakater.com/auto: "true"
+  name: gig-scripts
+  namespace: applications
+spec:
+  jobTemplate:
+    metadata:
+    spec:
+      template:
+        metadata:
+        spec:
+          containers:
+            - image: gigscripts.azurecr.io/gig-scripts
+              imagePullPolicy: Always
+              name: gig-scripts
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 512Mi
+                requests:
+                  cpu: 500m
+                  memory: 512Mi
+              volumeMounts:
+                - mountPath: /go/src/GIG-SDK/config.go
+                  name: gig-sdk-config
+                  subPath: config.go
+          restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 60
+          volumes:
+            - configMap:
+                defaultMode: 420
+                name: gig-sdk-config
+              name: gig-sdk-config
+      ttlSecondsAfterFinished: 60
+  schedule: 1 * * * *
+  suspend: false
