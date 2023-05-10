@@ -2,10 +2,8 @@ import csv
 import re
 import os
 
-def write_to_csv(extracted_data,pdf_file):
+def write_to_csv(extracted_data,pdf_file,path):
     x = re.findall('[0-9]+', pdf_file)
-    path = "extracted/"
-    
 
     # Check if the directory exists
     if not os.path.exists(path):

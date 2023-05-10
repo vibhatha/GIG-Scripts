@@ -12,5 +12,6 @@ def extract_pdf_text(pdf_file):
     # docx_content.close()
     # os.remove(docx_file)    
     # print(docx_content.body)
-    return docx_content.body
+    # print(docx_content.text)
+    return docx_content
     

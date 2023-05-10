@@ -8,7 +8,8 @@ extracted_data = dict()
 
 def extract_ministers_departments(pdf_file):
     minister_no = 1
-    pdf_text = extract_pdf_text(pdf_file)
+    pdf_text = extract_pdf_text(pdf_file).body
+    # print(pdf_text)
     
     # iterate through the pdf_text lists
     for i, text1 in enumerate(pdf_text):
@@ -23,9 +24,9 @@ def extract_ministers_departments(pdf_file):
             # extract deparments   
             extract_departments(table_data)
     
-    # print(len(extracted_data))
-    # for key, value in extracted_data.items():
-    #     print(key, ' : ', value,'\n\n')              
+    print("No: of Ministers : " , len(extracted_data))
+    for key, value in extracted_data.items():
+        print(key, ' : ', value,'No. of Departments : ',len(value),'\n\n')              
     return extracted_data
 
   
@@ -57,6 +58,12 @@ def extract_ministers(pdf_text, i, minister_no):
     return minister_no
                
 def extract_departments(table_data):
+    # print(table_data)
+    # minister_name = list(extracted_data.keys())[-1]
+    # if minister_name ==[]:
+    #     dept_no = 1
+    
+    
     # find the list which containing 3 columns in the table
     if len(table_data) == 3:
         # getting the 2nd column data to extract "Column II"
@@ -66,8 +73,13 @@ def extract_departments(table_data):
         if is_department_cell(deparment_string):
             # clean department names and add the list to extracted_data
             department_lst = clean_department_data(deparment_string)
-            minister_name = list(extracted_data.keys())[-1]
-            extracted_data[minister_name] = extracted_data[minister_name] + department_lst
+            try:
+                minister_name = list(extracted_data.keys())[-1]
+                extracted_data[minister_name] = extracted_data[minister_name] + department_lst
+            except:
+                print("No Ministry Found")
+    # else:
+        
         
 
 def clean_department_data(department_data):
