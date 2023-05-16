@@ -11,10 +11,6 @@ csv_directory = "extracted/"
 download_all_pdfs(website_url, pdf_directory)
 pdf_names = get_downloaded_pdfs(pdf_directory)
 
-
-# pdf_location = "./pdfs/functions_2022-07-22_E.pdf"
-# extracted_data = extract_ministers_departments(pdf_location)
-
 for pdf in pdf_names:
     # extract ministers and corresponding departments
     pdf_location = pdf_directory+"/"+pdf
