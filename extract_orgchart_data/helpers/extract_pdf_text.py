@@ -5,13 +5,19 @@ import os
 
 def extract_pdf_text(pdf_file):
     cv = Converter(pdf_file)
+    docx_directory = "./docx"
     docx_file = pdf_file.replace(".pdf",".docx")
-    cv.convert(docx_file)
+    docx_file = docx_directory+"/"+os.path.basename(docx_file)
+    
+    # Check if the directory exists
+    if not os.path.exists(docx_directory):
+        # If it doesn't exist, create it
+        os.makedirs(docx_directory)
+
+    if not os.path.exists(docx_file):
+        cv.convert(docx_file)
     
     docx_content = docx2python(docx_file)
-    # docx_content.close()
-    # os.remove(docx_file)    
-    # print(docx_content.body)
-    # print(docx_content.text)
+
     return docx_content
     
