@@ -1,13 +1,14 @@
 package main
 
 import (
-	"GIG-Scripts"
+	GIG_Scripts "GIG-Scripts"
 	"GIG-Scripts/orgchart/helpers"
 	"flag"
-	"github.com/lsflk/gig-sdk/libraries"
-	"github.com/lsflk/gig-sdk/models"
 	"log"
 	"os"
+
+	"github.com/lsflk/gig-sdk/libraries"
+	"github.com/lsflk/gig-sdk/models"
 )
 
 func main() {
