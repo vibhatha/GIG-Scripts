@@ -1,6 +1,6 @@
 import os
 
-def get_downloaded_pdfs(directory):
+def get_pdf_names(directory):
     pdf_names = []
     for file_name in os.listdir(directory):
         if file_name.endswith('.pdf'):

@@ -1,28 +1,40 @@
-import openai
-import marvin as ai_fn
+from helpers.llm_calls import update_entry
+import json
 
-def update_existing_data(existing_data, amendment):
-    openai.api_key = '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'
-    # print(existing_data)
+def update_existing_data(data_to_be_updated, json_path):
+    updated_data = []
+    for item in data_to_be_updated:
+        updated_obj = update_entry(json.dumps(item))
+        arranged_data = arrange_departments(json.loads(updated_obj))
+        updated_data.append(arranged_data)
+        update_json_file(json_path, arranged_data)
 
-    full_prompt = f'There is a table which consist of "Ministries" and corresponding "Departments, Statutory Institutions and Public Corporations". "Departments, Statutory Institutions and Public Corporations" is included in Column II of the table. That data in table is converted to a json file(every json object has "Ministry" key and "Organizations" key. "Ministry" key consist of the ministry and "Organizations" consist of the relavent "Departments, Statutory Institutions and Public Corporations"). Find the updates done to the table by going through this text : "{amendment}" and update this json file: "{existing_data}". Return result in JSON format without any explanation.'
-    full_prompt = f'find entities in this text: {amendment}'
+    return updated_data
 
-    response = openai.Completion.create(
-    model="text-davinci-003",
-    prompt=full_prompt,
-    temperature=0,
-    max_tokens=64,
-    top_p=1.0,
-    frequency_penalty=0.0,
-    presence_penalty=0.0
-    )
+def arrange_departments(json_data):
+    i = 1
+    for departmernt in json_data['Organizations']:
+        departmernt_no = int(departmernt.split('.')[0])
+        if i != departmernt_no:
+            # print(i,departmernt_no)
+            json_data['Organizations'][i-1] = f"{i}. {departmernt.split('. ')[1]}"
+        i += 1
 
-    extracted_data = response.choices[0].text.strip()
-    print(response)
+    return json_data
 
-    return extracted_data
+def update_json_file(filepath, new_data):
+    # Load the existing JSON data from the file
+    with open(filepath, 'r') as file:
+        json_data = json.load(file)
+    
+    # Update the JSON data with the new data
+    for item in json_data:
+        if item['Ministry'].lower() == new_data['Ministry'].lower():
+            item['Organizations'] = new_data['Organizations']
 
-# @ai_fn
-# def update_existing_data(existing_data: str, amendment: str) -> str:
-#     """There is a table which consist of "Ministries" and corresponding "Departments, Statutory Institutions and Public Corporations". "Departments, Statutory Institutions and Public Corporations" is included in Column II of the table. That data in table is converted to a json file(every json object has "Ministry" key and "Organizations" key. "Ministry" key consist of the ministry and "Organizations" consist of the relavent "Departments, Statutory Institutions and Public Corporations"). Find the updates done to the table by going through this text : "{amendment}" and update this json file: "{existing_data}". Return result in JSON format without any explanation."""
+    # Save the updated JSON data back to the file
+    with open(filepath, 'w') as file:
+        json.dump(json_data, file, indent=4)
+    
+    # Return the updated data
+    return json_data
