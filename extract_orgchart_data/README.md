@@ -35,3 +35,5 @@ Improvements:
  - From this script, it can only identify the data in tabular format. Need to address the gazettes which the data is in sentences as well.
 
  - When a PDF is converted into a docx, there are some miss-formattings in the tables. Because of this, the script can not identify "Column II" which contains the departments in some tables. Therefore, it can not extract some departments. This needs to be fixed.
+
+NOTE : Check extracted data before populate the GIG db

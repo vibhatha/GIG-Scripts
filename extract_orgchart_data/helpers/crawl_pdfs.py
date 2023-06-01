@@ -22,6 +22,8 @@ def get_pdf_links(url):
     return pdf_links
 
 def download_all_pdfs(url, save_directory):
+    save_directory = os.path.join(os.getcwd(), save_directory)
+
     if not os.path.exists(save_directory):
         os.makedirs(save_directory)
 
@@ -35,5 +37,7 @@ def download_all_pdfs(url, save_directory):
         print(f"Downloading {pdf_url}...")
         download_pdf(pdf_url, save_directory)
         print("Download complete!")
+    
+    print("All PDFs downloaded successfully!")
 
 

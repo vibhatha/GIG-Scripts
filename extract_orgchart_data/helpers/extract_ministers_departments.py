@@ -1,29 +1,35 @@
 from helpers.extract_pdf_text import extract_pdf_text
 import re
+import os
 
+COLUMN_HEADING = "Column I"
+NO_OF_COLUMNS_IN_TABLE = 3
 pdf_text = []
-column_heading = "Column I"
 extracted_data = dict()
 
 def extract_ministers_departments(pdf_file):
     pdf_text = extract_pdf_text(pdf_file).body
 
+    print("Extracting ministers and departments...")
     # iterate through the pdf_text lists
-    for i, text1 in enumerate(pdf_text):
-        for j, table_data in enumerate(text1):
+    for i, data in enumerate(pdf_text):
+        for table_data in data:
             # getting headings list in pdf_text
             table_heading = table_data[0]
 
             # extract ministers if  table_heading list contains "Column I"
-            if search_in_sublists(table_heading,column_heading):
+            if search_in_sublists(table_heading,COLUMN_HEADING):
                 extract_ministers(pdf_text, i)
 
             extract_departments(table_data)
 
-    print("No: of Ministers : " , len(extracted_data))
+    print("No: of Ministers Found : " , len(extracted_data))
     for key, value in extracted_data.items():
-        print(key, ' : ', value,'No. of Departments : ',len(value),'\n\n')
+        print('Ministry :\t\t',key)
+        print('No. of Departments :\t',len(value))
+        print('Departments :\t\t',value,'\n\n')
 
+    print("Ministers and departments extracted successfully! PDF file: ", os.path.basename(pdf_file))
     return extracted_data
 
 
@@ -66,7 +72,7 @@ def extract_ministers(pdf_text, i):
     
 def extract_departments(table_data):
     # find the list which containing 3 columns in the table
-    if len(table_data) == 3:
+    if len(table_data) == NO_OF_COLUMNS_IN_TABLE:
         # getting the 2nd column data to extract "Column II"
         deparment_string = ''.join(table_data[1])
 
@@ -98,24 +104,27 @@ def clean_department_data(department_data):
     # remove empty strings and whitespace from list
     lst = [x.strip() for x in lst if x.strip()]
 
+    # capitalize the first letter
+    lst = [x.capitalize() for x in lst]
+
     return lst
 
 
 
 def clean_minister_data(merged_str):
     # Remove "SCHEDULE" and "(Contd.)"
-    remove_text = "SCHEDULE"
-    compiled = re.compile(re.escape(remove_text), re.IGNORECASE)
-    merged_str = compiled.sub('', merged_str)
-
-    remove_text = "(Contd.)"
-    compiled = re.compile(re.escape(remove_text), re.IGNORECASE)
-    merged_str = compiled.sub('', merged_str)
+    remove_text_lst = ["(Contd.)", "SCHEDULE"]
+    for remove_text in remove_text_lst:
+        merged_str = re.compile(re.escape(remove_text), re.IGNORECASE).sub('', merged_str)
+      
     # remove unnessasary characters
     merged_str = merged_str.replace('.','').replace('•','').replace('/n','').replace('/t','')
 
     # Remove all digits
     merged_str = ''.join(c for c in merged_str if not c.isdigit())
+
+    # capitalize the first letter
+    merged_str = merged_str.capitalize()
 
     # remove trailing spaces
     return merged_str.strip()
