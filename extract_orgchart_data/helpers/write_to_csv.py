@@ -2,7 +2,20 @@ import csv
 import re
 import os
 
-def write_to_csv(extracted_data,pdf_file_name,write_directory):
+def write_to_csv(extracted_data, pdf_file_name, write_directory):
+    """
+    Write the extracted data to a CSV file.
+
+    Args:
+        extracted_data (dict): A dictionary containing the extracted data.
+        pdf_file_name (str): The name of the PDF file.
+        write_directory (str): The directory to write the CSV file.
+
+    Returns:
+        None
+    """
+    
+    """Write the extracted data to a csv file"""
     write_directory = os.path.join(os.getcwd(), write_directory)
 
     x = re.findall('[0-9]+', pdf_file_name)
@@ -21,4 +34,4 @@ def write_to_csv(extracted_data,pdf_file_name,write_directory):
             for department in extracted_data[ministry]:
                 row = [ministry, department]
                 writer.writerow(row)
-       
+                

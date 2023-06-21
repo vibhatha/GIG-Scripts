@@ -3,24 +3,15 @@ package main
 import (
 	GIG_Scripts "GIG-Scripts"
 	"GIG-Scripts/orgchart/helpers"
-	"flag"
 	"log"
-	"os"
 
 	"github.com/lsflk/gig-sdk/libraries"
 	"github.com/lsflk/gig-sdk/models"
 )
 
-func main() {
+func import_csv(csvFilePath string) {
 
-	flag.Parse()
-	args := flag.Args()
-	if len(args) < 1 {
-		log.Println("file path not specified")
-		os.Exit(1)
-	}
-
-	dataArray, fileName, gazetteDate, err := helpers.LoadDataFromCsv(args[0])
+	dataArray, fileName, gazetteDate, err := helpers.LoadDataFromCsv(csvFilePath)
 
 	if err != nil {
 		log.Fatal("error loading csv file:", err)
@@ -48,5 +39,4 @@ func main() {
 		_, saveErr := GIG_Scripts.GigClient.CreateEntity(organization.Entity)
 		libraries.ReportError(saveErr, ministry)
 	}
-
 }

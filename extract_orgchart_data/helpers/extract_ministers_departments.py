@@ -1,13 +1,23 @@
-from helpers.extract_pdf_text import extract_pdf_text
 import re
 import os
+from helpers.extract_pdf_text import extract_pdf_text
+
 
 COLUMN_HEADING = "Column I"
 NO_OF_COLUMNS_IN_TABLE = 3
-pdf_text = []
 extracted_data = dict()
 
 def extract_ministers_departments(pdf_file):
+    """
+    Extracts the ministers and corresponding departments from the given PDF file.
+
+    Args:
+        pdf_file (str): The path to the PDF file.
+
+    Returns:
+        dict: A dictionary containing the extracted ministers and departments.
+    """
+
     pdf_text = extract_pdf_text(pdf_file).body
 
     print("Extracting ministers and departments...")
@@ -18,7 +28,7 @@ def extract_ministers_departments(pdf_file):
             table_heading = table_data[0]
 
             # extract ministers if  table_heading list contains "Column I"
-            if search_in_sublists(table_heading,COLUMN_HEADING):
+            if search_in_sublists(table_heading, COLUMN_HEADING):
                 extract_ministers(pdf_text, i)
 
             extract_departments(table_data)
@@ -34,20 +44,40 @@ def extract_ministers_departments(pdf_file):
 
 
 
-def is_department_cell(table_data):
-    # returning false for unwanted cells in column II
-    if "Column II" in table_data:
+def is_department_cell(deparment_string):
+    """
+    Checks if the given cell is a department cell.
+
+    Args:
+        deparment_string (str): The cell to check.
+
+    Returns:
+        bool: True if the deparment_string is a department cell, False if it is a unwanted cell.
+    """
+
+    if "Column II" in deparment_string:
         return False
-    if "Departments,  Statutory \nInstitutions & Public Corporations" in table_data:
+    if "Departments,  Statutory \nInstitutions & Public Corporations" in deparment_string:
         return False
-    if "Departments, Statutory Institutions and Public Corporations" in table_data:
+    if "Departments, Statutory Institutions and Public Corporations" in deparment_string:
         return False
-    if len(table_data) == 0:
+    if len(deparment_string) == 0:
         return False
     return True
 
 
 def extract_ministers(pdf_text, i):
+    """
+    Extracts the ministers from the PDF text.
+
+    Args:
+        pdf_text (list): The PDF text as a nested list.
+        i (int): The index of the current data in the pdf_text list.
+
+    Returns:
+        None
+    """
+
     # getting list containing ministers and merging
     minister_data = pdf_text[i-1][0][0][-1]
     minister_data = ''.join(minister_data)
@@ -71,6 +101,16 @@ def extract_ministers(pdf_text, i):
 
     
 def extract_departments(table_data):
+    """
+    Extracts the departments from the table data.
+
+    Args:
+        table_data (list): The table data to extract departments from.
+
+    Returns:
+        None
+    """
+
     # find the list which containing 3 columns in the table
     if len(table_data) == NO_OF_COLUMNS_IN_TABLE:
         # getting the 2nd column data to extract "Column II"
@@ -90,6 +130,16 @@ def extract_departments(table_data):
 
 
 def clean_department_data(department_data):
+    """
+    Cleans the department data by removing unwanted characters and formatting the department names.
+
+    Args:
+        department_data (str): The department data to clean.
+
+    Returns:
+        list: A list of cleaned department names.
+    """
+
     # Remove newlines and tabs
     data = department_data.replace('\n', '').replace('\t', '').replace('�', ' ')
 
@@ -112,6 +162,16 @@ def clean_department_data(department_data):
 
 
 def clean_minister_data(merged_str):
+    """
+    Cleans the merged minister data by removing unwanted characters and formatting the minister name.
+
+    Args:
+        merged_str (str): The merged minister data to clean.
+
+    Returns:
+        str: The cleaned minister name.
+    """
+
     # Remove "SCHEDULE" and "(Contd.)"
     remove_text_lst = ["(Contd.)", "SCHEDULE"]
     for remove_text in remove_text_lst:
@@ -132,7 +192,17 @@ def clean_minister_data(merged_str):
 
 
 def search_in_sublists(sublist, search_term):
-    # searches an element in sublists
+    """
+    Searches for a search term in the sublists of a given list.
+
+    Args:
+        sublist (list): The sublist to search in.
+        search_term (str): The search term to look for.
+
+    Returns:
+        bool: True if the search term is found, False otherwise.
+    """
+
     for item in sublist:
         if search_term == item.strip():
             return True
