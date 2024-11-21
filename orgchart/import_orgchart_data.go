@@ -10,11 +10,17 @@ import (
 )
 
 const (
-	rootDir = "extracted"
 	fileExt = ".csv"
 )
 
 func main() {
+
+	// Check if the root directory is provided as an argument
+	if len(os.Args) < 2 {
+		log.Fatalf("Usage: %s <rootDir>", os.Args[0])
+	}
+	rootDir := os.Args[1]
+
 	filePaths, err := getCSVFilePaths(rootDir)
 	if err != nil {
 		log.Fatalf("Error retrieving CSV file paths: %v", err)
